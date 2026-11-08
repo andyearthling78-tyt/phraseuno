@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, usePathname } from "expo-router";
-import * as Speech from "expo-speech";
+import { learningSpeech } from "../lib/speech";
 export const C = {
   green: "#173e32",
   cream: "#f6f4eb",
@@ -76,16 +76,9 @@ export function Speak({ text }: { text: string }) {
           Alert.alert("Sprachausgabe", "Bitte wähle in den Einstellungen eine verfügbare spanische Stimme.");
           return;
         }
-        Speech.stop();
-        Speech.speak(text, {
-          language: "es-ES",
-          voice: selectedVoice.identifier,
-          rate: 0.85,
-          onError: () =>
-            Alert.alert(
-              "Sprachausgabe",
-              "Die spanische Stimme ist gerade nicht verfügbar.",
-            ),
+        learningSpeech.speak({
+          text, voice: selectedVoice,
+          onError: () => Alert.alert("Sprachausgabe", "Die Stimme konnte nicht abgespielt werden. Prüfe die Medienlautstärke und das gewählte Audiogerät und versuche es erneut."),
         });
       }}
       style={s.speak}

@@ -50,3 +50,15 @@
 Android-APK/Geräteprüfung und ein tatsächlicher männlicher Systemsprecher bleiben abhängig von der jeweils verfügbaren Entwicklungsumgebung bzw. installierten Stimme. Das Zeitbudget misst keine tatsächliche Lernzeit und verändert den Umfang des ersten Lerntags nicht.
 
 Der abschließende Release-Build wurde erneut erfolgreich auf dem iPhone installiert. Der automatische Start war anschließend wegen gesperrtem Gerät nicht möglich; die App kann nach dem Entsperren regulär geöffnet werden.
+
+## Korrektur: stumme iPhone-Sprachausgabe
+
+Nach Nutzerrückmeldung „keine Stimmen hörbar“ wurde die bisherige Standard-Audio-Session ersetzt. Vorschau und Lernphrasen verwenden gemeinsam `expo-audio`: `playsInSilentMode: true`, Aufnahme aus, keine Hintergrundwiedergabe, keine Hörerroute; anschließend explizite Aktivierung. `expo-speech` nutzt diese App-Session mit relativer Lautstärke 1 und der gewählten Stimm-ID. Die Geräte-Medienlautstärke und Bluetooth-Route werden nicht überschrieben.
+
+Eine zentrale Steuerung wartet auf Stoppen und Audio-Vorbereitung; neuere Tastendrücke verwerfen überholte wartende Ausgaben. Fehler beim Vorbereiten werden angezeigt. Mikrofonzugriff und Hintergrund-Audiodienste sind im Config-Plugin ausgeschaltet. Generierte iOS-/Android-Konfiguration auf fehlende Mikrofonberechtigung geprüft.
+
+22 automatisierte Tests bestanden. Die drei zusätzlichen Tests prüfen Reihenfolge und Wiedergabeeinstellungen, schnelle erneute Tastendrücke/Abbruch sowie die Fehlerbehandlung mit anschließendem Wiederholungsversuch. TypeScript und ESLint ohne Fehler; native Hermes-Bundles für iOS und Android erfolgreich.
+
+Die vorherigen Prüfungen haben die hörbare Ausgabe auf dem persönlichen iPhone nicht nachgewiesen. Die tatsächliche Hörbarkeit nach dieser Korrektur muss auf dem iPhone mit Medienlautstärke größer null und dem gewünschten Ausgabegerät bestätigt werden. Ein erfolgreicher Sprachausgabe-Aufruf allein beweist keinen hörbaren Ton.
+
+Audio-Korrektur nativ gebaut: Release-Simulator und Release-iPhone erfolgreich. Installation auf dem iPhone zu 100 % bestätigt; Start wegen Gerätesperre nicht möglich. Im neuen Simulator-Build Stimmvorschau Mónica ausgelöst, ohne angezeigten Laufzeitfehler. Hörbarkeit auf dem persönlichen iPhone weiterhin vom Nutzer zu bestätigen.

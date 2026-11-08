@@ -50,7 +50,7 @@ Node.js 24+, npm, für iOS Xcode/CocoaPods, für Android Java/Android SDK instal
 
 - Tag 1 im Café: Quiero un café → con leche → por favor → para llevar.
 - Vierstufiger simulierter Lehrerdialog mit inhaltsbezogener Antwortprüfung, Rückmeldung und Hilfen.
-- Spanische Sprachausgabe mit der Stimme des Geräts. Auf iOS kann der Lautlosmodus die Wiedergabe unterdrücken. Antworten werden schriftlich eingegeben; die Diktierfunktion der Systemtastatur kann verwendet werden. Keine eigene Mikrofonaufnahme und keine Aussprachebewertung.
+- Spanische Sprachausgabe mit der Stimme des Geräts. Die App konfiguriert eine aktive Audio-Session für Medienwiedergabe auch im Lautlosmodus. Die Medienlautstärke und die gewählte Audioausgabe bleiben in der Kontrolle des Geräts. Antworten werden schriftlich eingegeben; die Diktierfunktion der Systemtastatur kann verwendet werden. Keine eigene Mikrofonaufnahme und keine Aussprachebewertung.
 - Animierte, barrierearm bedienbare Vokabelkarten mit Rückseite und Wiederholungsrunde für unsichere Wörter.
 - Ca. acht Minuten Phrasen/Dialog und zwei Minuten Wörter als 80/20-Lernstruktur.
 - Tagesabschluss und geordnete, automatische Gerätespeicherung via AsyncStorage. Keine Cloud-Synchronisierung.
@@ -104,3 +104,7 @@ Das Tagesziel ist ein persönliches Zeitbudget, kein automatisch gemessener Zeit
 Erinnerungen sind standardmäßig aus. Erst bewusstes Aktivieren fragt nach Mitteilungserlaubnis. Eine lokale tägliche Mitteilung zur gewählten Gerätezeit ersetzt die bisherige Planung, ohne Ton oder Badge. Kein Push-Token, kein Benachrichtigungsserver. Die Einstellungen zeigen verweigerte Berechtigungen und Planungsfehler. Systemeinstellungen können Zustellung verzögern.
 
 Beim ersten Einstieg in eine noch nicht abgeschlossene Lektion pro lokalem Kalendertag erscheint ein wechselnder ermutigender Satz, zuerst auf Spanisch und darunter auf Deutsch oder Englisch. Nach „Los geht’s“ wird er an diesem Tag nicht erneut gezeigt. Die Texte sind eigene App-Texte; dezente Hintergrundsymbole sind für Screenreader ausgeblendet.
+
+## Korrektur der Sprachausgabe
+
+Vorschau und Lernphrasen nutzen eine gemeinsame, geordnete Wiedergabe. Vor jeder Ausgabe werden vorherige Stimmen gestoppt, die Audio-Session für Wiedergabe auch bei aktivem Lautlosmodus konfiguriert und aktiviert. Die Sprachausgabe verwendet diese Session mit voller relativer Ausgabelautstärke. Es wird weder die Medienlautstärke des Geräts verstellt noch ein Mikrofonzugriff angefordert. Fehler beim Vorbereiten der Audio-Session erscheinen als Hinweis. Schnelle erneute Tastendrücke ersetzen wartende Ausgaben.

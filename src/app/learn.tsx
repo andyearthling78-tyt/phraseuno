@@ -12,7 +12,7 @@ import {
   View,
 } from "react-native";
 import { router } from "expo-router";
-import * as Speech from "expo-speech";
+import { learningSpeech } from "../lib/speech";
 import {
   Button,
   Card,
@@ -57,7 +57,7 @@ export default function Learn() {
     );
     return () => {
       sub.remove();
-      Speech.stop();
+      learningSpeech.stop();
     };
   }, []);
   function flipCard() {

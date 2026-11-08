@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Linking, Pressable, Switch, TextInput, View } from "react-native";
-import * as Speech from "expo-speech";
+import { learningSpeech } from "../lib/speech";
 import { useI18n, useLocalizedAlert } from "../lib/i18n";
 import { usePreferences } from "../lib/preferences";
 import { Preferences, validTime } from "../lib/preferences-model";
@@ -25,13 +25,15 @@ export function PreferenceSections({ section }: { section: PreferenceSection }) 
   const [busy, setBusy] = useState(false);
   const [draftTime, setTime] = useState<string | null>(null);
   const time = draftTime ?? preferences.reminderTime;
-  useEffect(() => () => { Speech.stop(); }, []);
+  useEffect(() => () => { learningSpeech.stop(); }, []);
   function failure() { Alert.alert("Einstellungen", "Die Änderung konnte nicht gespeichert werden. Bitte versuche es erneut."); }
   function save(patch: Partial<Preferences>) { update(patch).catch(failure); }
   function preview(id: string) {
-    Speech.stop();
-    Speech.speak("Hola. Quiero un café con leche, por favor.", { language: "es-ES", voice: id, rate: 0.85,
-      onError: () => Alert.alert("Sprachausgabe", "Die spanische Stimme ist gerade nicht verfügbar.") });
+    const voice = voices.find((v) => v.identifier === id);
+    if (!voice) return;
+    learningSpeech.speak({ text: "Hola. Quiero un café con leche, por favor.", voice,
+      onError: () => Alert.alert("Sprachausgabe", "Die Stimme konnte nicht abgespielt werden. Prüfe die Medienlautstärke und das gewählte Audiogerät und versuche es erneut."),
+    });
   }
   if (section === "language") return <Card>
     <Text accessibilityRole="header" style={s.h2}>App-Sprache</Text>
@@ -41,8 +43,8 @@ export function PreferenceSections({ section }: { section: PreferenceSection }) 
   if (section === "voice") return <Card>
     <Text accessibilityRole="header" style={s.h2}>Deine Lernstimme</Text>
     <Text style={s.body}>Wähle eine weibliche oder männliche Stimme für die spanischen Hörbeispiele.</Text>
-    <Choice label="Weiblich" selected={preferences.voiceGender === "female"} onPress={() => { Speech.stop(); save({ voiceGender: "female", voiceId: null }); }} />
-    <Choice label="Männlich" selected={preferences.voiceGender === "male"} onPress={() => { Speech.stop(); save({ voiceGender: "male", voiceId: null }); }} />
+    <Choice label="Weiblich" selected={preferences.voiceGender === "female"} onPress={() => { learningSpeech.stop(); save({ voiceGender: "female", voiceId: null }); }} />
+    <Choice label="Männlich" selected={preferences.voiceGender === "male"} onPress={() => { learningSpeech.stop(); save({ voiceGender: "male", voiceId: null }); }} />
     {voicesLoading ? <Text style={s.small}>Stimmen werden geladen …</Text> : selectedVoice ? <>
       <Text style={s.small}>Aktive Stimme: <Text translate={false}>{selectedVoice.name}</Text></Text>
       <Button secondary onPress={() => preview(selectedVoice.identifier)}>Stimme probehören ♪</Button>
@@ -54,12 +56,12 @@ export function PreferenceSections({ section }: { section: PreferenceSection }) 
         <Text translate={false} style={s.body}>{voice.name} · {voice.language}</Text>
         <View style={s.row}>
           <View style={{ flex: 1 }}><Button secondary onPress={() => preview(voice.identifier)}>Probehören ♪</Button></View>
-          <View style={{ flex: 1 }}><Button secondary={selectedVoice?.identifier !== voice.identifier} onPress={() => { Speech.stop(); save({ voiceId: voice.identifier }); }}>{selectedVoice?.identifier === voice.identifier ? "Ausgewählt ✓" : "Auswählen"}</Button></View>
+          <View style={{ flex: 1 }}><Button secondary={selectedVoice?.identifier !== voice.identifier} onPress={() => { learningSpeech.stop(); save({ voiceId: voice.identifier }); }}>{selectedVoice?.identifier === voice.identifier ? "Ausgewählt ✓" : "Auswählen"}</Button></View>
         </View>
       </View>)}
       {voices.length === 0 && <Text style={s.body}>Auf diesem Gerät ist keine spanische Stimme verfügbar. Installiere eine spanische Stimme in den Spracheinstellungen des Geräts.</Text>}
     </>}
-    <Text style={s.small}>Die verfügbaren Stimmen hängen vom Gerät ab. Zusätzliche Stimmen kannst du in den Spracheinstellungen deines Geräts laden. Auf dem iPhone kann der Lautlosmodus die Wiedergabe unterdrücken.</Text>
+    <Text style={s.small}>Die verfügbaren Stimmen hängen vom Gerät ab. Zusätzliche Stimmen kannst du in den Spracheinstellungen deines Geräts laden. Prüfe beim Probehören die Medienlautstärke und ob Kopfhörer oder Bluetooth verbunden sind.</Text>
   </Card>;
   if (section === "goal") return <Card>
     <Text accessibilityRole="header" style={s.h2}>Dein Tageslernziel</Text>
