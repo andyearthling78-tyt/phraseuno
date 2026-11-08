@@ -62,3 +62,12 @@ Eine zentrale Steuerung wartet auf Stoppen und Audio-Vorbereitung; neuere Tasten
 Die vorherigen Prüfungen haben die hörbare Ausgabe auf dem persönlichen iPhone nicht nachgewiesen. Die tatsächliche Hörbarkeit nach dieser Korrektur muss auf dem iPhone mit Medienlautstärke größer null und dem gewünschten Ausgabegerät bestätigt werden. Ein erfolgreicher Sprachausgabe-Aufruf allein beweist keinen hörbaren Ton.
 
 Audio-Korrektur nativ gebaut: Release-Simulator und Release-iPhone erfolgreich. Installation auf dem iPhone zu 100 % bestätigt; Start wegen Gerätesperre nicht möglich. Im neuen Simulator-Build Stimmvorschau Mónica ausgelöst, ohne angezeigten Laufzeitfehler. Hörbarkeit auf dem persönlichen iPhone weiterhin vom Nutzer zu bestätigen.
+
+## Vorbereitung fester Audios (noch keine neue Klangqualität ausgeliefert)
+
+- Nutzer hat die hörbare iPhone-Sprachausgabe nach der Audio-Session-Korrektur bestätigt.
+- Genau zwei feste Stimmen vorbereitet: weiblich/männlich, jeweils natürliche und separate langsame Fassung. Katalog mit 17 Texten deckt alle derzeit hörbaren Phrasen, Dialogfragen, Hinweise, Vokabeln und den Vorschausatz ab. 68 Dateien geplant.
+- Tests prüfen vollständige Katalogabdeckung sowie Ausschluss unvollständiger Pakete. 24 automatisierte Tests, TypeScript und ESLint erfolgreich.
+- Dateiwiedergabe nutzt das vorhandene Expo-Audio-Modul. Tatsächliche feste Audios fehlen; `recordingPackReady` bleibt false. Kein Wechsel der Stimme und keine Aktivierung der neuen Auswahl ohne vollständigen Satz.
+- Keine MP3-Dateien erzeugt und keine Hörqualität freigegeben. Ein nativer Wiedergabetest der festen Aufnahmen ist deshalb noch nicht möglich. Auf dem persönlichen iPhone wurde in diesem Schritt keine neue Version installiert.
+- Fal-Anmeldung im Browser vorhanden, aber Kontoverbindung steht noch aus. Fal verlangt unter „Finish setup“ Rechnungsadresse, Karte und Guthaben. Es wurden keine Zahlungsdaten eingetragen, keine Guthabenkäufe und keine kostenpflichtigen Generierungen ausgelöst.

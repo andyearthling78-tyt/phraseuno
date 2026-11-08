@@ -108,3 +108,11 @@ Beim ersten Einstieg in eine noch nicht abgeschlossene Lektion pro lokalem Kalen
 ## Korrektur der Sprachausgabe
 
 Vorschau und Lernphrasen nutzen eine gemeinsame, geordnete Wiedergabe. Vor jeder Ausgabe werden vorherige Stimmen gestoppt, die Audio-Session für Wiedergabe auch bei aktivem Lautlosmodus konfiguriert und aktiviert. Die Sprachausgabe verwendet diese Session mit voller relativer Ausgabelautstärke. Es wird weder die Medienlautstärke des Geräts verstellt noch ein Mikrofonzugriff angefordert. Fehler beim Vorbereiten der Audio-Session erscheinen als Hinweis. Schnelle erneute Tastendrücke ersetzen wartende Ausgaben.
+
+## Vorbereitung: genau zwei feste Offline-Stimmen
+
+`AUDIO-PRODUKTION.md` und `assets/audio/spanish/recording-script.csv` enthalten 17 spanische Texte für Lucía (weiblich) und Mateo (männlich), jeweils natürlich und separat langsam gesprochen: 68 MP3-Dateien. Noch keine dieser Aufnahmen ist vorhanden oder freigegeben. Die installierte iPhone-Version nutzt weiterhin die bereits hörbar bestätigte Gerätesprachausgabe; in diesem Schritt wurde kein neues App-Paket installiert.
+
+Die vorbereitete Dateiwiedergabe wird erst aktiv, wenn beide Stimmen in beiden Sprechweisen vollständig vorliegen. `node scripts/build-recorded-audio.mjs` prüft Dateien, MP3-Kopf, Produktionsquelle/Nutzungsnachweis und die nach Hörprüfung dokumentierten SHA-256-Werte. Erst `--write` erzeugt die statischen lokalen Asset-Verweise. Die Freigabe bezieht sich auf die konkrete Datei; ein späterer Dateitausch verlangt eine neue Prüfung. Decoder- und Hörprüfung bleiben zusätzlich notwendig.
+
+Nach Freischaltung zeigt die App genau zwei Stimmen und die zwei Sprechweisen. Ohne vollständigen Aufnahmesatz bleiben die bestehenden Systemstimmen verfügbar. Bessere Klangqualität ist erst mit den tatsächlichen abgenommenen Audios erreichbar. Fal war bei der Prüfung noch nicht vollständig für Audioerzeugung eingerichtet; die Webseite verlangte Zahlungsdaten/Guthaben und die Kontoverbindung.

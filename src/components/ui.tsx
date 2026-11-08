@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, usePathname } from "expo-router";
+import { recordedSource } from "../lib/recorded-audio";
 import { learningSpeech } from "../lib/speech";
 export const C = {
   green: "#173e32",
@@ -66,18 +67,19 @@ export function Button({
 export function Speak({ text }: { text: string }) {
   const { t } = useI18n();
   const Alert = useLocalizedAlert();
-  const { selectedVoice } = usePreferences();
+  const { selectedVoice, preferences } = usePreferences();
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={t(`${text} auf Spanisch anhören`)}
       onPress={() => {
-        if (!selectedVoice) {
+        if (!selectedVoice && recordedSource(text, preferences.voiceGender, preferences.audioSpeed) === undefined) {
           Alert.alert("Sprachausgabe", "Bitte wähle in den Einstellungen eine verfügbare spanische Stimme.");
           return;
         }
         learningSpeech.speak({
-          text, voice: selectedVoice,
+          text, voice: selectedVoice ?? { identifier: "", language: "es-ES" },
+          recording: { voice: preferences.voiceGender, speed: preferences.audioSpeed },
           onError: () => Alert.alert("Sprachausgabe", "Die Stimme konnte nicht abgespielt werden. Prüfe die Medienlautstärke und das gewählte Audiogerät und versuche es erneut."),
         });
       }}

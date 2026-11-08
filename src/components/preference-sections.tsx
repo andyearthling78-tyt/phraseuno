@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Linking, Pressable, Switch, TextInput, View } from "react-native";
+import { recordingPackReady } from "../lib/recorded-audio";
 import { learningSpeech } from "../lib/speech";
 import { useI18n, useLocalizedAlert } from "../lib/i18n";
 import { usePreferences } from "../lib/preferences";
@@ -39,6 +40,21 @@ export function PreferenceSections({ section }: { section: PreferenceSection }) 
     <Text accessibilityRole="header" style={s.h2}>App-Sprache</Text>
     {([{ value: "system", name: "Gerätesprache verwenden" }, { value: "de", name: "Deutsch" }, { value: "en", name: "English" }] as const)
       .map((item) => <Choice key={item.value} label={item.name} selected={preference === item.value} onPress={() => setPreference(item.value)} />)}
+  </Card>;
+  if (section === "voice" && recordingPackReady) return <Card>
+    <Text accessibilityRole="header" style={s.h2}>Deine Lernstimme</Text>
+    <Choice label="Lucía · weiblich" selected={preferences.voiceGender === "female"} onPress={() => { learningSpeech.stop(); save({ voiceGender: "female" }); }} />
+    <Choice label="Mateo · männlich" selected={preferences.voiceGender === "male"} onPress={() => { learningSpeech.stop(); save({ voiceGender: "male" }); }} />
+    <Text style={s.body}>Sprechtempo</Text>
+    <Choice label="Natürlich gesprochen" selected={preferences.audioSpeed === "natural"} onPress={() => save({ audioSpeed: "natural" })} />
+    <Choice label="Langsam zum Mitsprechen" selected={preferences.audioSpeed === "slow"} onPress={() => save({ audioSpeed: "slow" })} />
+    <Button secondary onPress={() => learningSpeech.speak({
+      text: "Hola. Quiero un café con leche, por favor.",
+      voice: { identifier: "", language: "es-ES" },
+      recording: { voice: preferences.voiceGender, speed: preferences.audioSpeed },
+      onError: () => Alert.alert("Sprachausgabe", "Die Stimme konnte nicht abgespielt werden. Prüfe die Medienlautstärke und das gewählte Audiogerät und versuche es erneut."),
+    })}>Stimme probehören ♪</Button>
+    <Text style={s.small}>Beide Stimmen sind auch offline verfügbar.</Text>
   </Card>;
   if (section === "voice") return <Card>
     <Text accessibilityRole="header" style={s.h2}>Deine Lernstimme</Text>

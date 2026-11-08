@@ -2,6 +2,7 @@ export const PREFERENCES_KEY = "phraseuno.preferences.v1";
 export type VoiceGender = "female" | "male";
 export type Preferences = {
   onboarded: boolean;
+  audioSpeed: "natural" | "slow";
   lastMotivationDay: string | null;
   voiceGender: VoiceGender;
   voiceId: string | null;
@@ -10,7 +11,7 @@ export type Preferences = {
   reminderTime: string;
 };
 export const defaultPreferences: Preferences = {
-  lastMotivationDay: null, onboarded: false, voiceGender: "female", voiceId: null, goal: 10,
+  audioSpeed: "natural", lastMotivationDay: null, onboarded: false, voiceGender: "female", voiceId: null, goal: 10,
   reminderEnabled: false, reminderTime: "19:00",
 };
 export function validTime(value: string): boolean {
@@ -22,6 +23,7 @@ export function restorePreferences(raw: string | null): Preferences {
     if (!v || typeof v !== "object" || Array.isArray(v)) return { ...defaultPreferences };
     return {
       onboarded: v.onboarded === true,
+      audioSpeed: v.audioSpeed === "slow" ? "slow" : "natural",
       lastMotivationDay: typeof v.lastMotivationDay === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v.lastMotivationDay) ? v.lastMotivationDay : null,
       voiceGender: v.voiceGender === "male" ? "male" : "female",
       voiceId: typeof v.voiceId === "string" && v.voiceId.length < 300 ? v.voiceId : null,

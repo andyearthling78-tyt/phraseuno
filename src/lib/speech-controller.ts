@@ -7,6 +7,7 @@ export const learningAudioMode = {
 };
 export type LearningSpeechRequest = {
   text: string;
+  recording?: { voice: "female" | "male"; speed: "natural" | "slow" };
   voice: { identifier: string; language: string };
   onError: (error: Error) => void;
 };
@@ -14,6 +15,7 @@ type SpeechAdapter = {
   stop: () => Promise<void>;
   prepare: () => Promise<void>;
   speak: (text: string, options: {
+    recording?: LearningSpeechRequest["recording"];
     voice: string; language: string; rate: number; volume: number;
     useApplicationAudioSession: boolean; onError: (error: Error) => void;
   }) => void;
@@ -33,6 +35,7 @@ export function createSpeechController(adapter: SpeechAdapter) {
         await adapter.prepare();
         if (token !== generation) return;
         adapter.speak(request.text, {
+          recording: request.recording,
           voice: request.voice.identifier, language: request.voice.language,
           rate: 0.85, volume: 1, useApplicationAudioSession: true,
           onError: (error) => { if (token === generation) request.onError(error); },

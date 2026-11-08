@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "language": "es-ES",
+  "voices": {
+    "female": { "name": "Lucía", "performerOrModel": "", "rightsReference": "" },
+    "male": { "name": "Mateo", "performerOrModel": "", "rightsReference": "" }
+  },
+  "approvedSha256": {}
+}
