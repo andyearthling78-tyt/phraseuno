@@ -92,3 +92,15 @@ npm ci
 Use Node.js 24 or newer. On macOS with Xcode and CocoaPods: `npm run ios`. On Windows, Linux or macOS with Java and the Android SDK: `npm run android`. Native platform folders are generated from `app.json`; they are intentionally not committed. Application code, assets, translations, tests, dependency lockfile, legal information and build profiles are tracked together for both platforms.
 
 Checks: `npm run typecheck`, `npm run lint`, `npm test`, `npm run bundle:check`. The bundle check writes to the ignored `.expo/bundle-check` folder inside the checkout. No signing keys, device data, installed dependencies or machine-specific Xcode settings are stored in GitHub.
+
+## Onboarding, Einstellungen und Lernmomente
+
+Beim ersten Start stellt sich Lucía im vierstufigen Onboarding vor. Dort werden App-Sprache, spanische Lernstimme, tägliches Zeitbudget (5/10/15 Minuten) und eine freiwillige Erinnerung eingestellt. Später öffnet das Zahnrad diese Einstellungen. Der Sprachwechsel bleibt zusätzlich direkt im Dropdown der Kopfzeile möglich. Der Startknopf sitzt im kompakten grünen Café-Kasten; Lucías Vorstellung wird auf dem Dashboard nicht wiederholt.
+
+Die Stimmen werden vom Gerät abgefragt. Bekannte spanische Systemstimmen werden nach Stimmnamen männlich/weiblich zugeordnet. Expo liefert kein allgemeines Geschlechtsfeld. Unbekannte Stimmen können probegehört und manuell zugeordnet werden; wenn eine gewünschte Stimme fehlt, wird keine andere als Ersatz ausgegeben. Spanische Stimmen lassen sich gegebenenfalls in den Spracheinstellungen des Betriebssystems nachladen. Das gilt insbesondere für männliche Stimmen auf Geräten mit wenigen vorinstallierten Stimmen.
+
+Das Tagesziel ist ein persönliches Zeitbudget, kein automatisch gemessener Zeitnachweis. Die erste Lektion bleibt ungefähr zehn Minuten lang und kann unterbrochen werden.
+
+Erinnerungen sind standardmäßig aus. Erst bewusstes Aktivieren fragt nach Mitteilungserlaubnis. Eine lokale tägliche Mitteilung zur gewählten Gerätezeit ersetzt die bisherige Planung, ohne Ton oder Badge. Kein Push-Token, kein Benachrichtigungsserver. Die Einstellungen zeigen verweigerte Berechtigungen und Planungsfehler. Systemeinstellungen können Zustellung verzögern.
+
+Beim ersten Einstieg in eine noch nicht abgeschlossene Lektion pro lokalem Kalendertag erscheint ein wechselnder ermutigender Satz, zuerst auf Spanisch und darunter auf Deutsch oder Englisch. Nach „Los geht’s“ wird er an diesem Tag nicht erneut gezeigt. Die Texte sind eigene App-Texte; dezente Hintergrundsymbole sind für Screenreader ausgeblendet.

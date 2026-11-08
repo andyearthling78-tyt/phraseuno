@@ -1,5 +1,7 @@
 import { useI18n, useLocalizedAlert } from "../lib/i18n";
 import { Text } from "./localized-text";
+import { usePreferences } from "../lib/preferences";
+import { LanguageMenu } from "./language-menu";
 import React from "react";
 import {
   Pressable,
@@ -28,12 +30,14 @@ export function Button({
   children,
   onPress,
   secondary = false,
+  accent = false,
   disabled = false,
   label,
 }: {
   children: React.ReactNode;
   onPress: () => void;
   secondary?: boolean;
+  accent?: boolean;
   disabled?: boolean;
   label?: string;
 }) {
@@ -48,11 +52,12 @@ export function Button({
       style={({ pressed }) => [
         s.button,
         secondary && s.secondary,
+        accent && { backgroundColor: C.yellow },
         disabled && { opacity: 0.4 },
         pressed && { opacity: 0.75 },
       ]}
     >
-      <Text style={[s.buttonText, secondary && { color: C.green }]}>
+      <Text style={[s.buttonText, (secondary || accent) && { color: C.green }]}>
         {children}
       </Text>
     </Pressable>
@@ -61,14 +66,20 @@ export function Button({
 export function Speak({ text }: { text: string }) {
   const { t } = useI18n();
   const Alert = useLocalizedAlert();
+  const { selectedVoice } = usePreferences();
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={t(`${text} auf Spanisch anhören`)}
       onPress={() => {
+        if (!selectedVoice) {
+          Alert.alert("Sprachausgabe", "Bitte wähle in den Einstellungen eine verfügbare spanische Stimme.");
+          return;
+        }
         Speech.stop();
         Speech.speak(text, {
           language: "es-ES",
+          voice: selectedVoice.identifier,
           rate: 0.85,
           onError: () =>
             Alert.alert(
@@ -121,7 +132,7 @@ export function Page({
   lesson?: boolean;
   autoScroll?: boolean;
 }) {
-  const { t, language } = useI18n();
+  const { t } = useI18n();
   const path = usePathname();
   const scroll = React.useRef<React.ElementRef<typeof ScrollView>>(null);
   return (
@@ -135,22 +146,14 @@ export function Page({
             Phrase<Text style={{ color: "#aa842a" }}>UNO</Text>
           </Text>
         </View>
-        <View style={s.row}>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={t("Sprache ändern")}
-            onPress={() => router.push("/language")}
-            style={{
-              minWidth: 44,
-              minHeight: 44,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text style={{ fontSize: 12, color: C.green, fontWeight: "700" }}>
-              {language.toUpperCase()} ⌄
-            </Text>
-          </Pressable>
+        <View style={[s.row, { gap: 2 }]}>
+          <LanguageMenu />
+          {path !== "/onboarding" && <Pressable accessibilityRole="button" accessibilityLabel={t("Einstellungen öffnen")}
+            onPress={() => { if (path !== "/settings") router.push("/settings"); }}
+            style={{ minWidth: 44, minHeight: 44, alignItems: "center", justifyContent: "center" }}>
+            <Text style={{ color: C.green, fontSize: 23 }}>⚙</Text>
+          </Pressable>}
+
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={t("Rechtliches öffnen")}

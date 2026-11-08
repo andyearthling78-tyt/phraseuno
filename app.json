@@ -29,6 +29,12 @@
           ],
           "supportsRTL": false
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "enableRemoteNotifications": false
+        }
       ]
     ],
     "scheme": "phraseuno",

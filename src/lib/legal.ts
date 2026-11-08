@@ -15,6 +15,10 @@ export const providerComplete = Boolean(
 );
 export const privacySections = [
   {
+    title: "Lernstimme, Tagesziel und Erinnerungen",
+    text: "Stimmwahl, Tageslernziel, Onboarding-Abschluss, Datum des letzten Lernmoments und Erinnerungseinstellungen werden zusätzlich zur Sprachwahl lokal gespeichert. Sie bleiben beim Löschen der Lerndaten erhalten und sind in den Einstellungen änderbar. Erinnerungen sind freiwillig, standardmäßig ausgeschaltet und werden nach deiner Freigabe einmal täglich zur gewählten Geräte-Uhrzeit lokal geplant. PhraseUNO verwendet dafür keine Push-Token und keinen Benachrichtigungsserver. Die Erinnerung enthält nur einen allgemeinen Lernhinweis, keine Dialogantworten oder Lernstände. Du kannst sie in der App abschalten oder die Mitteilungserlaubnis im Betriebssystem entziehen.",
+  },
+  {
     title: "Deine Sprachwahl",
     text: "Die App erkennt die bevorzugten Sprachen deines Geräts. Du kannst Deutsch, Englisch oder die Gerätesprache wählen. Diese Einstellung wird separat vom Lernfortschritt lokal gespeichert und nicht an den Betreiber übermittelt. „Lerndaten löschen“ entfernt deine Lern- und Dialogdaten; deine Sprachwahl bleibt erhalten.",
   },
