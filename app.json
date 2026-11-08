@@ -1,25 +1,40 @@
 {
   "expo": {
-    "name": "phraseuno-native",
-    "slug": "phraseuno-native",
+    "name": "PhraseUNO",
+    "slug": "phraseuno",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.phraseuno.mobile"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#173e32",
+        "foregroundImage": "./assets/android-icon-foreground.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": true,
+      "package": "com.phraseuno.mobile"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "plugins": [
+      "expo-router",
+      [
+        "expo-localization",
+        {
+          "supportedLocales": [
+            "de",
+            "en"
+          ],
+          "supportsRTL": false
+        }
+      ]
+    ],
+    "scheme": "phraseuno",
+    "platforms": [
+      "ios",
+      "android"
+    ]
   }
 }
