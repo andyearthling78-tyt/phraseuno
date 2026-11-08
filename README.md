@@ -10,7 +10,7 @@ Auf diesem Mac wurde PhraseUNO bereits als eigenständig lauffähige Release-App
 npm run ios
 ```
 
-Das erstellt und startet eine Entwicklungs-App im iPhone-Simulator einschließlich Entwicklungsserver.
+Das erstellt und startet eine Entwicklungs-App im iPhone-Simulator einschließlich Entwicklungsserver. Beim zuletzt geprüften Debug-Build trat auf diesem Mac ein Expo-Dev-Launcher-Linkerfehler auf; der eigenständig lauffähige Release-Build wurde erfolgreich geprüft. Details stehen in `PRUEFBERICHT.md`.
 
 ### Auf dem verbundenen iPhone
 

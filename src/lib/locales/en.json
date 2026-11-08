@@ -232,5 +232,6 @@
   "Diese App ist auf Deutsch und Englisch verfügbar.": "This app is available in German and English.",
   "Deine Sprachwahl": "Your language choice",
   "Die App erkennt die bevorzugten Sprachen deines Geräts. Du kannst Deutsch, Englisch oder die Gerätesprache wählen. Diese Einstellung wird separat vom Lernfortschritt lokal gespeichert und nicht an den Betreiber übermittelt. „Lerndaten löschen“ entfernt deine Lern- und Dialogdaten; deine Sprachwahl bleibt erhalten.": "The app reads your device’s preferred languages. You can choose German, English or your device language. This setting is saved locally, separately from your learning progress, and is not sent to the provider. “Delete learning data” removes your learning and conversation data; your language choice is kept.",
-  "Eintrag": "entry"
+  "Eintrag": "entry",
+  "← Zurück": "← Back"
 }

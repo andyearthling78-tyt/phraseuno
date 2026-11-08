@@ -12,7 +12,7 @@ export default function Language() {
         onPress={() => router.back()}
         style={{ paddingVertical: 8 }}
       >
-        <Text style={{ color: C.green }}>← Mein Lerntag</Text>
+        <Text style={{ color: C.green }}>← Zurück</Text>
       </Pressable>
       <View>
         <Label>PhraseUNO</Label>
