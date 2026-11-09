@@ -50,3 +50,15 @@ test('iOS voices report their gender natively through the reproducible expo-spee
  assert(options.includes('// PhraseUNO: voice gender'));
  assert(module.includes('gender: voice.gender == .female ? "female"'));
 });
+test('Typical recognition near-misses of a correct answer still count; contradictions do not', async () => {
+ const { assess, snapToVocabulary } = await import('../src/lib/learning.ts');
+ for (const heard of ['Para yevar', 'para lleva', 'parar llevar por favor', 'Para llevar.']) {
+  assert.equal(assess(heard, 2).ok, true, heard);
+ }
+ assert.equal(assess('quiero un cafe con leche', 3).ok, false);
+ assert.equal(assess('sin leche', 1).ok, false);
+ assert.equal(assess('no quiero un cafe', 0).ok, false);
+ assert.equal(snapToVocabulary('kiero un kafe', ['Quiero un café']), 'quiero un cafe');
+ assert(matchesSpokenPhrase('Quiero un café con lece', 'Quiero un café con leche'));
+ assert(!matchesSpokenPhrase('Quiero un té', 'Quiero un café'));
+});

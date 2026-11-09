@@ -121,3 +121,7 @@ Startseite: ein grüner Tageskasten mit Zielsatz, drei Schritt-Chips und Startkn
 ## Erfolgsmomente, Antwort-Bausteine, Knopfleiste · 9. November 2026
 
 Gerätefeedback: Knopfbeschriftungen umbrachen, nach richtiger Sprachantwort kam keine sichtbare Bestätigung, unklar was zu antworten ist. Jetzt: Erfolgskarte (✓-Animation, „¡Muy bien!“, Weiter-Knopf) nach richtigem Nachsprechen, Schreiben und jeder Dialogantwort; der Dialog geht erst nach „Nächste Frage →“ weiter. Unter jeder Frage stehen die Wörter der Musterantwort als ungeordnete Bausteine. Nebenknöpfe als Symbol mit einzeiliger Kurzbeschriftung. Tag 1, Frage 3 akzeptiert auch „para tomar aquí“. 36 Tests, TypeScript, ESLint bestanden.
+
+## Toleranz bei der Spracherkennung · 9. November 2026
+
+Gerätefeedback: „para llevar“ wurde nicht erkannt. Jetzt: Erkennung erhält erwartete Sätze/Wörter als Kontext (iOS contextualStrings), bis zu drei Alternativen werden geprüft, und erkannte Wörter werden nach Klang (ll/y, v/b, z/c/s, stummes h) bzw. mit einem Buchstaben Toleranz bei Wörtern ab vier Buchstaben auf die Lektionswörter abgebildet. Widersprüche („sin leche“, „no quiero“) bleiben falsch. 37 Tests bestanden.

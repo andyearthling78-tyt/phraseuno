@@ -116,16 +116,46 @@ export const normalize = (s: string) =>
     .replace(/[^a-z\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+// Spanish speech recognition often hears near-misses ("yevar", "lleva", "parar").
+// Words are compared by sound (ll/y, v/b, z/c/s, silent h) and, for longer words,
+// with one letter tolerance, then snapped to the lesson's known words.
+export function soundKey(word: string) {
+  return normalize(word).replace(/ll/g, "y").replace(/v/g, "b").replace(/z/g, "s")
+    .replace(/c([ei])/g, "s$1").replace(/qu/g, "k").replace(/c/g, "k").replace(/(^|[^c])h/g, "$1").replace(/(.)\1+/g, "$1");
+}
+function distance(a: string, b: string) {
+  const row = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    let previous = row[0]; row[0] = i;
+    for (let j = 1; j <= b.length; j++) {
+      const current = row[j];
+      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, previous + (a[i - 1] === b[j - 1] ? 0 : 1));
+      previous = current;
+    }
+  }
+  return row[b.length];
+}
+export function snapToVocabulary(text: string, vocabulary: readonly string[]) {
+  const known = [...new Set(vocabulary.flatMap((v) => normalize(v).split(" ")).filter(Boolean))];
+  return normalize(text).split(" ").filter(Boolean).map((word) => {
+    if (known.includes(word)) return word;
+    const key = soundKey(word);
+    const sameSound = known.find((k) => soundKey(k) === key);
+    if (sameSound) return sameSound;
+    if (word.length < 4) return word;
+    const close = known.filter((k) => k.length >= 4 && distance(soundKey(k), key) <= 1);
+    return close.length === 1 ? close[0] : word;
+  }).join(" ");
+}
 export function assess(text: string, index: number, lessonTurns = turns) {
   if (!text.trim())
     return { ok: false, message: "Schreibe zuerst deine Antwort." };
   const t = lessonTurns[index];
   if (!t)
     return { ok: false, message: "Dieser Dialog ist bereits abgeschlossen." };
-  return {
-    ok: t.test(normalize(text)),
-    message: t.test(normalize(text)) ? t.success : t.help,
-  };
+  const vocabulary = lessonTurns.map((turn) => turn.hint);
+  const ok = t.test(normalize(text)) || t.test(snapToVocabulary(text, vocabulary));
+  return { ok, message: ok ? t.success : t.help };
 }
 export const fresh = (): LearningState => ({
   version: 1,

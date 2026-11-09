@@ -1,10 +1,11 @@
-import { normalize } from './learning.ts';
+import { normalize, snapToVocabulary } from './learning.ts';
 // Recognition checks the words that were understood; it cannot grade pronunciation.
 export function matchesSpokenPhrase(transcript: string, target: string) {
-  return Boolean(normalize(transcript)) && normalize(transcript) === normalize(target);
+  if (!normalize(transcript)) return false;
+  return normalize(transcript) === normalize(target) || snapToVocabulary(transcript, [target]) === normalize(target);
 }
 export const recognitionOptions = {
-  lang: 'es-ES', interimResults: true, continuous: true, maxAlternatives: 1,
+  lang: 'es-ES', interimResults: true, continuous: true, maxAlternatives: 3,
   requiresOnDeviceRecognition: true, recordingOptions: { persist: false },
   // Matches the speech-output session (expo-audio allowsRecording) to avoid category switches.
   iosCategory: { category: 'playAndRecord', categoryOptions: ['defaultToSpeaker', 'allowBluetooth', 'mixWithOthers'], mode: 'default' },

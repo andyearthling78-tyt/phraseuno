@@ -11,7 +11,11 @@ import { MicIndicator, MicPhase } from './mic-indicator';
 import { Button, C, s } from './ui';
 import { Text } from './localized-text';
 
-type Props = { prompt: string; onAnswer: (text: string) => void; repeat?: boolean; autoPlay?: boolean; actions?: React.ReactNode };
+type Props = {
+  prompt: string; onAnswer: (text: string) => void; repeat?: boolean; autoPlay?: boolean; actions?: React.ReactNode;
+  // Words/sentences the learner is expected to say: biases recognition and picks the best alternative.
+  expected?: string[]; accept?: (text: string) => boolean;
+};
 // Small secondary action, so the microphone stays the one obvious control.
 export function Pill({ label, icon, onPress, disabled, active }: { label: string; icon?: string; onPress: () => void; disabled?: boolean; active?: boolean }) {
   return <Pressable accessibilityRole="button" accessibilityLabel={label} disabled={disabled} onPress={onPress} style={({ pressed }) => ({
@@ -43,7 +47,7 @@ const sp = StyleSheet.create({
   option: { width: 42, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
   on: { backgroundColor: C.yellow },
 });
-export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true, actions }: Props) {
+export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true, actions, expected = [], accept }: Props) {
   const { selectedVoice, preferences, voicesLoading } = usePreferences();
   const [phase, setPhase] = useState<MicPhase>('idle');
   const [level, setLevel] = useState(0);
@@ -59,6 +63,11 @@ export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true
   const generation = useRef(0);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const lastText = useRef('');
+  const alternatives = useRef<string[]>([]);
+  const acceptRef = useRef(accept);
+  useEffect(() => { acceptRef.current = accept; }, [accept]);
+  // Prefer an alternative transcript that is a correct answer over the top guess.
+  const best = () => alternatives.current.find((text) => acceptRef.current?.(text)) ?? lastText.current;
   const silence = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const callback = useRef(onAnswer);
   useEffect(() => { callback.current = onAnswer; }, [onAnswer]);
@@ -98,6 +107,7 @@ export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true
     if (!active.current) return;
     const text = event.results[0]?.transcript?.trim() ?? '';
     if (!text) return;
+    alternatives.current = event.results.map((r) => r.transcript.trim()).filter(Boolean);
     lastText.current = text; setTranscript(text);
     // Stop after a pause; the final text then arrives with the 'end' event.
     clearTimeout(silence.current);
@@ -107,7 +117,7 @@ export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true
     ownsRecognition.current = false;
     if (!active.current) return;
     finish();
-    if (lastText.current) callback.current(lastText.current);
+    if (lastText.current) callback.current(best());
     else setError(recognitionError('no-speech'));
   });
   useSpeechRecognitionEvent('error', event => {
@@ -147,7 +157,7 @@ export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true
     if (phase === 'starting' || phase === 'speaking') return;
     if (active.current) { Recognition.stop(); return; }
     const token = ++generation.current;
-    setError(''); setBlocked(false); setTranscript(''); lastText.current = ''; setPhase('starting');
+    setError(''); setBlocked(false); setTranscript(''); lastText.current = ''; alternatives.current = []; setPhase('starting');
     try {
       await learningSpeech.stop();
       // Only microphone access is needed for iOS on-device recognition. No network authorization.
@@ -161,6 +171,7 @@ export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true
       if (!mounted.current || token !== generation.current) return;
       active.current = true; started.current = false; ownsRecognition.current = true; intentionalAbort.current = false;
       Recognition.start({ ...recognitionOptions, iosTaskHint: 'dictation',
+        contextualStrings: [...new Set(expected.flatMap((e) => [e, ...e.replace(/[.,¿?¡!]/g, '').split(/\s+/)]).filter((e) => e.length > 1))].slice(0, 100),
         iosCategory: { ...recognitionOptions.iosCategory, categoryOptions: [...recognitionOptions.iosCategory.categoryOptions] } });
       timer.current = setTimeout(() => {
         if (!active.current || started.current) return;

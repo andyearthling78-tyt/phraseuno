@@ -208,7 +208,8 @@ export default function Learn() {
             )}
             {step === "listen" && <ListenStep key={`listen-${lesson.id}-${state.build}`} prompt={p.phrase} onContinue={() => { setStep("speak"); setFeedback(""); setHint(false); }} />}
             {step === "speak" && <>
-              {!passed && <OralPractice key={`build-${lesson.id}-${state.build}`} prompt={p.phrase} repeat autoPlay={false} onAnswer={text => {
+              {!passed && <OralPractice key={`build-${lesson.id}-${state.build}`} prompt={p.phrase} repeat autoPlay={false}
+                expected={[p.phrase]} accept={(text) => matchesSpokenPhrase(text, p.phrase)} onAnswer={text => {
                 const ok = matchesSpokenPhrase(text, p.phrase);
                 setPassed(ok);
                 setFeedback(ok ? "✓ Gut verstanden!" : `„${text}“\nNoch einmal ganz entspannt.`);
@@ -268,6 +269,7 @@ export default function Learn() {
                   </View>
                 )}
                 {!hint && !writing && <OralPractice key={`chat-${lesson.id}-${state.chat}`} prompt={turn.es} onAnswer={send}
+                  expected={[turn.hint, ...phrases.map((x) => x.phrase)]} accept={(text) => assess(text, state.chat, turns).ok}
                   actions={<>
                     <Pill icon="⌨" label="Tippen" onPress={() => setWriting(true)} />
                     <Pill icon="💡" label="Hilfe" onPress={() => setHint(true)} />
