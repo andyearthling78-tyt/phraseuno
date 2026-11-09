@@ -13,14 +13,14 @@ import { Text } from './localized-text';
 
 type Props = { prompt: string; onAnswer: (text: string) => void; repeat?: boolean; autoPlay?: boolean; actions?: React.ReactNode };
 // Small secondary action, so the microphone stays the one obvious control.
-export function Pill({ label, onPress, disabled, active }: { label: string; onPress: () => void; disabled?: boolean; active?: boolean }) {
-  return <Pressable accessibilityRole="button" disabled={disabled} onPress={onPress} style={({ pressed }) => ({
-    flex: 1, minHeight: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 8,
+export function Pill({ label, icon, onPress, disabled, active }: { label: string; icon?: string; onPress: () => void; disabled?: boolean; active?: boolean }) {
+  return <Pressable accessibilityRole="button" accessibilityLabel={label} disabled={disabled} onPress={onPress} style={({ pressed }) => ({
+    flex: 1, minHeight: 56, borderRadius: 16, alignItems: 'center', justifyContent: 'center', gap: 2, paddingHorizontal: 2,
     backgroundColor: active ? C.green : C.pale, opacity: disabled ? 0.45 : pressed ? 0.7 : 1 })}>
-    <Text style={{ fontSize: 13, fontWeight: '600', color: active ? C.cream : C.green }}>{label}</Text>
+    {!!icon && <Text accessible={false} style={{ fontSize: 19 }}>{icon}</Text>}
+    <Text numberOfLines={1} adjustsFontSizeToFit style={{ fontSize: 11, fontWeight: '600', color: active ? C.cream : C.green }}>{label}</Text>
   </Pressable>;
 }
-const START_TIMEOUT = 4000;
 // Hare = natural tempo, snail = slow. Changing it replays the sentence right away.
 export function SpeedToggle() {
   const { preferences, update } = usePreferences();
@@ -37,9 +37,10 @@ export function SpeedToggle() {
     })}
   </View>;
 }
+const START_TIMEOUT = 4000;
 const sp = StyleSheet.create({
-  wrap: { flexDirection: 'row', backgroundColor: C.pale, borderRadius: 22, padding: 3 },
-  option: { width: 44, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
+  wrap: { flexDirection: 'row', backgroundColor: C.pale, borderRadius: 16, padding: 3, minHeight: 56 },
+  option: { width: 42, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
   on: { backgroundColor: C.yellow },
 });
 export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true, actions }: Props) {
@@ -177,9 +178,9 @@ export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true
     {phase === 'listening' && !!transcript && <Text translate={false} accessibilityLiveRegion="polite" style={[s.body, s.center, { fontStyle: 'italic' }]}>„{transcript}“</Text>}
     {!!error && <Text accessibilityLiveRegion="polite" style={[s.body, s.center]}>{error}</Text>}
     {blocked && <Button secondary onPress={() => { void Linking.openSettings(); }}>Geräteeinstellungen öffnen</Button>}
-    <View style={s.row}>
+    <View style={[s.row, { gap: 8, alignItems: 'stretch' }]}>
       <SpeedToggle />
-      <Pill label="♪ Hören" onPress={() => { void listen(); }} disabled={phase === 'starting' || phase === 'listening'} />
+      <Pill icon="♪" label="Hören" onPress={() => { void listen(); }} disabled={phase === 'starting' || phase === 'listening'} />
       {actions}
     </View>
   </View>;

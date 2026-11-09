@@ -15,6 +15,7 @@ import { router } from "expo-router";
 import { OralPractice, Pill } from "../components/oral-practice";
 import { usePreferences } from "../lib/preferences";
 import { ListenStep } from "../components/listen-step";
+import { SuccessCard } from "../components/success-card";
 import { matchesSpokenPhrase } from "../lib/oral-model";
 import { learningSpeech } from "../lib/speech";
 import {
@@ -75,6 +76,7 @@ export default function Learn() {
   const [passed, setPassed] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [hint, setHint] = useState(false);
+  const [celebrate, setCelebrate] = useState<string | null>(null);
   const [reply, setReply] = useState("");
   const [flipped, setFlipped] = useState(false);
   const [flip] = useState(() => new Animated.Value(0));
@@ -142,7 +144,7 @@ export default function Learn() {
     setState((v) => ({
       ...v,
       chat: v.chat + (result.ok ? 1 : 0),
-      ...(result.ok && v.chat === 3 ? { stage: "cards" as const, completedAt: new Date().toISOString(), card: [0, 1, 2].find(i => !v.known.includes(i)) ?? 0 } : {}),
+      ...(result.ok && v.chat === 3 ? { completedAt: new Date().toISOString(), card: [0, 1, 2].find(i => !v.known.includes(i)) ?? 0 } : {}),
       messages: [
         ...v.messages,
         { role: "user", text },
@@ -151,11 +153,12 @@ export default function Learn() {
     }));
     setReply("");
     setHint(false);
-    if (result.ok) setWriting(false);
+    if (result.ok) { setWriting(false); setCelebrate(result.message.replace(/^¡[^!]*!\s*/, "")); }
   }
   const lastUser = [...state.messages].reverse().find((m) => m.role === "user")?.text;
   const lastTeacher = state.messages.length && state.messages[state.messages.length - 1].role === "teacher" ? state.messages[state.messages.length - 1].text : undefined;
   const lastOk = !!lastTeacher && turns.some((x) => x.success === lastTeacher);
+  const blocks = (text: string) => text.replace(/[.,¿?¡!]/g, "").split(/\s+/).filter(Boolean).sort((a, b) => a.localeCompare(b, "es"));
   const p = phrases[Math.min(state.build, 3)],
     turn = turns[Math.min(state.chat, 3)],
     w = words[state.card];
@@ -210,11 +213,11 @@ export default function Learn() {
                 setPassed(ok);
                 setFeedback(ok ? "✓ Gut verstanden!" : `„${text}“\nNoch einmal ganz entspannt.`);
               }} actions={<>
-                <Pill label={hint ? "Text verbergen" : "💡 Text zeigen"} active={hint} onPress={() => setHint((v) => !v)} />
-                <Pill label="Überspringen →" onPress={() => { setStep("read"); setFeedback(""); setHint(false); }} />
+                <Pill icon="💡" label={hint ? "Verbergen" : "Text"} active={hint} onPress={() => setHint((v) => !v)} />
+                <Pill icon="→" label="Weiter" onPress={() => { setStep("read"); setFeedback(""); setHint(false); }} />
               </>} />}
-              {feedback !== "" && <Text accessibilityLiveRegion="polite" style={[s.body, s.center]}>{feedback}</Text>}
-              {passed && <Button onPress={() => { setStep("read"); setFeedback(""); setHint(false); }}>Weiter zum Lesen →</Button>}
+              {!passed && feedback !== "" && <Text accessibilityLiveRegion="polite" style={[s.body, s.center]}>{feedback}</Text>}
+              {passed && <SuccessCard text="Du hast den Satz richtig nachgesprochen." action="Weiter zum Lesen →" onContinue={() => { setStep("read"); setFeedback(""); setHint(false); }} />}
             </>}
             {step === "read" && <>
               <Text style={[s.small, s.center]}>💡 {p.tip}</Text>
@@ -222,9 +225,9 @@ export default function Learn() {
             </>}
             {step === "write" && <>
               <TextInput value={written} onChangeText={value => { setWritten(value); setWritingPassed(false); }} accessibilityLabel={t("Den Satz auf Spanisch schreiben")} placeholder={t("Schreibe den Satz auf Spanisch …")} placeholderTextColor={C.muted} style={l.input} multiline maxLength={300} autoCorrect={false} autoCapitalize="sentences" editable={!writingPassed} />
-              {feedback !== "" && <Text accessibilityLiveRegion="polite" style={[s.body, s.center]}>{feedback}</Text>}
+              {!writingPassed && feedback !== "" && <Text accessibilityLiveRegion="polite" style={[s.body, s.center]}>{feedback}</Text>}
               {!writingPassed && <Button onPress={check} disabled={!written.trim()}>Prüfen ✓</Button>}
-              {writingPassed && <Button onPress={advance}>{state.build === 3 ? "Zum Dialog →" : "Nächster Baustein →"}</Button>}
+              {writingPassed && <SuccessCard text="Gehört, gesprochen, gelesen und geschrieben. Dieser Baustein sitzt." action={state.build === 3 ? "Zum Dialog →" : "Nächster Baustein →"} onContinue={advance} />}
             </>}
           </Card>
         )}
@@ -239,9 +242,12 @@ export default function Learn() {
                 <Dots total={4} done={state.chat} />
               </View>
             </View>
-            {state.chat < 4 ? (
+            {celebrate !== null ? (
+              <SuccessCard text={celebrate || "Lucía hat dich verstanden."} action={state.chat === 4 ? "Weiter zu den Vokabeln →" : "Nächste Frage →"}
+                onContinue={() => { setCelebrate(null); if (state.chat === 4) setState((v) => ({ ...v, stage: "cards" })); }} />
+            ) : state.chat < 4 ? (
               <>
-                {lastUser && lastTeacher && (
+                {lastUser && lastTeacher && !lastOk && (
                   <View style={[l.feedback, lastOk ? l.feedbackOk : l.feedbackTry]} accessibilityLiveRegion="polite">
                     <Text translate={false} style={s.small}>„{lastUser}“</Text>
                     <Text style={s.body}>{lastOk ? "✓ " : "↻ "}{lastTeacher}</Text>
@@ -251,6 +257,10 @@ export default function Learn() {
                   <Text translate={false} style={l.questionEs}>{turn.es}</Text>
                   <Text style={s.small}>{turn.de}</Text>
                 </View>
+                {!hint && <View style={l.blocks}>
+                  <Text style={[s.small, { width: "100%", textAlign: "center" }]}>Diese Bausteine helfen dir:</Text>
+                  {blocks(turn.hint).map((word, i) => <View key={`${word}-${i}`} style={l.block}><Text translate={false} style={l.blockText}>{word}</Text></View>)}
+                </View>}
                 {hint && (
                   <View style={[l.question, { backgroundColor: C.yellow }]}>
                     <Text translate={false} style={[s.h2, s.center]}>{turn.hint}</Text>
@@ -259,8 +269,8 @@ export default function Learn() {
                 )}
                 {!hint && !writing && <OralPractice key={`chat-${lesson.id}-${state.chat}`} prompt={turn.es} onAnswer={send}
                   actions={<>
-                    <Pill label="⌨ Tippen" onPress={() => setWriting(true)} />
-                    <Pill label="💡 Hilfe" onPress={() => setHint(true)} />
+                    <Pill icon="⌨" label="Tippen" onPress={() => setWriting(true)} />
+                    <Pill icon="💡" label="Hilfe" onPress={() => setHint(true)} />
                   </>} />}
                 {hint && <Button secondary onPress={() => setHint(false)}>Verstanden – jetzt selbst sagen</Button>}
                 {writing && <>
@@ -452,6 +462,9 @@ export default function Learn() {
   );
 }
 const l = StyleSheet.create({
+  blocks: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: 6 },
+  block: { borderWidth: 1, borderColor: C.line, backgroundColor: C.paper, borderRadius: 10, paddingVertical: 6, paddingHorizontal: 10 },
+  blockText: { fontSize: 15, color: C.green, fontWeight: "600" },
   question: { backgroundColor: C.pale, borderRadius: 18, padding: 20, gap: 8, alignItems: "center" },
   questionEs: { fontSize: 24, fontWeight: "700", color: C.green, textAlign: "center", letterSpacing: -0.4 },
   feedback: { borderRadius: 14, padding: 14, gap: 4 },

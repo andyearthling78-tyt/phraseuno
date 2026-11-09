@@ -117,3 +117,7 @@ Ursachen/Behebung: Abbrechen einer gar nicht laufenden Erkennung setzte die gete
 ## Ruhigeres Layout und 🐇/🐌-Tempo · 9. November 2026
 
 Startseite: ein grüner Tageskasten mit Zielsatz, drei Schritt-Chips und Startknopf; Woche als Leiste mit sieben Tagen statt sieben Knöpfen; Erklärtexte und 80/20-Karte entfernt. Während der Lektion kein App-Kopf mehr (nur Zurück + Fortschritt). Vokabelseite und Tagesabschluss gekürzt. Tempo-Schalter 🐇 normal / 🐌 langsam direkt in jeder Hör-/Sprechübung (Sprechrate 0,9 bzw. 0,55); Umschalten spielt den Satz sofort neu ab und wird gespeichert. 36 Tests, TypeScript, ESLint bestanden; JS-Bundle (1283 Module) erzeugt. Gerätetest ausstehend.
+
+## Erfolgsmomente, Antwort-Bausteine, Knopfleiste · 9. November 2026
+
+Gerätefeedback: Knopfbeschriftungen umbrachen, nach richtiger Sprachantwort kam keine sichtbare Bestätigung, unklar was zu antworten ist. Jetzt: Erfolgskarte (✓-Animation, „¡Muy bien!“, Weiter-Knopf) nach richtigem Nachsprechen, Schreiben und jeder Dialogantwort; der Dialog geht erst nach „Nächste Frage →“ weiter. Unter jeder Frage stehen die Wörter der Musterantwort als ungeordnete Bausteine. Nebenknöpfe als Symbol mit einzeiliger Kurzbeschriftung. Tag 1, Frage 3 akzeptiert auch „para tomar aquí“. 36 Tests, TypeScript, ESLint bestanden.

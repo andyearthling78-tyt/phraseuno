@@ -86,9 +86,10 @@ export const turns = [
     es: "¿Para tomar aquí o para llevar?",
     de: "Hier trinken oder zum Mitnehmen?",
     hint: "Para llevar, por favor.",
-    success: "¡Genial! „Para llevar“ passt genau.",
-    test: (s: string) => /\bpara llevar\b/.test(s),
-    help: "Zum Mitnehmen heißt „para llevar“.",
+    success: "¡Genial! Lucía weiß jetzt, wo du deinen Kaffee trinkst.",
+    // Both are correct Spanish answers: to go or to have here.
+    test: (s: string) => /\bpara llevar\b/.test(s) || /\baqui\b/.test(s),
+    help: "Sag „para llevar“ (zum Mitnehmen) oder „para tomar aquí“ (hier trinken).",
   },
   {
     es: "Muy bien. ¿Puedes repetir tu pedido completo?",

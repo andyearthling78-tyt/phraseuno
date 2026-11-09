@@ -22,12 +22,14 @@ test("Targeted feedback blocks irrelevant, incomplete and contradictory answers"
     ["cafetería", 0],
     ["Sin leche", 1],
     ["No, sin leche, con leche", 1],
-    ["Aquí", 2],
+    ["No sé", 2],
     ["Quiero un café con leche", 3],
     ["", 0],
   ])
     assert.equal(assess(s, i).ok, false);
   assert.match(assess("cafe", 0).message, /Quiero/);
+  // "Here" is a correct real-life answer too, not only "to go".
+  for (const answer of ["Para tomar aquí, por favor", "Para llevar"]) assert.equal(assess(answer, 2).ok, true);
 });
 test("Restore survives malformed, old and invalid saved data", () => {
   for (const s of [

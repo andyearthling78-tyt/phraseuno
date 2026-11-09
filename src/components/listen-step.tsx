@@ -56,6 +56,6 @@ export function ListenStep({ prompt, onContinue }: { prompt: string; onContinue:
         : "Gut zugehört."}
     </Text>
     <Button onPress={() => { halt(); onContinue(); }} disabled={!heard && phase !== "error"}>🎙 Jetzt nachsprechen →</Button>
-    <View style={s.row}><SpeedToggle /><Pill label="♪ Nochmal hören" onPress={() => { void play(); }} disabled={phase === "speaking"} /></View>
+    <View style={[s.row, { gap: 8, alignItems: "stretch" }]}><SpeedToggle /><Pill icon="♪" label="Nochmal hören" onPress={() => { void play(); }} disabled={phase === "speaking"} /></View>
   </View>;
 }
