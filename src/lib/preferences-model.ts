@@ -33,16 +33,35 @@ export function restorePreferences(raw: string | null): Preferences {
     };
   } catch { return { ...defaultPreferences }; }
 }
-export type DeviceVoice = { identifier: string; name: string; language: string };
-// Expo does not expose voice gender. Recognize known Spanish system voice names;
-// unknown engine names remain unclassified and can be auditioned/selected manually.
+export type DeviceVoice = { identifier: string; name: string; language: string; quality?: string; gender?: string };
+export function tutorName(gender: VoiceGender) { return gender === "male" ? "Mateo" : "Lucía"; }
+const FEMALE = /\b(monica|paulina|marisol|angelica|silvia|luciana|jimena|isabela|francisca|lucia|helena|laura|elvira|dalia|flo|sandy|shelley|grandma)\b/;
+const MALE = /\b(jorge|juan|diego|carlos|antonio|rodrigo|mateo|alvaro|pablo|eddy|reed|rocko|grandpa)\b/;
+const NOVELTY = /\b(grandma|grandpa|rocko|eddy|flo|reed|sandy|shelley)\b/;
+function names(voice: DeviceVoice) {
+  return `${voice.name} ${voice.identifier}`.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+// iOS reports the gender natively (patched expo-speech). Elsewhere, known Spanish
+// system voice names are used; unknown engine names stay unclassified.
 export function voiceGender(voice: DeviceVoice): VoiceGender | null {
-  const names = `${voice.name} ${voice.identifier}`.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-  if (/\b(monica|paulina|marisol|angelica|silvia|luciana|jimena)\b/.test(names)) return "female";
-  if (/\b(jorge|juan|diego|carlos|antonio|rodrigo|mateo)\b/.test(names)) return "male";
+  if (voice.gender === "female" || voice.gender === "male") return voice.gender;
+  const text = names(voice);
+  if (FEMALE.test(text)) return "female";
+  if (MALE.test(text)) return "male";
   return null;
+}
+function rank(voice: DeviceVoice) {
+  const text = names(voice);
+  let score = 0;
+  if (/^es[-_]es$/i.test(voice.language)) score += 4;
+  else if (/^es[-_](mx|us)$/i.test(voice.language)) score += 2;
+  if (voice.quality === "Enhanced" || /premium|enhanced/.test(text)) score += 3;
+  if (NOVELTY.test(text) || /eloquence/.test(text)) score -= 6;
+  return score;
 }
 export function selectVoice(voices: readonly DeviceVoice[], gender: VoiceGender, id: string | null) {
   const spanish = voices.filter((v) => /^es([-_]|$)/i.test(v.language));
-  return spanish.find((v) => v.identifier === id) ?? spanish.find((v) => voiceGender(v) === gender);
+  const chosen = spanish.find((v) => v.identifier === id);
+  if (chosen) return chosen;
+  return spanish.filter((v) => voiceGender(v) === gender).sort((a, b) => rank(b) - rank(a))[0];
 }

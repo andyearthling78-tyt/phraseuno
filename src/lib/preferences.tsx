@@ -15,7 +15,7 @@ function usePreferencesState() {
   const current = useRef(preferences);
   const [ready, setReady] = useState(false);
   const [saveError, setSaveError] = useState(false);
-  const [voices, setVoices] = useState<Speech.Voice[]>([]);
+  const [voices, setVoices] = useState<(Speech.Voice & { gender?: string })[]>([]);
   const [voicesLoading, setVoicesLoading] = useState(true);
   const [voiceError, setVoiceError] = useState(false);
   const [reminderState, setReminderState] = useState("off");

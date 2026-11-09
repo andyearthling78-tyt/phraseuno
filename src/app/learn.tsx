@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { OralPractice } from "../components/oral-practice";
+import { ListenStep } from "../components/listen-step";
 import { matchesSpokenPhrase } from "../lib/oral-model";
 import { learningSpeech } from "../lib/speech";
 import {
@@ -26,18 +27,42 @@ import {
   Speak,
 } from "../components/ui";
 import { useLearning } from "../lib/store";
+import { weekStatus } from "../lib/course";
 import {
   assess,
   fresh,
   normalize,
   percent,
 } from "../lib/learning";
+type PhraseStep = "listen" | "speak" | "read" | "write";
+const STEPS: { id: PhraseStep; label: string }[] = [
+  { id: "listen", label: "Hören" },
+  { id: "speak", label: "Nachsprechen" },
+  { id: "read", label: "Lesen" },
+  { id: "write", label: "Schreiben" },
+];
+function StepTrail({ step }: { step: PhraseStep }) {
+  const current = STEPS.findIndex((item) => item.id === step);
+  return <View accessibilityRole="progressbar" accessibilityValue={{ min: 1, max: 4, now: current + 1 }} style={l.trail}>
+    {STEPS.map((item, index) => <View key={item.id} style={[l.trailItem, index <= current && l.trailDone, index === current && l.trailActive]}>
+      <Text style={[l.trailText, index <= current && { color: C.green, fontWeight: "700" }]}>{index < current ? "✓ " : ""}{item.label}</Text>
+    </View>)}
+  </View>;
+}
+function BuiltPhrase({ phrase, add }: { phrase: string; add: string }) {
+  const at = phrase.toLowerCase().lastIndexOf(add.toLowerCase());
+  if (at < 0) return <Text translate={false} style={[s.h2, s.center]}>{phrase}</Text>;
+  return <Text translate={false} style={[s.h2, s.center]}>
+    {phrase.slice(0, at)}<Text translate={false} style={l.newPart}>{phrase.slice(at, at + add.length)}</Text>{phrase.slice(at + add.length)}
+  </Text>;
+}
 export default function Learn() {
   const { t } = useI18n();
   const Alert = useLocalizedAlert();
-  const { state, setState, saveError, lesson, openDay } = useLearning();
+  const { state, setState, saveError, lesson, openDay, course } = useLearning();
   const { phrases, words, turns } = lesson;
   const [writing, setWriting] = useState(false);
+  const [step, setStep] = useState<PhraseStep>("listen");
   const [writingPassed, setWritingPassed] = useState(false);
   const [written, setWritten] = useState("");
   const [passed, setPassed] = useState(false);
@@ -96,13 +121,12 @@ export default function Learn() {
   }
   function advance() {
     setState(v => ({ ...v, build: v.build + 1, stage: v.build === 3 ? "chat" : "build" }));
-    setWritten(""); setPassed(false); setWritingPassed(false); setWriting(false); setFeedback(""); setHint(false);
+    setWritten(""); setPassed(false); setWritingPassed(false); setWriting(false); setFeedback(""); setHint(false); setStep("listen");
   }
   function check() {
     const ok = normalize(written) === normalize(phrases[state.build].phrase);
     setWritingPassed(ok);
-    if (ok) setPassed(true);
-    setFeedback(ok ? "¡Muy bien! " + phrases[state.build].tip : "Fast! Vergleiche deinen Satz mit dem Beispiel und versuche es noch einmal.");
+    setFeedback(ok ? "¡Muy bien! Geschrieben, gelesen, gesprochen. Dieser Baustein sitzt." : "Fast! Vergleiche deinen Satz mit dem Satz oben und versuche es noch einmal.");
   }
   function send(answer: string = reply) {
     const text = answer.trim();
@@ -153,31 +177,50 @@ export default function Learn() {
         {state.stage === "build" && (
           <Card>
             <Label>01 / PHRASEN · {state.build + 1} VON 4</Label>
+            <StepTrail step={step} />
             <Text style={s.title}>
               {lesson.title}
             </Text>
             <Text style={s.subtitle}>{p.de}</Text>
-            <View style={l.phrase}>
-              <Text style={[s.h2, s.center]}>{p.phrase}</Text>
-            </View>
-            {!passed && <OralPractice key={`build-${lesson.id}-${state.build}`} prompt={p.phrase} repeat onAnswer={text => {
-              const ok = matchesSpokenPhrase(text, p.phrase);
-              setPassed(ok);
-              setFeedback(ok ? "Gut verstanden! Du hast den Satz gesprochen." : "Noch einmal ganz entspannt. Höre den Satz erneut und sprich ihn vollständig nach.");
-            }} />}
-            {passed && <Text accessibilityLiveRegion="polite" style={s.body}>✓ Gut gemacht. Weiter in deinem Tempo.</Text>}
-            <Button secondary onPress={() => setWriting(value => !value)}>{writing ? "Schreibübung schließen" : "Optional: auch schreiben üben"}</Button>
-            {writing && <>
-              <Text style={s.small}>Schreibe den vollständigen Satz auf Spanisch.</Text>
-              <TextInput value={written} onChangeText={value => { setWritten(value); setWritingPassed(false); }} accessibilityLabel={t("Den Satz auf Spanisch schreiben")} placeholder={t("Dein spanischer Satz …")} placeholderTextColor={C.muted} style={l.input} multiline maxLength={300} autoCorrect={false} />
-              <Button onPress={check} disabled={writingPassed || !written.trim()}>Schreiben prüfen ✓</Button>
+            {step === "listen" || step === "speak" ? (
+              <View style={l.phrase}>
+                <Text style={{ fontSize: 34 }}>🎧</Text>
+                <Text style={[s.small, s.center]}>
+                  {hint ? "" : "Erst hören und nachsprechen. Den spanischen Text liest du im nächsten Schritt."}
+                </Text>
+                {hint && <Text translate={false} style={[s.h2, s.center]}>{p.phrase}</Text>}
+              </View>
+            ) : (
+              <View style={l.phrase}>
+                <BuiltPhrase phrase={p.phrase} add={p.add} />
+                <Speak text={p.phrase} />
+              </View>
+            )}
+            {step === "listen" && <ListenStep key={`listen-${lesson.id}-${state.build}`} prompt={p.phrase} onContinue={() => { setStep("speak"); setFeedback(""); }} />}
+            {step === "speak" && <>
+              {!passed && <OralPractice key={`build-${lesson.id}-${state.build}`} prompt={p.phrase} repeat autoPlay={false} onAnswer={text => {
+                const ok = matchesSpokenPhrase(text, p.phrase);
+                setPassed(ok);
+                setFeedback(ok ? "Gut verstanden! Du hast den Satz gesprochen." : "Noch einmal ganz entspannt. Höre den Satz erneut und sprich ihn vollständig nach.");
+              }} />}
+              {passed && <Text accessibilityLiveRegion="polite" style={s.body}>✓ Gut gemacht. Jetzt siehst du den Satz.</Text>}
+              <Button secondary={!passed} onPress={() => { setStep("read"); setFeedback(""); setHint(false); }}>{passed ? "Weiter zum Lesen →" : "Gerade nicht sprechen? Weiter zum Lesen →"}</Button>
+            </>}
+            {step === "read" && <>
+              <Text style={s.body}>Lies den Satz in Ruhe. Neu ist der hervorgehobene Baustein.</Text>
+              <View style={s.note}><Text style={s.body}>💡 {p.tip}</Text></View>
+              <Button onPress={() => { setStep("write"); setFeedback(""); }}>Jetzt schreiben →</Button>
+            </>}
+            {step === "write" && <>
+              <Text style={s.small}>Schreibe den vollständigen Satz auf Spanisch. Akzente und Satzzeichen sind nicht entscheidend.</Text>
+              <TextInput value={written} onChangeText={value => { setWritten(value); setWritingPassed(false); }} accessibilityLabel={t("Den Satz auf Spanisch schreiben")} placeholder={t("Dein spanischer Satz …")} placeholderTextColor={C.muted} style={l.input} multiline maxLength={300} autoCorrect={false} autoCapitalize="sentences" editable={!writingPassed} />
+              {!writingPassed && <Button onPress={check} disabled={!written.trim()}>Schreiben prüfen ✓</Button>}
             </>}
             {feedback !== "" && <View accessibilityLiveRegion="polite" style={s.note}><Text style={s.body}>{feedback}</Text></View>}
-            {hint && <Text style={s.body}>💡 {p.tip}</Text>}
-            {passed && <Button onPress={advance}>{state.build === 3 ? "Zum Dialog →" : "Weiter →"}</Button>}
-            <Button secondary onPress={() => setHint((v) => !v)}>
-              {hint ? "Hilfe ausblenden" : "💡 Kleine Hilfe"}
-            </Button>
+            {step === "write" && writingPassed && <Button onPress={advance}>{state.build === 3 ? "Zum Dialog →" : "Nächster Baustein →"}</Button>}
+            {(step === "listen" || step === "speak") && <Button secondary onPress={() => setHint((v) => !v)}>
+              {hint ? "Text ausblenden" : "💡 Text kurz zeigen"}
+            </Button>}
           </Card>
         )}
         {state.stage === "chat" && (
@@ -267,7 +310,7 @@ export default function Learn() {
         {state.stage === "cards" && (
           <Card>
             <Text style={s.h2}>Lerntag geschafft! ✨</Text>
-            <Text style={s.body}>Jetzt folgt deine freiwillige Vokabel-Zusatzübung. Du kannst sie später im Vokabel-Reiter fortsetzen. Vor der nächsten Lernwoche werden alle Wochenwörter wiederholt.</Text>
+            <Text style={s.body}>Zum Abschluss deines Lerntags folgt die Vokabelabfrage. Du kannst sie auch später im Vokabel-Reiter machen. Am Ende der Woche fragen wir alle Wörter der Woche gemeinsam ab.</Text>
             <Label>03 / WÖRTER · {state.known.length} VON 3 SICHER</Label>
             <Text style={s.title}>Schon vertraut.</Text>
             <Text style={s.subtitle}>
@@ -412,6 +455,8 @@ export default function Learn() {
                       text: "Wiederholen",
                       onPress: () => {
                         setState({ ...fresh(), stage: "build" });
+                        setStep("listen");
+                        setWritingPassed(false);
                         setPassed(false);
                         setWritten("");
                         setFeedback("");
@@ -426,6 +471,7 @@ export default function Learn() {
             </Button>
             <Button secondary onPress={() => router.replace("/words")}>Vokabeln aus diesem Lerntag üben →</Button>
             {lesson.id < 7 && <Button onPress={() => { openDay(lesson.id + 1); router.replace("/"); }}>Nächster Lerntag →</Button>}
+            {weekStatus(course).completedDays === 7 && !course.weekReviewedAt && <Button accent onPress={() => router.replace({ pathname: "/words", params: { review: "week" } })}>Wochenabfrage starten →</Button>}
             <Button secondary onPress={() => router.replace("/")}>
               Zur Übersicht
             </Button>
@@ -439,6 +485,12 @@ export default function Learn() {
   );
 }
 const l = StyleSheet.create({
+  trail: { flexDirection: "row", gap: 6, flexWrap: "wrap" },
+  trailItem: { paddingVertical: 6, paddingHorizontal: 10, borderRadius: 999, borderWidth: 1, borderColor: C.line, backgroundColor: C.paper },
+  trailDone: { borderColor: C.green, backgroundColor: C.pale },
+  trailActive: { backgroundColor: C.yellow, borderColor: C.yellow },
+  trailText: { fontSize: 12, color: C.muted },
+  newPart: { backgroundColor: C.yellow, color: C.green },
   phrase: {
     backgroundColor: C.pale,
     borderRadius: 15,

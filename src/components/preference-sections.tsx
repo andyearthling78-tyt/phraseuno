@@ -58,9 +58,9 @@ export function PreferenceSections({ section }: { section: PreferenceSection }) 
   </Card>;
   if (section === "voice") return <Card>
     <Text accessibilityRole="header" style={s.h2}>Deine Lernstimme</Text>
-    <Text style={s.body}>Wähle eine weibliche oder männliche Stimme für die spanischen Hörbeispiele.</Text>
-    <Choice label="Weiblich" selected={preferences.voiceGender === "female"} onPress={() => { learningSpeech.stop(); save({ voiceGender: "female", voiceId: null }); }} />
-    <Choice label="Männlich" selected={preferences.voiceGender === "male"} onPress={() => { learningSpeech.stop(); save({ voiceGender: "male", voiceId: null }); }} />
+    <Text style={s.body}>Wähle, wer dir die spanischen Sätze vorspricht: Lucía mit weiblicher oder Mateo mit männlicher Stimme.</Text>
+    <Choice label="Lucía · weiblich" selected={preferences.voiceGender === "female"} onPress={() => { learningSpeech.stop(); save({ voiceGender: "female", voiceId: null }); }} />
+    <Choice label="Mateo · männlich" selected={preferences.voiceGender === "male"} onPress={() => { learningSpeech.stop(); save({ voiceGender: "male", voiceId: null }); }} />
     {voicesLoading ? <Text style={s.small}>Stimmen werden geladen …</Text> : selectedVoice ? <>
       <Text style={s.small}>Aktive Stimme: <Text translate={false}>{selectedVoice.name}</Text></Text>
       <Button secondary onPress={() => preview(selectedVoice.identifier)}>Stimme probehören ♪</Button>

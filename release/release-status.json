@@ -19,9 +19,9 @@
     "iosAndAndroidHermesBundles": "PASS",
     "nativeIosReleaseSimulatorBuild": "PASS",
     "iosManualFlow": "PASS: old progress preserved; day/week vocabulary selectors, six collected fixture words after two completed days, optional cards and real writing input, automatic spoken prompt and enabled microphone after playback, permission denial message.",
-    "iosPrivacyManifestAudit": "14 bundled manifests: no tracking/collected-data declarations; no microphone/camera permission",
+    "iosPrivacyManifestAudit": "14 bundled manifests: no tracking/collected-data declarations. Build 3 intentionally requests microphone access (NSMicrophoneUsageDescription, on-device speech recognition); no camera permission. Authoritative: app.json and release/ios-privacy-audit.json.",
     "binarySourceDifference": "Final source Hermes bundle embedded into copies of native Release builds; native code unchanged, device copy re-signed with existing profile; strict signatures verified. No fixed recordings included.",
-    "nativeIosReleaseDeviceBuild": "PASS: native microphone/recognition module compiled; iPhone build installed and launched. Final UI corrections embedded with Expo export:embed, signatures verified, installation confirmed; final launch blocked by device lock.",
+    "nativeIosReleaseDeviceBuild": "PASS: native microphone/recognition module compiled; iPhone build installed and launched. Final UI corrections embedded with Expo export:embed, signatures verified, installation confirmed; final launch confirmed via devicectl after the user unlocked the iPhone on 2026-11-09.",
     "nativeSpeech": "Native speech UI, auto-play completion state, permission prompt and denied-permission fallback verified in simulator. Actual Spanish microphone recognition and network behaviour still require physical-device testing.",
     "screenshots": "Build 2 historical screenshots; new speaking/vocabulary views require refreshed store captures."
   },
@@ -44,7 +44,7 @@
     {
       "id": "iphoneInstallation",
       "status": "DONE",
-      "reason": "Build 3 native app and final source bundle installed successfully. Earlier build 3 process launch confirmed; final re-launch blocked by device lock. User can open app after unlocking."
+      "reason": "Build 3 native app and final source bundle installed successfully. Final build 3 process launch confirmed via devicectl after device unlock (2026-11-09). Real spoken recognition still unverified."
     },
     {
       "id": "storeAccountsAndSigning",

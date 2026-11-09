@@ -9,8 +9,8 @@ import { recognitionError, recognitionOptions } from '../lib/oral-model';
 import { Button, s } from './ui';
 import { Text } from './localized-text';
 
-type Props = { prompt: string; onAnswer: (text: string) => void; repeat?: boolean };
-export function OralPractice({ prompt, onAnswer, repeat = false }: Props) {
+type Props = { prompt: string; onAnswer: (text: string) => void; repeat?: boolean; autoPlay?: boolean };
+export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true }: Props) {
   const { t } = useI18n();
   const { selectedVoice, preferences, voicesLoading } = usePreferences();
   const [phase, setPhase] = useState<'idle' | 'speaking' | 'starting' | 'listening'>('idle');
@@ -73,10 +73,10 @@ export function OralPractice({ prompt, onAnswer, repeat = false }: Props) {
     });
   }, [cancel, prompt, selectedVoice, preferences.voiceGender, preferences.audioSpeed]);
   useEffect(() => {
-    if (voicesLoading) return;
+    if (voicesLoading || !autoPlay) return;
     const scheduled = setTimeout(listen, 150);
     return () => clearTimeout(scheduled);
-  }, [listen, voicesLoading]);
+  }, [listen, voicesLoading, autoPlay]);
   async function record() {
     if (phase === 'starting' || phase === 'speaking') return;
     if (active.current) { Recognition.stop(); return; }
@@ -112,7 +112,7 @@ export function OralPractice({ prompt, onAnswer, repeat = false }: Props) {
     }
   }
   return <View style={{ gap: 12 }}>
-    <Text style={[s.body, s.center]}>{phase === 'speaking' ? 'Lucía spricht. Hör erst einmal zu …' : phase === 'listening' ? 'Ich höre zu …' : repeat ? 'Jetzt du: Sprich den Satz nach.' : 'Jetzt du: Antworte auf Spanisch.'}</Text>
+    <Text style={[s.body, s.center]}>{phase === 'speaking' ? (preferences.voiceGender === 'male' ? 'Mateo spricht. Hör erst einmal zu …' : 'Lucía spricht. Hör erst einmal zu …') : phase === 'listening' ? 'Ich höre zu …' : repeat ? 'Jetzt du: Sprich den Satz nach.' : 'Jetzt du: Antworte auf Spanisch.'}</Text>
     <Button secondary onPress={listen} disabled={phase === 'starting'}>♪ Noch einmal hören</Button>
     <Button onPress={record} disabled={phase === 'starting' || phase === 'speaking'}>
       {phase === 'listening' ? '■ Aufnahme beenden' : phase === 'starting' ? 'Mikrofon wird vorbereitet …' : repeat ? '🎙 Satz nachsprechen' : '🎙 Antwort sprechen'}

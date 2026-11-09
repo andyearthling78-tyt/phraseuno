@@ -91,3 +91,17 @@ Aktuellen finalen Quellstand mit sieben Tagen, neuen Rechtsangaben und vollstän
 Native iPhone-/Simulator-Release-Builds erfolgreich. iPhone installiert und Prozessstart bestätigt. Abschließende UI-Korrekturen (bekannte Karten weiterblättern, tatsächliches Schreibfeld, Mikrofonabbruch beim Öffnen der Dialoghilfe) per Expo export:embed als Hermes-Bundle in App-Kopien eingebettet; vorhandene Gerätesignatur beibehalten, strikte Signaturprüfungen erfolgreich, finale Installation bestätigt. Letzter Start durch Gerätesperre blockiert.
 
 Simulator: Vorlesen beim Eintritt, Freigabe des Nachsprechknopfs nach Vorlese-Ende, Mikrofonabfrage erst nach Tippen, Ablehnung zeigt Hinweis/Schreibalternative. Vorhandene abgeschlossene Tage 1/2 erhalten; Wochensammlung zeigt sechs Wörter. Tages-/Wochenwechsel und freiwillige Karten/Bedeutung angezeigt, echtes optionales Texteingabefeld bestätigt. Automatisierte Tests prüfen 20 eindeutige Wochenwörter, Zurückstellen/Neustart und Freigabe erst nach vollständiger Woche/Vokabeln. Keine echte spanische Sprachaufnahme als Hardwaretest durchgeführt; keine Aussprachequalität behauptet. Android-Hardwaretests weiterhin offen.
+
+## Berichtigung · 9. November 2026
+
+Überholt: „Letzter Start durch Gerätesperre blockiert“. Nach dem Entsperren wurde der Start der aktuell installierten Build-3-Version per `devicectl` erfolgreich bestätigt. Ebenfalls überholt ist die frühere Zusammenfassung „keine Mikrofonberechtigung“: Build 3 fragt absichtlich nach Mikrofonzugriff für die On-device-Spracherkennung; maßgeblich sind `app.json` und `release/ios-privacy-audit.json`. Eine reale spanische Spracherkennung auf dem iPhone ist weiterhin nicht nachgewiesen.
+
+## Stimmen, Phrasenablauf und Wochenabfrage · Build 4 (Quellstand) · 9. November 2026
+
+Nutzerfeedback: Lucía klang männlich. iOS liefert das Stimmgeschlecht jetzt nativ (`scripts/patch-speech-voice-gender.mjs`, per postinstall, idempotent, bricht bei unbekanntem Quellstand ab). Lucía = weibliche, Mateo = männliche Stimme; natürliche es-ES-/Enhanced-Stimmen vor Eloquence-Stimmen. Erfordert einen neuen nativen Build.
+
+Jede Phrase folgt jetzt fest: Hören (Text verborgen) → Nachsprechen (überspringbar, wenn Sprechen nicht möglich) → Lesen (neuer Baustein hervorgehoben, Tipp) → Schreiben (Pflicht vor dem nächsten Baustein). Danach Dialog, am Tagesende Vokabelabfrage.
+
+Wochenabfrage: Nach allen sieben Lerntagen öffnet sich im Vokabel-Reiter die Abfrage aller 20 Wochenwörter; unsichere Wörter wiederholen sich am Ende. `readyForNextWeek` verlangt jetzt zusätzlich den abgeschlossenen Wochencheck (`weekReviewedAt`, verlustfrei ergänzt, Speicher-Version unverändert).
+
+33 Tests, TypeScript und ESLint bestanden. Noch nicht nativ gebaut oder auf dem iPhone geprüft.

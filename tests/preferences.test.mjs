@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { restorePreferences, defaultPreferences, validTime, selectVoice } from "../src/lib/preferences-model.ts";
+import { restorePreferences, defaultPreferences, validTime, selectVoice, tutorName } from "../src/lib/preferences-model.ts";
 import { createReminderQueue } from "../src/lib/reminder-queue.ts";
 test("Preferences validate damaged storage and keep onboarding/reminders opt-in", () => {
   for (const value of [null, "broken", "[]", "null"]) assert.deepEqual(restorePreferences(value), defaultPreferences);
@@ -29,6 +29,22 @@ test("Voice selection uses existing Spanish voices and never guesses unknown gen
   assert.equal(selectVoice(voices, "male", "engine-es")?.identifier, "engine-es");
   assert.equal(selectVoice(voices.slice(2), "female", null), undefined);
   assert.equal(selectVoice(voices, "male", "wrong-language")?.identifier, "male-es");
+});
+test("Lucía gets a female and Mateo a male voice, using native gender and natural voices first", () => {
+  const ios = [
+    { name: "Grandpa", identifier: "com.apple.eloquence.es-ES.Grandpa", language: "es-ES", gender: "male" },
+    { name: "Jorge", identifier: "com.apple.voice.compact.es-ES.Jorge", language: "es-ES", gender: "male" },
+    { name: "Shelley", identifier: "com.apple.eloquence.es-ES.Shelley", language: "es-ES", gender: "female" },
+    { name: "Paulina", identifier: "com.apple.voice.compact.es-MX.Paulina", language: "es-MX", gender: "female" },
+    { name: "Mónica", identifier: "com.apple.voice.compact.es-ES.Monica", language: "es-ES", gender: "female" },
+    { name: "Neutral", identifier: "x", language: "es-ES", gender: "male" },
+  ];
+  assert.equal(selectVoice(ios, "female", null)?.name, "Mónica");
+  assert.equal(selectVoice(ios, "male", null)?.name, "Jorge");
+  assert.equal(selectVoice([{ name: "Anna", identifier: "a", language: "es-ES", gender: "female" }], "female", null)?.name, "Anna");
+  assert.equal(selectVoice([{ name: "Jorge", identifier: "j", language: "es-ES", gender: "unspecified" }], "female", null), undefined);
+  assert.equal(tutorName("female"), "Lucía");
+  assert.equal(tutorName("male"), "Mateo");
 });
 test("Reminder edits serialize replacement, disabling removes schedule, denial never schedules", async () => {
   let scheduled = null;

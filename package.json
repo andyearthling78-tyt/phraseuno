@@ -35,7 +35,7 @@
     "lint": "expo lint",
     "test": "node --test tests/*.test.mjs",
     "bundle:check": "expo export --platform ios --platform android --output-dir .expo/bundle-check",
-    "postinstall": "node scripts/patch-speech-recognition.mjs"
+    "postinstall": "node scripts/patch-speech-recognition.mjs && node scripts/patch-speech-voice-gender.mjs"
   },
   "private": true,
   "engines": {

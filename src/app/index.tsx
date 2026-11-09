@@ -137,8 +137,10 @@ export default function Home() {
       <Card>
         <Text style={s.h2}>Dein Wochenabschluss</Text>
         <Text style={s.body}>{week.completedDays} / 7 <Text>Lerntage geschafft</Text></Text>
-        <Text style={s.small}>{week.readyForNextWeek ? "Woche 1 geschafft! Alle Wochenwörter sind geübt. Weitere Lernwochen folgen." : "Die nächste Lernwoche wird erst freigegeben, wenn alle sieben Lerntage und ihre gesammelten Vokabeln geübt sind."}</Text>
-        <Button secondary onPress={() => router.push("/words")}>Wochenvokabeln üben →</Button>
+        <Text style={s.small}>{week.readyForNextWeek ? "Woche 1 geschafft! Alle Wochenwörter sind abgefragt. Weitere Lernwochen folgen." : week.reviewOpen ? "Alle sieben Lerntage geschafft. Jetzt fehlt nur noch die Wochenabfrage aller Vokabeln." : "Die Wochenabfrage öffnet sich nach allen sieben Lerntagen. Erst danach wird die nächste Lernwoche freigegeben."}</Text>
+        {week.reviewOpen && !week.readyForNextWeek
+          ? <Button accent onPress={() => router.push({ pathname: "/words", params: { review: "week" } })}>Wochenabfrage starten →</Button>
+          : <Button secondary onPress={() => router.push("/words")}>Wochenvokabeln üben →</Button>}
       </Card>
       <Card>
         <Text style={s.h2}>Mehr sprechen. Weniger pauken.</Text>

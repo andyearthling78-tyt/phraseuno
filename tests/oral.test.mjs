@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { matchesSpokenPhrase, recognitionOptions, recognitionError } from '../src/lib/oral-model.ts';
 import { fresh, restore } from '../src/lib/learning.ts';
-import { freshCourse, lessons, collectedWords, reviewCollectedWord, weekStatus, restoreCourse } from '../src/lib/course.ts';
+import { freshCourse, lessons, collectedWords, reviewCollectedWord, weekStatus, restoreCourse, completeWeekReview } from '../src/lib/course.ts';
 test('Speech checks complete understood words without pretending to score pronunciation', () => {
  assert(matchesSpokenPhrase('QUIERO UN CAFE.', 'Quiero un café'));
  assert(!matchesSpokenPhrase('no quiero un café', 'Quiero un café'));
@@ -23,15 +23,30 @@ test('Daily vocabulary can be deferred and restored; unfinished speech days do n
  assert.equal(weekStatus(course).completedDays,1);
  assert(!weekStatus(course).readyForNextWeek);
 });
-test('Weekly gate survives restart and requires every completed day and all collected words', () => {
+test('Weekly gate needs all seven days, every word known and the end-of-week check; it survives restart', () => {
  let course=freshCourse();
- for (const lesson of lessons) course.days[String(lesson.id)]={...fresh(),stage:'summary',build:4,chat:4,completedAt:'2026-11-09T12:00:00Z'};
- assert(!weekStatus(course).readyForNextWeek);
+ for (const lesson of lessons.slice(0,6)) course.days[String(lesson.id)]={...fresh(),stage:'summary',build:4,chat:4,completedAt:'2026-11-09T12:00:00Z'};
+ assert(!weekStatus(course).reviewOpen);
+ assert.equal(completeWeekReview(course),course);
+ course.days['7']={...fresh(),stage:'summary',build:4,chat:4,completedAt:'2026-11-09T12:00:00Z'};
+ assert(weekStatus(course).reviewOpen); assert(!weekStatus(course).readyForNextWeek);
  const unique=collectedWords(course);assert.equal(unique.length,20);
+ assert.equal(completeWeekReview(course),course,'open words block the check');
  for (const entry of unique) course=reviewCollectedWord(course,entry.word.es,true);
- assert(weekStatus(restoreCourse(JSON.stringify(course))).readyForNextWeek);
+ assert(!weekStatus(course).readyForNextWeek,'known words alone do not replace the weekly check');
+ course=completeWeekReview(course,'2026-11-15T10:00:00.000Z');
+ const restored=restoreCourse(JSON.stringify(course));
+ assert.equal(restored.weekReviewedAt,'2026-11-15T10:00:00.000Z');
+ assert(weekStatus(restored).readyForNextWeek);
  assert.deepEqual(course.days['2'].known.sort(),[0,1,2]); assert.deepEqual(course.days['5'].known.sort(),[0,1,2]);
  course=reviewCollectedWord(course,'la bolsa',false);
  assert(!weekStatus(course).readyForNextWeek);assert.equal(weekStatus(course).remaining,1);
+ assert.equal(restoreCourse(JSON.stringify({...course,weekReviewedAt:'kaputt'})).weekReviewedAt,null);
  delete course.days['7'];assert(!weekStatus(course).readyForNextWeek);
+});
+test('iOS voices report their gender natively through the reproducible expo-speech patch', () => {
+ const options = fs.readFileSync(new URL('../node_modules/expo-speech/ios/SpeechOptions.swift', import.meta.url),'utf8');
+ const module = fs.readFileSync(new URL('../node_modules/expo-speech/ios/SpeechModule.swift', import.meta.url),'utf8');
+ assert(options.includes('// PhraseUNO: voice gender'));
+ assert(module.includes('gender: voice.gender == .female ? "female"'));
 });

@@ -15,18 +15,20 @@ export const lessons: Lesson[] = [
     test: (answer: string) => turn.need.every((part) => contains(answer, part)) && !turn.reject.some((part) => contains(answer, part)),
   })) })),
 ];
-export type CourseState = { version: 2; selectedDay: number; days: Record<string, LearningState> };
-export function freshCourse(): CourseState { return { version: 2, selectedDay: 1, days: { "1": fresh() } }; }
+// weekReviewedAt: the end-of-week check of all collected words was completed.
+export type CourseState = { version: 2; selectedDay: number; days: Record<string, LearningState>; weekReviewedAt?: string | null };
+export function freshCourse(): CourseState { return { version: 2, selectedDay: 1, days: { "1": fresh() }, weekReviewedAt: null }; }
 export function restoreCourse(raw: string | null): CourseState {
   try {
     const value = JSON.parse(raw ?? "null");
-    if (value?.version === 1) return { version: 2, selectedDay: 1, days: { "1": restore(raw) } };
+    if (value?.version === 1) return { version: 2, selectedDay: 1, days: { "1": restore(raw) }, weekReviewedAt: null };
     if (value?.version !== 2 || !value.days || typeof value.days !== "object" || Array.isArray(value.days)) return freshCourse();
     const days: Record<string, LearningState> = {};
     for (const lesson of lessons) if (value.days[String(lesson.id)]) days[String(lesson.id)] = restore(JSON.stringify(value.days[String(lesson.id)]));
     const selectedDay = lessons.some((lesson) => lesson.id === value.selectedDay) ? value.selectedDay : 1;
     days[String(selectedDay)] ??= fresh();
-    return { version: 2, selectedDay, days };
+    const reviewed = typeof value.weekReviewedAt === "string" && Number.isFinite(Date.parse(value.weekReviewedAt)) ? value.weekReviewedAt : null;
+    return { version: 2, selectedDay, days, weekReviewedAt: reviewed };
   } catch { return freshCourse(); }
 }
 export function selectDay(course: CourseState, id: number): CourseState {
@@ -65,5 +67,13 @@ export function weekStatus(course: CourseState) {
   const completedDays = lessons.filter(lesson => course.days[String(lesson.id)]?.chat === 4).length;
   const vocabulary = collectedWords(course);
   const remaining = vocabulary.filter(entry => !entry.known).length;
-  return { completedDays, vocabulary, remaining, readyForNextWeek: completedDays === lessons.length && remaining === 0 };
+  const reviewOpen = completedDays === lessons.length;
+  const weekReviewed = reviewOpen && remaining === 0 && !!course.weekReviewedAt;
+  return { completedDays, vocabulary, remaining, reviewOpen, weekReviewed, readyForNextWeek: weekReviewed };
+}
+// Called when every word of the week was answered with "Gewusst" in the end-of-week check.
+export function completeWeekReview(course: CourseState, at = new Date().toISOString()): CourseState {
+  const status = weekStatus({ ...course, weekReviewedAt: at });
+  if (!status.reviewOpen || status.remaining !== 0) return course;
+  return { ...course, weekReviewedAt: at };
 }

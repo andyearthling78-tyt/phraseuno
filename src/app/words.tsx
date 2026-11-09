@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Text } from '../components/localized-text';
 import { Button, Card, Label, Page, s, Speak } from '../components/ui';
 import { useLearning } from '../lib/store';
 import { weekStatus } from '../lib/course';
 
 export default function Words() {
-  const { state, lesson, course, reviewWord } = useLearning();
-  const [scope, setScope] = useState<'day' | 'week'>('day');
+  const { state, lesson, course, reviewWord, finishWeekReview } = useLearning();
+  const params = useLocalSearchParams<{ review?: string }>();
+  const [scope, setScope] = useState<'day' | 'week'>(params.review === 'week' ? 'week' : 'day');
+  const [queue, setQueue] = useState<string[] | null>(() => {
+    const start = weekStatus(course);
+    return params.review === 'week' && start.reviewOpen ? start.vocabulary.map(entry => entry.word.es) : null;
+  });
+  const [queueFlipped, setQueueFlipped] = useState(false);
   const [practice, setPractice] = useState(false);
   const [flipped, setFlipped] = useState(false);
   const [cursor, setCursor] = useState(0);
@@ -17,6 +23,37 @@ export default function Words() {
   const pending = entries.filter(entry => !entry.known);
   const current = (pending.length ? pending : entries)[cursor % (pending.length || entries.length || 1)];
   const canSave = !!current && current.sources.every(source => course.days[String(source.day)]?.chat === 4);
+  function startWeekReview() { setQueue(status.vocabulary.map(entry => entry.word.es)); setQueueFlipped(false); setPractice(false); }
+  function answerWeek(known: boolean) {
+    if (!queue?.length) return;
+    const [head, ...rest] = queue;
+    reviewWord(head, known);
+    const next = known ? rest : [...rest, head];
+    setQueue(next); setQueueFlipped(false);
+    if (next.length === 0) finishWeekReview();
+  }
+  if (queue) {
+    const total = status.vocabulary.length;
+    const entry = status.vocabulary.find(item => item.word.es === queue[0]);
+    return <Page>
+      <View><Label>WOCHENABFRAGE</Label><Text style={[s.title, { marginTop: 10 }]}>Alle Wörter dieser Woche.</Text><Text style={s.subtitle}>Unsichere Wörter kommen am Ende noch einmal.</Text></View>
+      {entry ? <Card>
+        <Text style={s.small}>{total - queue.length} / {total} <Text>sicher gewusst</Text></Text>
+        <Text style={[s.title, s.center]}>{entry.word.symbol}</Text>
+        <Text translate={false} style={[s.title, s.center]}>{entry.word.es}</Text><Speak text={entry.word.es} />
+        <Text style={[s.small, s.center]}>Was heißt das? Erst laut antworten, dann aufdecken.</Text>
+        {queueFlipped ? <>
+          <Text style={[s.h2, s.center]}>{entry.word.de}</Text><Text style={s.body}>{entry.word.example}</Text>
+          <Button onPress={() => answerWeek(true)}>Gewusst ✓</Button>
+          <Button secondary onPress={() => answerWeek(false)}>Noch einmal üben ↻</Button>
+        </> : <Button secondary onPress={() => setQueueFlipped(true)}>Bedeutung aufdecken</Button>}
+      </Card> : <Card>
+        <Text style={s.h2}>Woche geschafft! ✨</Text>
+        <Text style={s.body}>Du hast alle Wörter der Woche abgefragt und gewusst. Die nächste Lernwoche ist freigegeben, sobald sie verfügbar ist.</Text>
+      </Card>}
+      <Button secondary onPress={() => setQueue(null)}>{entry ? 'Abfrage unterbrechen' : 'Zur Wortsammlung'}</Button>
+    </Page>;
+  }
   return <Page>
     <View><Label>DEINE WORTSAMMLUNG</Label><Text style={[s.title, { marginTop: 10 }]}>Deine Wörter wachsen mit dir.</Text><Text style={s.subtitle}>Freiwillig am Tag. Gemeinsam zum Wochenabschluss.</Text></View>
     <View style={s.row}>
@@ -27,7 +64,8 @@ export default function Words() {
       <Text style={s.h2}>Dein Wochenabschluss</Text>
       <Text style={s.body}>{status.completedDays} / 7 <Text>Lerntage geschafft</Text></Text>
       <Text style={s.body}>{status.vocabulary.length - status.remaining} / {status.vocabulary.length} <Text>gesammelte Wörter geübt</Text></Text>
-      <Text style={s.small}>{status.readyForNextWeek ? 'Woche 1 geschafft! Alle Wochenwörter sind geübt. Weitere Lernwochen folgen.' : 'Die nächste Lernwoche wird erst freigegeben, wenn alle sieben Lerntage und ihre gesammelten Vokabeln geübt sind.'}</Text>
+      <Text style={s.small}>{status.readyForNextWeek ? 'Woche 1 geschafft! Alle Wochenwörter sind abgefragt. Weitere Lernwochen folgen.' : status.reviewOpen ? 'Alle sieben Lerntage geschafft. Jetzt fehlt nur noch die Wochenabfrage aller Vokabeln.' : 'Die Wochenabfrage öffnet sich nach allen sieben Lerntagen. Erst danach wird die nächste Lernwoche freigegeben.'}</Text>
+      {status.reviewOpen && <Button accent onPress={startWeekReview}>{status.readyForNextWeek ? 'Wochenabfrage wiederholen ↻' : 'Wochenabfrage starten →'}</Button>}
     </Card>}
     {!entries.length && <Card><Text style={s.body}>Nach deinem ersten erfolgreichen Lerntag sammeln sich hier automatisch die Vokabeln der Woche.</Text></Card>}
     {!!entries.length && <Button onPress={() => { setPractice(value => !value); setFlipped(false); setCursor(0); }}>{practice ? 'Zur Wortliste' : 'Vokabeln üben →'}</Button>}
