@@ -125,3 +125,15 @@ Gerätefeedback: Knopfbeschriftungen umbrachen, nach richtiger Sprachantwort kam
 ## Toleranz bei der Spracherkennung · 9. November 2026
 
 Gerätefeedback: „para llevar“ wurde nicht erkannt. Jetzt: Erkennung erhält erwartete Sätze/Wörter als Kontext (iOS contextualStrings), bis zu drei Alternativen werden geprüft, und erkannte Wörter werden nach Klang (ll/y, v/b, z/c/s, stummes h) bzw. mit einem Buchstaben Toleranz bei Wörtern ab vier Buchstaben auf die Lektionswörter abgebildet. Widersprüche („sin leche“, „no quiero“) bleiben falsch. 37 Tests bestanden.
+
+## Duolingo-ähnlicher Aufbau · 9. November 2026
+
+Nutzerentscheidung: Lernpfad, Tages-Serie und Punkte (keine Herzen); falsche Antworten kommen am Lektionsende erneut.
+
+- Startseite = Lernpfad: Woche als Abschnitt, sieben Stationen im Zickzack, nächste Station gelb mit hüpfender START/WEITER-Blase, erledigte Stationen grün ✓, Wochenabfrage als Truhe 🔒/🎁/🏆. Oben 🔥 Serie und ⚡ Wochenpunkte.
+- Lerntag = 20 kurze Übungen (16 Phrasen/Dialog = 80 %, 4 Wörter = 20 %): je Baustein Hören+Nachsprechen → Satz aus Wortkacheln bauen → Schreiben; nach Baustein 2 Wortpaare zuordnen; vier Dialogfragen (sprechen oder tippen, Wortbausteine als Stütze); am Ende Vokabelabfrage (Bedeutung wählen).
+- Unten „Prüfen“, danach grüne (¡Muy bien!) oder rötliche Leiste mit richtiger Lösung; falsche Übungen werden hinten angehängt. „Später“ schaltet Sprechübungen für die Sitzung ab (Dialog dann per Tastatur).
+- Abschluss: Pokal, Punkte (10, +5 ohne Fehler), Genauigkeit, Serie.
+- Fortschritt bleibt im bestehenden Speicherformat (LearningState v1): Bausteine/Dialog/Wörter werden nach jeder bestandenen Übung gespeichert; unterbrochene Tage setzen an der richtigen Stelle fort. Serie/Punkte unter eigenem Schlüssel `phraseuno.stats.v1`, wird mit „Lernstand löschen“ entfernt.
+
+40 Tests, TypeScript, ESLint bestanden; JS-Bundle exportiert. Nativer Build/Gerätetest ausstehend.

@@ -4,6 +4,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator, View } from "react-native";
 import { fresh, KEY, LearningState } from "./learning";
 import { createStorageQueue } from "./storage";
+import { freshStats, recordLesson, restoreStats, Stats, STATS_KEY } from "./stats";
+import { localDay } from "./motivation";
 import { CourseState, freshCourse, lessons, Lesson, restoreCourse, selectDay, reviewCollectedWord, completeWeekReview } from "./course";
 type Store = {
   course: CourseState;
@@ -11,6 +13,8 @@ type Store = {
   openDay: (id: number) => void;
   reviewWord: (es: string, known: boolean) => void;
   finishWeekReview: () => void;
+  stats: Stats;
+  finishLesson: (xp: number) => void;
   state: LearningState;
   setState: React.Dispatch<React.SetStateAction<LearningState>>;
   saveError: boolean;
@@ -33,6 +37,16 @@ export function LearningProvider({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = useState(false);
   const [saveError, setSaveError] = useState(false);
   const [storage] = useState(() => createStorageQueue(AsyncStorage, KEY));
+  const [stats, setStats] = useState<Stats>(freshStats);
+  const [statsReady, setStatsReady] = useState(false);
+  const [statsStorage] = useState(() => createStorageQueue(AsyncStorage, STATS_KEY));
+  const finishLesson = (xp: number) => setStats((previous) => recordLesson(previous, localDay(), xp));
+  useEffect(() => {
+    AsyncStorage.getItem(STATS_KEY).then((raw) => setStats(restoreStats(raw))).catch(() => {}).finally(() => setStatsReady(true));
+  }, []);
+  useEffect(() => {
+    if (statsReady) statsStorage.save(JSON.stringify(stats)).catch(() => setSaveError(true));
+  }, [stats, statsReady, statsStorage]);
   useEffect(() => {
     AsyncStorage.getItem(KEY)
       .then((raw) => setCourse(restoreCourse(raw)))
@@ -50,14 +64,16 @@ export function LearningProvider({ children }: { children: React.ReactNode }) {
   async function clearProgress() {
     try {
       await storage.clear();
+      await statsStorage.clear();
       setCourse(freshCourse());
+      setStats(freshStats());
       setSaveError(false);
     } catch (error) {
       setSaveError(true);
       throw error;
     }
   }
-  if (!ready)
+  if (!ready || !statsReady)
     return (
       <View
         style={{
@@ -73,7 +89,7 @@ export function LearningProvider({ children }: { children: React.ReactNode }) {
       </View>
     );
   return (
-    <Context.Provider value={{ state, setState, course, lesson, openDay, reviewWord, finishWeekReview, saveError, clearProgress }}>
+    <Context.Provider value={{ state, setState, course, lesson, openDay, reviewWord, finishWeekReview, stats, finishLesson, saveError, clearProgress }}>
       {children}
     </Context.Provider>
   );

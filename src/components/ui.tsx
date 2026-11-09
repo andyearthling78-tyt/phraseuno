@@ -179,7 +179,7 @@ export function Page({
           <View style={s.tabs}>
             {(
               [
-                { path: "/", icon: "◫", name: "Mein Lerntag" },
+                { path: "/", icon: "◫", name: "Lernen" },
                 { path: "/words", icon: "▤", name: "Meine Wörter" },
                 { path: "/progress", icon: "◴", name: "Fortschritt" },
               ] as const
