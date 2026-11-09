@@ -20,7 +20,8 @@
     "nativeIosReleaseSimulatorBuild": "PASS",
     "iosManualFlow": "PASS: migrated old day one, complete day two, day three, language switch, restart, iPad onboarding",
     "iosPrivacyManifestAudit": "14 bundled manifests: no tracking/collected-data declarations; no microphone/camera permission",
-    "binarySourceDifference": "Native QA binary predates two English legal-label translations and expanded future audio catalog. Final source bundles validated; no fixed recordings included. Final signed archive still required."
+    "binarySourceDifference": "Physical iPhone Release build now includes final source, including English legal labels and expanded future audio catalog. Fixed recordings remain absent; signed store archive still required.",
+    "nativeIosReleaseDeviceBuild": "PASS: Release build succeeded with 0 errors; installed 100% on iPhone 13 and launched via Apple device tools on 2026-11-09"
   },
   "submissionGates": [
     {
@@ -40,8 +41,8 @@
     },
     {
       "id": "iphoneInstallation",
-      "status": "OPEN",
-      "reason": "New seven-day build not installed on personal iPhone: device was unreachable. Previous version remains installed."
+      "status": "DONE",
+      "reason": "Current seven-day Release version built, installed successfully on connected iPhone 13 and launched on 2026-11-09. User-facing real-device flow/audio confirmation remains part of release QA."
     },
     {
       "id": "storeAccountsAndSigning",

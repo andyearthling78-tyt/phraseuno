@@ -18,7 +18,7 @@ Die Kontakt-Telefonnummer ist mit den gelieferten Angaben übernommen. Sie ist z
 
 ## Geprüft
 
-27 automatisierte Tests, TypeScript, ESLint und native Hermes-Bundles für beide Plattformen bestanden. Der iOS-Release-Simulator-Build war erfolgreich. Tag 2 wurde komplett durchgespielt; Tag 1 blieb nach Migration abgeschlossen. Neustart erhält beide Abschlüsse und die Auswahl von Tag 3. Auf dem iPad wurden Onboarding, Deutsch und Englisch geprüft. Der native QA-Build liegt zwei kleinen englischen Rechtsbereich-Übersetzungen und dem erweiterten zukünftigen Audio-Katalog hinter dem endgültigen Quellstand; vor Einreichung ist ein neues signiertes Archiv zu erstellen.
+27 automatisierte Tests, TypeScript, ESLint und native Hermes-Bundles für beide Plattformen bestanden. Der iOS-Release-Simulator-Build war erfolgreich. Tag 2 wurde komplett durchgespielt; Tag 1 blieb nach Migration abgeschlossen. Neustart erhält beide Abschlüsse und die Auswahl von Tag 3. Auf dem iPad wurden Onboarding, Deutsch und Englisch geprüft. Der aktuelle Quellstand wurde zusätzlich als nativer Release-Build für das iPhone 13 erfolgreich erstellt (null Fehler), vollständig installiert und am 9. November 2026 gestartet. Vor Store-Einreichung bleiben das signierte Distributionsarchiv und abschließende Gerätetests erforderlich.
 
 Die festen Aufnahmen sind noch nicht produziert/freigegeben. Die App nutzt weiterhin Gerätestimmen. Es wurde keine kostenpflichtige Audioerzeugung ausgelöst.
 
@@ -26,7 +26,7 @@ Die festen Aufnahmen sind noch nicht produziert/freigegeben. Die App nutzt weite
 
 1. Rechtsentwürfe abschließend fachlich prüfen lassen und Betreiberpflichten bestätigen. Eine Übersetzung alleine ist keine Freigabe für USA/UK.
 2. Datenschutz und Support unter eigenen öffentlichen HTTPS-Adressen bereitstellen; Hosting-Verarbeitung ergänzen und URLs in `metadata.json` eintragen.
-3. iPhone verbinden/entsperren und die neue Sieben-Tage-Version installieren. Android-Umgebung oder autorisierten Cloud-Build einrichten, APK/AAB erstellen und auf Android testen; echte Screenshots ergänzen.
+3. Die neue Sieben-Tage-Version ist auf dem iPhone installiert und gestartet. Android-Umgebung oder autorisierten Cloud-Build einrichten, APK/AAB erstellen und auf Android testen; echte Screenshots ergänzen.
 4. Produktionssignierung und Händlerstatus in Apple-/Google-Konten prüfen. Diese Vorbereitung enthält weder Zugangsdaten noch Zertifikate. Altersbewertung aus den Store-Fragebögen bestimmen; Zielgruppe sind Erwachsene und ältere Jugendliche (16+), keine Kinder-App.
 5. Finales signiertes Paket, Datenschutzerklärungen und Berechtigungen gemeinsam prüfen. TestFlight und Play-Test durchführen; sofern das persönliche Google-Konto unter die betreffende Regel fällt, zwölf Tester über vierzehn zusammenhängende Tage einplanen. Erst anschließend zur Veröffentlichung einreichen.
 
