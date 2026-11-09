@@ -154,7 +154,7 @@ export function DialogExercise({ lesson, ex, locked, onResult, noSpeech }: Props
         <Pill icon="💡" label="Hilfe" active={hint} onPress={() => setHint((v) => !v)} />
       </>} />}
     {!locked && typing && <>
-      {!noSpeech && <Speaker text={turn.es} auto={false} size={56} />}
+      {!noSpeech && <Speaker text={turn.es} size={56} />}
       <TextInput value={reply} onChangeText={setReply} accessibilityLabel={t("Deine Antwort auf Spanisch")} placeholder={t("Deine Antwort auf Spanisch …")}
         placeholderTextColor={C.muted} style={e.input} multiline maxLength={300} autoCorrect={false} autoCapitalize="sentences" />
       <View style={s.row}>

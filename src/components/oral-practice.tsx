@@ -47,7 +47,7 @@ const sp = StyleSheet.create({
   option: { width: 42, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
   on: { backgroundColor: C.yellow },
 });
-export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true, actions, expected = [], accept }: Props) {
+export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = false, actions, expected = [], accept }: Props) {
   const { selectedVoice, preferences, voicesLoading } = usePreferences();
   const [phase, setPhase] = useState<MicPhase>('idle');
   const [level, setLevel] = useState(0);

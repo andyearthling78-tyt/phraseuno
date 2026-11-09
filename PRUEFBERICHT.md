@@ -141,3 +141,7 @@ Nutzerentscheidung: Lernpfad, Tages-Serie und Punkte (keine Herzen); falsche Ant
 ## Korrektur: PhraseUNO-Optik, Duolingo-Aufbau · 9. November 2026
 
 Nutzerklarstellung: übernommen werden sollen Fortschritt und Lektionsaufbau, nicht die Optik. Zickzack-Pfad, Truhe, hüpfende Blase, 3D-Kacheln, gelbe Lautsprecher und farbige Ergebnisleisten zurückgebaut. Startseite wieder im PhraseUNO-Stil: grüner Kasten mit dem nächsten Tag und Zielsatz, darunter Woche 1 als ruhige Liste. Neu: Tage werden nacheinander freigeschaltet (🔒 bis der Vortag geschafft ist), Wochenabfrage danach. Übungsfolge, Wiederholung falscher Übungen, Serie und Punkte bleiben. 41 Tests, TypeScript, ESLint, JS-Bundle bestanden.
+
+## Kein automatisches Vorlesen · 9. November 2026
+
+Nutzerwunsch: Sätze und Fragen werden nur noch auf Knopfdruck (♪ Hören / ♪-Knopf) abgespielt, nirgends automatisch beim Öffnen einer Übung. Tempowechsel 🐇/🐌 spielt als bewusste Aktion weiterhin neu ab. 41 Tests, TypeScript, ESLint bestanden.

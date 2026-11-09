@@ -7,8 +7,8 @@ import { useSay } from "../../lib/use-say";
 import { Text } from "../localized-text";
 import { SpeedToggle } from "../oral-practice";
 import { C } from "../ui";
-// Big speaker button with hare/snail tempo; plays once on entry and again on tempo change.
-export function Speaker({ text, auto = true, size = 84 }: { text: string; auto?: boolean; size?: number }) {
+// Big speaker button with hare/snail tempo. Plays only when tapped (or when the tempo is switched).
+export function Speaker({ text, auto = false, size = 84 }: { text: string; auto?: boolean; size?: number }) {
   const { t } = useI18n();
   const say = useSay();
   const { voicesLoading, preferences } = usePreferences();
