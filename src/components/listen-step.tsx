@@ -6,7 +6,7 @@ import { learningSpeech } from "../lib/speech";
 import { recognitionGate } from "../lib/recognition-gate";
 import { Text } from "./localized-text";
 import { Button, s } from "./ui";
-import { Pill } from "./oral-practice";
+import { Pill, SpeedToggle } from "./oral-practice";
 
 // Step 1 of every phrase: listen only. The Spanish text stays hidden until the reading step.
 export function ListenStep({ prompt, onContinue }: { prompt: string; onContinue: () => void }) {
@@ -37,6 +37,12 @@ export function ListenStep({ prompt, onContinue }: { prompt: string; onContinue:
     return () => { mounted.current = false; halt(); sub.remove(); };
   }, [halt]);
   useFocusEffect(useCallback(() => () => { halt(); }, [halt]));
+  const speed = useRef(preferences.audioSpeed);
+  useEffect(() => {
+    if (speed.current === preferences.audioSpeed) return;
+    speed.current = preferences.audioSpeed;
+    void play();
+  }, [preferences.audioSpeed, play]);
   useEffect(() => {
     if (voicesLoading) return;
     const scheduled = setTimeout(() => { void play(); }, 150);
@@ -50,6 +56,6 @@ export function ListenStep({ prompt, onContinue }: { prompt: string; onContinue:
         : "Gut zugehört."}
     </Text>
     <Button onPress={() => { halt(); onContinue(); }} disabled={!heard && phase !== "error"}>🎙 Jetzt nachsprechen →</Button>
-    <View style={s.row}><Pill label="♪ Nochmal hören" onPress={() => { void play(); }} disabled={phase === "speaking"} /></View>
+    <View style={s.row}><SpeedToggle /><Pill label="♪ Nochmal hören" onPress={() => { void play(); }} disabled={phase === "speaking"} /></View>
   </View>;
 }

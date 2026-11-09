@@ -132,7 +132,7 @@ export function Page({
   const scroll = React.useRef<React.ElementRef<typeof ScrollView>>(null);
   return (
     <SafeAreaView style={s.page} edges={["top", "left", "right"]}>
-      <View style={s.header}>
+      {!lesson && <View style={s.header}>
         <View style={s.logo}>
           <View style={s.mark}>
             <Text style={s.markText}>P</Text>
@@ -163,7 +163,7 @@ export function Page({
             <Text style={{ color: C.green, fontSize: 23 }}>ⓘ</Text>
           </Pressable>
         </View>
-      </View>
+      </View>}
       <ScrollView
         ref={scroll}
         onContentSizeChange={() => {

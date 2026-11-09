@@ -286,14 +286,10 @@ export default function Learn() {
         )}
         {state.stage === "cards" && (
           <Card>
-            <Text style={s.h2}>Lerntag geschafft! ✨</Text>
-            <Text style={s.body}>Zum Abschluss deines Lerntags folgt die Vokabelabfrage. Du kannst sie auch später im Vokabel-Reiter machen. Am Ende der Woche fragen wir alle Wörter der Woche gemeinsam ab.</Text>
-            <Label>03 / WÖRTER · {state.known.length} VON 3 SICHER</Label>
-            <Text style={s.title}>Schon vertraut.</Text>
-            <Text style={s.subtitle}>
-              Erst erinnern, dann umdrehen. Du kennst das Wort aus deinem
-              Gespräch.
-            </Text>
+            <View style={[s.row, { justifyContent: "space-between" }]}>
+              <Text style={s.h2}>Vokabelabfrage</Text>
+              <Dots total={3} done={state.known.length} />
+            </View>
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={t(`Karte umdrehen: ${flipped ? w.de : w.es}`)}
@@ -382,9 +378,6 @@ export default function Learn() {
             >
               Noch einmal üben ↻
             </Button>
-            <Text style={[s.small, s.center]}>
-              Unsichere Wörter kommen noch einmal dran.
-            </Text>
             <Button secondary onPress={() => setState(v => ({ ...v, stage: "summary", completedAt: v.completedAt ?? new Date().toISOString() }))}>Vokabeln später üben →</Button>
           </Card>
         )}
@@ -452,9 +445,6 @@ export default function Learn() {
             <Button secondary onPress={() => router.replace("/")}>
               Zur Übersicht
             </Button>
-            <Text style={[s.small, s.center]}>
-              Sieben Lerntage. Schritt für Schritt.
-            </Text>
           </Card>
         )}
       </Page>

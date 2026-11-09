@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { Text } from '../components/localized-text';
 import { Button, Card, Label, Page, s, Speak } from '../components/ui';
 import { useLearning } from '../lib/store';
@@ -55,19 +55,17 @@ export default function Words() {
     </Page>;
   }
   return <Page>
-    <View><Label>DEINE WORTSAMMLUNG</Label><Text style={[s.title, { marginTop: 10 }]}>Deine Wörter wachsen mit dir.</Text><Text style={s.subtitle}>Freiwillig am Tag. Gemeinsam zum Wochenabschluss.</Text></View>
+    <Text style={s.title}>Meine Wörter</Text>
     <View style={s.row}>
       <View style={{flex:1}}><Button secondary={scope !== 'day'} onPress={() => { setScope('day'); setPractice(false); setCursor(0); }}>Dieser Lerntag</Button></View>
       <View style={{flex:1}}><Button secondary={scope !== 'week'} onPress={() => { setScope('week'); setPractice(false); setCursor(0); }}>Diese Woche</Button></View>
     </View>
     {scope === 'week' && <Card>
-      <Text style={s.h2}>Dein Wochenabschluss</Text>
-      <Text style={s.body}>{status.completedDays} / 7 <Text>Lerntage geschafft</Text></Text>
-      <Text style={s.body}>{status.vocabulary.length - status.remaining} / {status.vocabulary.length} <Text>gesammelte Wörter geübt</Text></Text>
-      <Text style={s.small}>{status.readyForNextWeek ? 'Woche 1 geschafft! Alle Wochenwörter sind abgefragt. Weitere Lernwochen folgen.' : status.reviewOpen ? 'Alle sieben Lerntage geschafft. Jetzt fehlt nur noch die Wochenabfrage aller Vokabeln.' : 'Die Wochenabfrage öffnet sich nach allen sieben Lerntagen. Erst danach wird die nächste Lernwoche freigegeben.'}</Text>
+      <Text style={s.body}>{status.vocabulary.length - status.remaining} / {status.vocabulary.length} <Text>Wörter sicher</Text> · {status.completedDays} / 7 <Text>Tage</Text></Text>
+      {!status.reviewOpen && <Text style={s.small}>Wochenabfrage nach Tag 7.</Text>}
       {status.reviewOpen && <Button accent onPress={startWeekReview}>{status.readyForNextWeek ? 'Wochenabfrage wiederholen ↻' : 'Wochenabfrage starten →'}</Button>}
     </Card>}
-    {!entries.length && <Card><Text style={s.body}>Nach deinem ersten erfolgreichen Lerntag sammeln sich hier automatisch die Vokabeln der Woche.</Text></Card>}
+    {!entries.length && <Card><Text style={s.body}>Nach deinem ersten Lerntag erscheinen hier deine Wörter.</Text></Card>}
     {!!entries.length && <Button onPress={() => { setPractice(value => !value); setFlipped(false); setCursor(0); }}>{practice ? 'Zur Wortliste' : 'Vokabeln üben →'}</Button>}
     {practice && current ? <Card>
       <Text style={s.small}>{pending.length} <Text>Wörter noch offen</Text></Text>
@@ -78,11 +76,10 @@ export default function Words() {
         <Button onPress={() => { if (canSave) reviewWord(current.word.es,true); setFlipped(false); setCursor(value => value + (canSave && pending.length ? 0 : 1)); }}>Gewusst ✓</Button>
         <Button secondary onPress={() => { if (canSave) reviewWord(current.word.es,false); setFlipped(false); setCursor(value => value+1); }}>Noch einmal üben ↻</Button>
       </> : <Button secondary onPress={() => setFlipped(true)}>Bedeutung aufdecken</Button>}
-      {!canSave && <Text style={s.small}>Du kannst schon üben. Für den Wochenabschluss zählt das Wort nach dem erfolgreichen Lerntag.</Text>}
+
       {pending.length === 0 && canSave && <Text style={s.body}>Alle Wörter in dieser Auswahl sind geübt. Du kannst sie jederzeit wiederholen.</Text>}
     </Card> : entries.map(entry => <Card key={entry.word.es}>
       <View style={s.row}><Text style={{fontSize:36}}>{entry.word.symbol}</Text><View style={{flex:1}}><Text style={s.h2}>{entry.word.es}</Text><Text style={s.subtitle}>{entry.word.de} · {entry.known ? '✓ gefestigt' : 'noch in Übung'}</Text></View><Speak text={entry.word.es}/></View><Text style={s.small}>{entry.word.example}</Text>
     </Card>)}
-    <Button secondary onPress={() => router.replace('/')}>Zum Lerntag →</Button>
   </Page>;
 }

@@ -22,3 +22,12 @@ test('Speech output and microphone share one play-and-record session; level is b
   assert.equal(micLevel(-2), 0); assert.equal(micLevel(4), 0.5); assert.equal(micLevel(20), 1); assert.equal(micLevel(NaN), 0);
   assert.match(recognitionError('interrupted'), /unterbrochen/);
 });
+test('Hare and snail switch between natural and clearly slower speech', async () => {
+  const { speechRate, createSpeechController } = await import('../src/lib/speech-controller.ts');
+  assert(speechRate('slow') < speechRate('natural') * 0.7);
+  const rates = [];
+  const controller = createSpeechController({ stop: async () => {}, prepare: async () => {}, speak: (_t, o) => rates.push(o.rate) });
+  await controller.speak({ text: 'Hola', voice: { identifier: 'x', language: 'es-ES' }, recording: { voice: 'female', speed: 'slow' }, onError: () => {} });
+  await controller.speak({ text: 'Hola', voice: { identifier: 'x', language: 'es-ES' }, recording: { voice: 'female', speed: 'natural' }, onError: () => {} });
+  assert.deepEqual(rates, [speechRate('slow'), speechRate('natural')]);
+});

@@ -7,6 +7,8 @@ export const learningAudioMode = {
   shouldRouteThroughEarpiece: false,
   interruptionMode: "mixWithOthers" as const,
 };
+// 🐇 natural vs. 🐌 slow learning speed for device voices.
+export function speechRate(speed: "natural" | "slow" | undefined) { return speed === "slow" ? 0.55 : 0.9; }
 export type LearningSpeechRequest = {
   text: string;
   recording?: { voice: "female" | "male"; speed: "natural" | "slow" };
@@ -41,7 +43,7 @@ export function createSpeechController(adapter: SpeechAdapter) {
           recording: request.recording,
           onDone: () => { if (token === generation) request.onDone?.(); },
           voice: request.voice.identifier, language: request.voice.language,
-          rate: 0.85, volume: 1, useApplicationAudioSession: true,
+          rate: speechRate(request.recording?.speed), volume: 1, useApplicationAudioSession: true,
           onError: (error) => { if (token === generation) request.onError(error); },
         });
       }).catch((error: unknown) => {

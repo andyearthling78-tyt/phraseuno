@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
+import { Redirect, router } from "expo-router";
 import { LearningMoment } from "../components/learning-moment";
 import { PlayfulDetails } from "../components/playful-details";
-import { localDay } from "../lib/motivation";
 import { Text } from "../components/localized-text";
-import { View } from "react-native";
+import { Button, C, Page, s } from "../components/ui";
+import { localDay } from "../lib/motivation";
 import { usePreferences } from "../lib/preferences";
-import { Redirect, router } from "expo-router";
-import { Button, Card, C, Label, Page, Progress, s } from "../components/ui";
 import { useLearning } from "../lib/store";
 import { lessons, weekStatus } from "../lib/course";
 import { percent } from "../lib/learning";
+const ICONS = ["☕", "🥖", "🍽️", "📍", "🍎", "🛏️", "💬"];
+// Calm home screen: one clear next step, a week strip, nothing to read through.
 export default function Home() {
   const { state, setState, saveError, lesson, course, openDay } = useLearning();
   const { preferences, update } = usePreferences();
@@ -19,8 +21,8 @@ export default function Home() {
     if (state.stage === "intro") setState((v) => ({ ...v, stage: "build" }));
     router.push("/learn");
   }
-  const p = percent(state);
   const week = weekStatus(course);
+  const steps: [string, boolean][] = [["Phrasen", state.build === 4], ["Dialog", state.chat === 4], ["Wörter", state.known.length === 3]];
   if (!preferences.onboarded) return <Redirect href="/onboarding" />;
   return (
     <Page key={lesson.id}>
@@ -28,145 +30,65 @@ export default function Home() {
         update({ lastMotivationDay: localDay() }).catch(() => {});
         openLesson();
       }} />
-      <View>
-        <Label>Tag {lesson.id} / <Text>{lesson.label}</Text></Label>
-        <Text style={[s.title, { marginTop: 10 }]}>
-          {lesson.title}
-        </Text>
-        <Text style={s.subtitle}>
-          Heute sprichst du ein bisschen mehr Spanisch.
-        </Text>
-      </View>
-      <View style={[s.hero, { padding: 22, gap: 12, minHeight: 0 }]}>
+      <View style={[s.hero, h.hero]}>
         <PlayfulDetails />
-        <Label>Alltagsspanisch · Lektion {lesson.id}</Label>
-        <Text style={[s.heroTitle, { fontSize: 32, lineHeight: 36 }]}>
-          {lesson.heroLead}{"\n"}
-          <Text style={{ color: C.yellow }}>{lesson.heroAccent}</Text>
-        </Text>
-
-        <View style={s.row}>
-          <View style={s.pill}>
-            <Text style={s.pillText}>◷ ca. 10 Min. · für Einsteiger</Text>
-          </View>
-          <Text style={{ fontSize: 42, marginLeft: "auto" }}>{["☕", "🥖", "🍽️", "📍", "🍎", "🛏️", "💬"][lesson.id - 1]}</Text>
+        <View style={[s.row, { justifyContent: "space-between" }]}>
+          <Text style={h.day}>Tag {lesson.id} · <Text>{lesson.label}</Text></Text>
+          <Text accessible={false} style={{ fontSize: 40 }}>{ICONS[lesson.id - 1]}</Text>
         </View>
-        <Button
-          accent
-          onPress={() => {
-            if (!state.completedAt && preferences.lastMotivationDay !== localDay()) setMomentVisible(true);
-            else openLesson();
-          }}
-        >
-          {state.completedAt
-            ? "Tagesabschluss ansehen"
-            : state.stage === "intro"
-              ? "Meinen Lerntag starten ↗"
-              : "Weiterlernen ↗"}
+        <Text translate={false} style={h.phrase}>„{lesson.phrases[3].phrase}“</Text>
+        <Text style={h.goal}>Das sagst du heute.</Text>
+        <View style={h.steps}>
+          {steps.map(([name, done]) => <View key={name} style={[h.step, done && h.stepDone]}>
+            <Text style={[h.stepText, done && { color: C.green }]}>{done ? "✓ " : ""}{name}</Text>
+          </View>)}
+        </View>
+        <Button accent onPress={() => {
+          if (!state.completedAt && preferences.lastMotivationDay !== localDay()) setMomentVisible(true);
+          else openLesson();
+        }}>
+          {state.completedAt ? "Tag wiederholen" : state.stage === "intro" ? "Los geht’s ↗" : ["Weiterlernen", ` · ${percent(state)} %`]}
         </Button>
       </View>
-      <Card>
-        <Text style={s.small}>Dein Tagesziel: <Text translate={false}>{preferences.goal}</Text> Min. täglich</Text>
-        <View style={[s.row, { justifyContent: "space-between" }]}>
-          <Text style={s.h2}>Dein Plan für heute</Text>
-          <Text style={s.small}>{p}%</Text>
-        </View>
-        <Progress value={p} />
-        {[
-          [
-            "01",
-            "Phrasen aufbauen",
-            "Ein Satz, vier kleine Schritte.",
-            "4 Min.",
-            state.build === 4,
-          ],
-          [
-            "02",
-            "Mit Lucía sprechen",
-            "Dein Gespräch für heute.",
-            "4 Min.",
-            state.chat === 4,
-          ],
-          [
-            "03",
-            "Wörter festigen",
-            "Drei Wörter, die bleiben.",
-            "2 Min.",
-            state.known.length === 3,
-          ],
-        ].map(([n, title, sub, time, done]) => (
-          <View key={String(n)} style={[s.row, { paddingVertical: 4 }]}>
-            <View
-              style={{
-                width: 40,
-                height: 42,
-                borderRadius: 12,
-                backgroundColor: done ? C.pale : C.yellow,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text style={{ color: C.green, fontWeight: "700" }}>
-                {done ? "✓" : n}
-              </Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={{ color: C.green, fontWeight: "600", fontSize: 14 }}>
-                {title}
-              </Text>
-              <Text style={s.small}>{sub}</Text>
-            </View>
-            <Text style={s.small}>{time}</Text>
-          </View>
-        ))}
 
-        <Text style={[s.small, s.center]}>
-          {saveError
-            ? "Speichern gerade nicht verfügbar."
-            : "✓ Dein Fortschritt bleibt auf diesem Gerät."}
-        </Text>
-      </Card>
-
-      <Card>
-        <Text style={s.h2}>Deine erste Woche</Text>
-        <Text style={s.small}>Wähle einen Lerntag. Jeder Tag speichert deinen Fortschritt einzeln.</Text>
-        {lessons.map((day) => <Button key={day.id} secondary={day.id !== lesson.id} onPress={() => { openDay(day.id); }}>
-          <Text>Tag </Text>{day.id}<Text> · </Text><Text>{day.label}</Text>{course.days[String(day.id)]?.completedAt ? " ✓" : ""}
-        </Button>)}
-      </Card>
-      <Card>
-        <Text style={s.h2}>Dein Wochenabschluss</Text>
-        <Text style={s.body}>{week.completedDays} / 7 <Text>Lerntage geschafft</Text></Text>
-        <Text style={s.small}>{week.readyForNextWeek ? "Woche 1 geschafft! Alle Wochenwörter sind abgefragt. Weitere Lernwochen folgen." : week.reviewOpen ? "Alle sieben Lerntage geschafft. Jetzt fehlt nur noch die Wochenabfrage aller Vokabeln." : "Die Wochenabfrage öffnet sich nach allen sieben Lerntagen. Erst danach wird die nächste Lernwoche freigegeben."}</Text>
-        {week.reviewOpen && !week.readyForNextWeek
-          ? <Button accent onPress={() => router.push({ pathname: "/words", params: { review: "week" } })}>Wochenabfrage starten →</Button>
-          : <Button secondary onPress={() => router.push("/words")}>Wochenvokabeln üben →</Button>}
-      </Card>
-      <Card>
-        <Text style={s.h2}>Mehr sprechen. Weniger pauken.</Text>
-        <View style={[s.row, { gap: 4 }]}>
-          <View
-            style={{
-              flex: 8,
-              height: 8,
-              borderRadius: 8,
-              backgroundColor: C.green,
-            }}
-          />
-          <View
-            style={{
-              flex: 2,
-              height: 8,
-              borderRadius: 8,
-              backgroundColor: C.yellow,
-            }}
-          />
-        </View>
+      <View style={{ gap: 10 }}>
         <View style={[s.row, { justifyContent: "space-between" }]}>
-          <Text style={s.small}>80% Phrasen & Dialog</Text>
-          <Text style={s.small}>20% Wörter</Text>
+          <Text style={s.h2}>Woche 1</Text>
+          <Text style={s.small}>{week.completedDays} / 7</Text>
         </View>
-      </Card>
+        <View style={h.week}>
+          {lessons.map((day) => {
+            const done = !!course.days[String(day.id)]?.completedAt;
+            const selected = day.id === lesson.id;
+            return <Pressable key={day.id} accessibilityRole="button" accessibilityState={{ selected }}
+              accessibilityLabel={`Tag ${day.id}: ${day.label}${done ? " ✓" : ""}`}
+              onPress={() => openDay(day.id)}
+              style={[h.dayDot, done && h.dayDone, selected && h.daySelected]}>
+              <Text accessible={false} style={{ fontSize: 18 }}>{done ? "✓" : ICONS[day.id - 1]}</Text>
+              <Text style={[h.dayNum, selected && { color: C.green }]}>{day.id}</Text>
+            </Pressable>;
+          })}
+        </View>
+      </View>
+
+      {week.reviewOpen && !week.readyForNextWeek && <Button accent onPress={() => router.push({ pathname: "/words", params: { review: "week" } })}>Wochenabfrage starten →</Button>}
+      {week.readyForNextWeek && <Text style={[s.body, s.center]}>✨ Woche 1 geschafft!</Text>}
+      {saveError && <Text style={[s.small, s.center]}>Speichern gerade nicht verfügbar.</Text>}
     </Page>
   );
 }
+const h = StyleSheet.create({
+  hero: { padding: 22, gap: 12, minHeight: 0 },
+  day: { color: "#d2ddc5", fontSize: 13, fontWeight: "600", letterSpacing: 0.3 },
+  phrase: { color: C.cream, fontSize: 28, lineHeight: 34, fontWeight: "700", letterSpacing: -0.5 },
+  goal: { color: C.yellow, fontSize: 13, fontWeight: "600" },
+  steps: { flexDirection: "row", gap: 6, marginVertical: 4 },
+  step: { flex: 1, borderRadius: 999, borderWidth: 1, borderColor: "#41604f", paddingVertical: 7, alignItems: "center" },
+  stepDone: { backgroundColor: "#dfeccf", borderColor: "#dfeccf" },
+  stepText: { fontSize: 12, color: "#d2ddc5", fontWeight: "600" },
+  week: { flexDirection: "row", justifyContent: "space-between", gap: 4 },
+  dayDot: { flex: 1, aspectRatio: 0.78, borderRadius: 14, backgroundColor: C.paper, borderWidth: 1, borderColor: C.line, alignItems: "center", justifyContent: "center", gap: 2 },
+  dayDone: { backgroundColor: C.pale },
+  daySelected: { borderColor: C.green, borderWidth: 2, backgroundColor: C.yellow },
+  dayNum: { fontSize: 11, color: C.muted, fontWeight: "700" },
+});

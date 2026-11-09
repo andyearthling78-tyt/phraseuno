@@ -113,3 +113,7 @@ iPhone-Feedback zu Build 4: „Antwort sprechen“ reagierte oft nicht, Lucías 
 Ursachen/Behebung: Abbrechen einer gar nicht laufenden Erkennung setzte die geteilte Audiositzung zurück (jetzt nur eigene Erkennung abbrechen); Kategorie-Wechsel zwischen Sprachausgabe (playback) und Mikrofon (playAndRecord/measurement) – jetzt eine gemeinsame playAndRecord-Sitzung; Sprachausgabe wartet app-weit auf das Ende der Erkennung plus 350 ms; Erkennung kontinuierlich mit eigener Pausenerkennung (1,7 s); unbeabsichtigte Abbrüche zeigen einen Hinweis statt nichts. Großes Mikrofon: grün = bereit, rot pulsierend mit Pegel = jetzt sprechen. Dialog zeigt nur noch aktuelle Frage und letzte Rückmeldung; Nebenaktionen als kleine Knöpfe; Datenschutz-Fußnoten aus den Übungen entfernt (bleiben unter Info/Datenschutz). Hinweis auf kostenlose erweiterte iOS-Stimmen in den Stimmeinstellungen.
 
 35 Tests, TypeScript, ESLint bestanden. Nativer Build und Gerätetest stehen aus.
+
+## Ruhigeres Layout und 🐇/🐌-Tempo · 9. November 2026
+
+Startseite: ein grüner Tageskasten mit Zielsatz, drei Schritt-Chips und Startknopf; Woche als Leiste mit sieben Tagen statt sieben Knöpfen; Erklärtexte und 80/20-Karte entfernt. Während der Lektion kein App-Kopf mehr (nur Zurück + Fortschritt). Vokabelseite und Tagesabschluss gekürzt. Tempo-Schalter 🐇 normal / 🐌 langsam direkt in jeder Hör-/Sprechübung (Sprechrate 0,9 bzw. 0,55); Umschalten spielt den Satz sofort neu ab und wird gespeichert. 36 Tests, TypeScript, ESLint bestanden; JS-Bundle (1283 Module) erzeugt. Gerätetest ausstehend.

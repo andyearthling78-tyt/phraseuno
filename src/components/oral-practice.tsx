@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useFocusEffect } from 'expo-router';
-import { AppState, Linking, Pressable, View } from 'react-native';
+import { AppState, Linking, Pressable, StyleSheet, View } from 'react-native';
 import { ExpoSpeechRecognitionModule as Recognition, useSpeechRecognitionEvent } from 'expo-speech-recognition';
 import { usePreferences } from '../lib/preferences';
 import { learningSpeech } from '../lib/speech';
@@ -21,6 +21,27 @@ export function Pill({ label, onPress, disabled, active }: { label: string; onPr
   </Pressable>;
 }
 const START_TIMEOUT = 4000;
+// Hare = natural tempo, snail = slow. Changing it replays the sentence right away.
+export function SpeedToggle() {
+  const { preferences, update } = usePreferences();
+  const slow = preferences.audioSpeed === 'slow';
+  const set = (audioSpeed: 'natural' | 'slow') => { update({ audioSpeed }).catch(() => {}); };
+  return <View accessibilityRole="radiogroup" style={sp.wrap}>
+    {([['natural', '🐇', 'Normales Tempo'], ['slow', '🐌', 'Langsames Tempo']] as const).map(([value, icon, label]) => {
+      const on = (value === 'slow') === slow;
+      return <Pressable key={value} accessibilityRole="radio" accessibilityState={{ checked: on }} accessibilityLabel={label}
+        onPress={() => { if (!on) set(value); }}
+        style={[sp.option, on && sp.on]}>
+        <Text accessible={false} style={{ fontSize: 20 }}>{icon}</Text>
+      </Pressable>;
+    })}
+  </View>;
+}
+const sp = StyleSheet.create({
+  wrap: { flexDirection: 'row', backgroundColor: C.pale, borderRadius: 22, padding: 3 },
+  option: { width: 44, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
+  on: { backgroundColor: C.yellow },
+});
 export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true, actions }: Props) {
   const { selectedVoice, preferences, voicesLoading } = usePreferences();
   const [phase, setPhase] = useState<MicPhase>('idle');
@@ -109,6 +130,13 @@ export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true
       } },
     });
   }, [cancel, prompt, selectedVoice, preferences.voiceGender, preferences.audioSpeed]);
+  // Replay right away in the new tempo when 🐇/🐌 is switched.
+  const speed = useRef(preferences.audioSpeed);
+  useEffect(() => {
+    if (speed.current === preferences.audioSpeed) return;
+    speed.current = preferences.audioSpeed;
+    if (!active.current) void listen();
+  }, [preferences.audioSpeed, listen]);
   useEffect(() => {
     if (voicesLoading || !autoPlay) return;
     const scheduled = setTimeout(() => { void listen(); }, 150);
@@ -150,7 +178,8 @@ export function OralPractice({ prompt, onAnswer, repeat = false, autoPlay = true
     {!!error && <Text accessibilityLiveRegion="polite" style={[s.body, s.center]}>{error}</Text>}
     {blocked && <Button secondary onPress={() => { void Linking.openSettings(); }}>Geräteeinstellungen öffnen</Button>}
     <View style={s.row}>
-      <Pill label="♪ Nochmal hören" onPress={() => { void listen(); }} disabled={phase === 'starting' || phase === 'listening'} />
+      <SpeedToggle />
+      <Pill label="♪ Hören" onPress={() => { void listen(); }} disabled={phase === 'starting' || phase === 'listening'} />
       {actions}
     </View>
   </View>;
