@@ -56,3 +56,8 @@ test("XP and streak: daily continuation, reset after a gap, restore validation",
   assert.deepEqual(restoreStats(JSON.stringify(s)), s);
   assert.deepEqual(restoreStats("kaputt"), freshStats());
 });
+test("Days unlock one after another", async () => {
+  const { dayUnlocked } = await import("../src/lib/unlock.ts");
+  const done = new Set([1, 2]);
+  assert.deepEqual([1, 2, 3, 4, 5].map((id) => dayUnlocked(id, (d) => done.has(d))), [true, true, true, false, false]);
+});

@@ -717,5 +717,10 @@
   "START": "START",
   "Wochenabfrage": "Weekly check",
   "Lernen": "Learn",
-  "Lektion verlassen": "Leave lesson"
+  "Lektion verlassen": "Leave lesson",
+  "Woche 1 · Abschluss": "Week 1 · Finale",
+  "Alle sieben Lerntage und die Wochenabfrage geschafft.": "All seven learning days and the weekly check done.",
+  "Alle Wörter der Woche – dann ist Woche 1 geschafft.": "All of the week’s words – then week 1 is done.",
+  "Wochenabfrage starten ↗": "Start weekly check ↗",
+  "Jetzt": "Now"
 }

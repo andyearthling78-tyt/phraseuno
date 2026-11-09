@@ -137,3 +137,7 @@ Nutzerentscheidung: Lernpfad, Tages-Serie und Punkte (keine Herzen); falsche Ant
 - Fortschritt bleibt im bestehenden Speicherformat (LearningState v1): Bausteine/Dialog/Wörter werden nach jeder bestandenen Übung gespeichert; unterbrochene Tage setzen an der richtigen Stelle fort. Serie/Punkte unter eigenem Schlüssel `phraseuno.stats.v1`, wird mit „Lernstand löschen“ entfernt.
 
 40 Tests, TypeScript, ESLint bestanden; JS-Bundle exportiert. Nativer Build/Gerätetest ausstehend.
+
+## Korrektur: PhraseUNO-Optik, Duolingo-Aufbau · 9. November 2026
+
+Nutzerklarstellung: übernommen werden sollen Fortschritt und Lektionsaufbau, nicht die Optik. Zickzack-Pfad, Truhe, hüpfende Blase, 3D-Kacheln, gelbe Lautsprecher und farbige Ergebnisleisten zurückgebaut. Startseite wieder im PhraseUNO-Stil: grüner Kasten mit dem nächsten Tag und Zielsatz, darunter Woche 1 als ruhige Liste. Neu: Tage werden nacheinander freigeschaltet (🔒 bis der Vortag geschafft ist), Wochenabfrage danach. Übungsfolge, Wiederholung falscher Übungen, Serie und Punkte bleiben. 41 Tests, TypeScript, ESLint, JS-Bundle bestanden.

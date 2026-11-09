@@ -1,41 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { Animated, Easing, Pressable, StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
 import { Redirect, router } from "expo-router";
 import { LearningMoment } from "../components/learning-moment";
+import { PlayfulDetails } from "../components/playful-details";
 import { Text } from "../components/localized-text";
-import { C, Page, s } from "../components/ui";
+import { Button, C, Card, Page, s } from "../components/ui";
 import { localDay } from "../lib/motivation";
 import { usePreferences } from "../lib/preferences";
 import { useLearning } from "../lib/store";
 import { lessons, weekStatus } from "../lib/course";
 import { percent } from "../lib/learning";
 import { currentStreak, weekXp } from "../lib/stats";
+import { dayUnlocked } from "../lib/unlock";
 const ICONS = ["☕", "🥖", "🍽️", "📍", "🍎", "🛏️", "💬"];
-const OFFSETS = [0, 52, 78, 52, 0, -52, -78];
-// Learning path: the week as a winding path of days, the next one clearly marked.
+// PhraseUNO look, Duolingo-like progression: one next day, the rest unlocks step by step.
 export default function Home() {
   const { course, stats, openDay } = useLearning();
   const { preferences, update } = usePreferences();
   const [moment, setMoment] = useState<number | null>(null);
-  const [bounce] = useState(() => new Animated.Value(0));
-  useEffect(() => {
-    const loop = Animated.loop(Animated.sequence([
-      Animated.timing(bounce, { toValue: 1, duration: 700, easing: Easing.inOut(Easing.quad), useNativeDriver: true }),
-      Animated.timing(bounce, { toValue: 0, duration: 700, easing: Easing.inOut(Easing.quad), useNativeDriver: true }),
-    ]));
-    loop.start();
-    return () => loop.stop();
-  }, [bounce]);
   if (!preferences.onboarded) return <Redirect href="/onboarding" />;
   const today = localDay();
   const week = weekStatus(course);
-  const nextDay = lessons.find((l) => !course.days[String(l.id)]?.completedAt)?.id ?? null;
+  const completed = (id: number) => !!course.days[String(id)]?.completedAt;
+  const nextLesson = lessons.find((l) => !completed(l.id)) ?? lessons[lessons.length - 1];
+  const nextState = course.days[String(nextLesson.id)];
+  const started = !!nextState && nextState.stage !== "intro" && !completed(nextLesson.id);
   function open(id: number) {
     setMoment(null);
     openDay(id);
     router.push("/learn");
   }
-  function tap(id: number) {
+  function start(id: number) {
     if (preferences.lastMotivationDay !== today) setMoment(id);
     else open(id);
   }
@@ -45,60 +40,71 @@ export default function Home() {
         update({ lastMotivationDay: today }).catch(() => {});
         if (moment !== null) open(moment);
       }} />
-      <View style={p.stats}>
-        <View style={p.statPill}><Text style={[p.statText, { color: "#c86a1f" }]}>🔥 {currentStreak(stats, today)}</Text><Text style={s.small}>Tage</Text></View>
-        <View style={p.statPill}><Text style={[p.statText, { color: "#b8860b" }]}>⚡ {weekXp(stats, today)}</Text><Text style={s.small}>Punkte diese Woche</Text></View>
+      <View style={[s.row, { justifyContent: "space-between" }]}>
+        <Text style={s.small}>🔥 {currentStreak(stats, today)} <Text>Tage am Stück</Text></Text>
+        <Text style={s.small}>✦ {weekXp(stats, today)} <Text>Punkte diese Woche</Text></Text>
       </View>
-      <View style={p.banner}>
-        <Text style={p.bannerLabel}>ABSCHNITT 1 · WOCHE 1</Text>
-        <Text style={p.bannerTitle}>Erste Sätze für den Alltag</Text>
-        <Text style={p.bannerSub}>{week.completedDays} / 7 <Text>Lerntage</Text></Text>
-      </View>
-      <View style={p.path}>
-        {lessons.map((day, i) => {
-          const state = course.days[String(day.id)];
-          const doneDay = !!state?.completedAt;
-          const current = day.id === nextDay;
-          const started = !!state && state.stage !== "intro" && !doneDay;
-          return <View key={day.id} style={[p.nodeWrap, { transform: [{ translateX: OFFSETS[i] }] }]}>
-            {current && <Animated.View style={[p.bubble, { transform: [{ translateY: bounce.interpolate({ inputRange: [0, 1], outputRange: [0, -6] }) }] }]}>
-              <Text style={p.bubbleText}>{started ? ["WEITER", ` · ${percent(state)} %`] : "START"}</Text>
-            </Animated.View>}
-            <Pressable accessibilityRole="button" accessibilityLabel={`Tag ${day.id}: ${day.label}${doneDay ? " ✓" : ""}`}
-              onPress={() => tap(day.id)}
-              style={({ pressed }) => [p.node, doneDay && p.nodeDone, current && p.nodeCurrent, { transform: [{ translateY: pressed ? 3 : 0 }] }]}>
-              <Text accessible={false} style={{ fontSize: current ? 34 : 28 }}>{doneDay ? "✓" : ICONS[i]}</Text>
-            </Pressable>
-            <Text style={[p.nodeLabel, current && { color: C.green, fontWeight: "800" }]}>{day.label}</Text>
-          </View>;
-        })}
-        <View style={p.nodeWrap}>
-          <Pressable accessibilityRole="button" accessibilityState={{ disabled: !week.reviewOpen }} disabled={!week.reviewOpen}
-            onPress={() => router.push({ pathname: "/words", params: { review: "week" } })}
-            style={[p.node, p.chest, week.readyForNextWeek && p.nodeDone, !week.reviewOpen && { opacity: 0.45 }]}>
-            <Text accessible={false} style={{ fontSize: 30 }}>{week.readyForNextWeek ? "🏆" : week.reviewOpen ? "🎁" : "🔒"}</Text>
-          </Pressable>
-          <Text style={p.nodeLabel}>Wochenabfrage</Text>
+      {week.readyForNextWeek ? <View style={[s.hero, h.hero]}>
+        <PlayfulDetails />
+        <Text style={h.day}>Woche 1</Text>
+        <Text style={h.phrase}>¡Enhorabuena! ✨</Text>
+        <Text style={h.goal}>Alle sieben Lerntage und die Wochenabfrage geschafft.</Text>
+      </View> : week.reviewOpen ? <View style={[s.hero, h.hero]}>
+        <PlayfulDetails />
+        <Text style={h.day}>Woche 1 · Abschluss</Text>
+        <Text style={h.phrase}>Wochenabfrage</Text>
+        <Text style={h.goal}>Alle Wörter der Woche – dann ist Woche 1 geschafft.</Text>
+        <Button accent onPress={() => router.push({ pathname: "/words", params: { review: "week" } })}>Wochenabfrage starten ↗</Button>
+      </View> : <View style={[s.hero, h.hero]}>
+        <PlayfulDetails />
+        <View style={[s.row, { justifyContent: "space-between" }]}>
+          <Text style={h.day}>Tag {nextLesson.id} · <Text>{nextLesson.label}</Text></Text>
+          <Text accessible={false} style={{ fontSize: 38 }}>{ICONS[nextLesson.id - 1]}</Text>
         </View>
-      </View>
+        <Text translate={false} style={h.phrase}>„{nextLesson.phrases[3].phrase}“</Text>
+        <Text style={h.goal}>Das sagst du heute.</Text>
+        <Button accent onPress={() => start(nextLesson.id)}>
+          {started ? ["Weiterlernen", ` · ${percent(nextState)} %`] : "Los geht’s ↗"}
+        </Button>
+      </View>}
+
+      <Card>
+        <View style={[s.row, { justifyContent: "space-between" }]}>
+          <Text style={s.h2}>Woche 1</Text>
+          <Text style={s.small}>{week.completedDays} / 7</Text>
+        </View>
+        {lessons.map((day, i) => {
+          const doneDay = completed(day.id);
+          const open_ = dayUnlocked(day.id, completed);
+          const current = day.id === nextLesson.id && !doneDay;
+          return <Pressable key={day.id} disabled={!open_} accessibilityRole="button" accessibilityState={{ disabled: !open_ }}
+            onPress={() => (current ? start(day.id) : open(day.id))}
+            style={({ pressed }) => [h.dayRow, current && h.dayCurrent, { opacity: !open_ ? 0.45 : pressed ? 0.7 : 1 }]}>
+            <View style={[h.dayIcon, doneDay && { backgroundColor: C.pale }, current && { backgroundColor: C.yellow }]}>
+              <Text accessible={false} style={{ fontSize: 20 }}>{doneDay ? "✓" : open_ ? ICONS[i] : "🔒"}</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={[s.body, { fontWeight: current ? "700" : "500", color: C.green }]}>Tag {day.id} · <Text>{day.label}</Text></Text>
+            </View>
+            <Text style={s.small}>{doneDay ? "✓" : current ? "Jetzt" : ""}</Text>
+          </Pressable>;
+        })}
+        <Pressable disabled={!week.reviewOpen} accessibilityRole="button" accessibilityState={{ disabled: !week.reviewOpen }}
+          onPress={() => router.push({ pathname: "/words", params: { review: "week" } })}
+          style={[h.dayRow, !week.reviewOpen && { opacity: 0.45 }]}>
+          <View style={h.dayIcon}><Text accessible={false} style={{ fontSize: 20 }}>{week.readyForNextWeek ? "✓" : week.reviewOpen ? "✦" : "🔒"}</Text></View>
+          <Text style={[s.body, { flex: 1, color: C.green }]}>Wochenabfrage</Text>
+        </Pressable>
+      </Card>
     </Page>
   );
 }
-const p = StyleSheet.create({
-  stats: { flexDirection: "row", gap: 10 },
-  statPill: { flex: 1, flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: C.paper, borderWidth: 1, borderColor: C.line, borderRadius: 14, paddingVertical: 10, paddingHorizontal: 14 },
-  statText: { fontSize: 18, fontWeight: "800" },
-  banner: { backgroundColor: C.green, borderRadius: 20, padding: 18, gap: 4 },
-  bannerLabel: { color: C.yellow, fontSize: 11, fontWeight: "800", letterSpacing: 1 },
-  bannerTitle: { color: C.cream, fontSize: 21, fontWeight: "800" },
-  bannerSub: { color: "#d2ddc5", fontSize: 13 },
-  path: { alignItems: "center", gap: 18, paddingVertical: 10 },
-  nodeWrap: { alignItems: "center", gap: 6 },
-  node: { width: 78, height: 72, borderRadius: 39, backgroundColor: C.paper, borderWidth: 2, borderColor: C.line, borderBottomWidth: 7, alignItems: "center", justifyContent: "center" },
-  nodeDone: { backgroundColor: "#dcebc8", borderColor: "#9fbf80" },
-  nodeCurrent: { width: 92, height: 84, borderRadius: 46, backgroundColor: C.yellow, borderColor: "#c9a94a" },
-  chest: { borderRadius: 20 },
-  nodeLabel: { fontSize: 12, color: C.muted, fontWeight: "600" },
-  bubble: { backgroundColor: C.green, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 6 },
-  bubbleText: { color: C.cream, fontSize: 12, fontWeight: "800", letterSpacing: 0.6 },
+const h = StyleSheet.create({
+  hero: { padding: 22, gap: 12, minHeight: 0 },
+  day: { color: "#d2ddc5", fontSize: 13, fontWeight: "600", letterSpacing: 0.3 },
+  phrase: { color: C.cream, fontSize: 28, lineHeight: 34, fontWeight: "700", letterSpacing: -0.5 },
+  goal: { color: C.yellow, fontSize: 13, fontWeight: "600" },
+  dayRow: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 8, paddingHorizontal: 8, borderRadius: 14 },
+  dayCurrent: { backgroundColor: C.pale },
+  dayIcon: { width: 42, height: 42, borderRadius: 12, backgroundColor: C.paper, borderWidth: 1, borderColor: C.line, alignItems: "center", justifyContent: "center" },
 });

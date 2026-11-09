@@ -30,13 +30,13 @@ export function Speaker({ text, auto = true, size = 84 }: { text: string; auto?:
   return <View style={sp.row}>
     <Pressable accessibilityRole="button" accessibilityLabel={t("Anhören")} onPress={play}
       style={({ pressed }) => [sp.button, { width: size, height: size, borderRadius: size / 2, opacity: pressed ? 0.75 : 1 }, playing && sp.playing]}>
-      <Text accessible={false} style={{ fontSize: size * 0.42 }}>🔊</Text>
+      <Text accessible={false} style={{ fontSize: size * 0.4, color: C.cream }}>♪</Text>
     </Pressable>
     <SpeedToggle />
   </View>;
 }
 const sp = StyleSheet.create({
   row: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 14 },
-  button: { backgroundColor: C.yellow, alignItems: "center", justifyContent: "center", borderBottomWidth: 4, borderColor: "#c9a94a" },
-  playing: { backgroundColor: "#f5dd8f" },
+  button: { backgroundColor: C.green, alignItems: "center", justifyContent: "center" },
+  playing: { backgroundColor: "#2c5a49" },
 });
