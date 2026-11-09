@@ -1,0 +1,825 @@
+[
+  {
+    "id": 2,
+    "label": "In der Bäckerei",
+    "title": "Etwas Leckeres für unterwegs.",
+    "heroLead": "Ein Brot.",
+    "heroAccent": "Deine Bestellung.",
+    "context": "Mit Lucía in der Bäckerei",
+    "summary": "Du hast Brot mit Käse bestellt und nach einer Tüte gefragt.",
+    "phrases": [
+      {
+        "phrase": "Quiero un pan",
+        "de": "Ich möchte ein Brot.",
+        "add": "Quiero un pan",
+        "tokens": [
+          "pan",
+          "un",
+          "Quiero"
+        ],
+        "tip": "Quiero kennst du schon. Pan bedeutet Brot."
+      },
+      {
+        "phrase": "Quiero un pan con queso",
+        "de": "Ich möchte ein Brot mit Käse.",
+        "add": "con queso",
+        "tokens": [
+          "queso",
+          "con"
+        ],
+        "tip": "Con heißt mit. Queso ist Käse."
+      },
+      {
+        "phrase": "Quiero un pan con queso, por favor",
+        "de": "Ich möchte ein Brot mit Käse, bitte.",
+        "add": "por favor",
+        "tokens": [
+          "favor",
+          "por"
+        ],
+        "tip": "Por favor macht deine Bestellung freundlich."
+      },
+      {
+        "phrase": "Quiero un pan con queso, por favor, para llevar",
+        "de": "Ich möchte ein Brot mit Käse, bitte, zum Mitnehmen.",
+        "add": "para llevar",
+        "tokens": [
+          "llevar",
+          "para"
+        ],
+        "tip": "Para llevar kannst du auch in der Bäckerei verwenden."
+      }
+    ],
+    "words": [
+      {
+        "es": "el pan",
+        "de": "das Brot",
+        "symbol": "🥖",
+        "note": "Pan ist männlich: el pan.",
+        "example": "Quiero un pan."
+      },
+      {
+        "es": "el queso",
+        "de": "der Käse",
+        "symbol": "🧀",
+        "note": "Con queso heißt mit Käse.",
+        "example": "Un pan con queso."
+      },
+      {
+        "es": "la bolsa",
+        "de": "die Tüte",
+        "symbol": "🛍️",
+        "note": "Eine Tüte: una bolsa.",
+        "example": "Una bolsa, por favor."
+      }
+    ],
+    "turns": [
+      {
+        "es": "¡Hola! ¿Qué quieres?",
+        "de": "Hallo! Was möchtest du?",
+        "hint": "Quiero un pan.",
+        "need": [
+          "quiero",
+          "pan"
+        ],
+        "reject": [
+          "no quiero",
+          "sin"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Bestelle mit quiero und pan."
+      },
+      {
+        "es": "¿Con queso?",
+        "de": "Mit Käse?",
+        "hint": "Con queso, por favor.",
+        "need": [
+          "con queso"
+        ],
+        "reject": [
+          "no quiero",
+          "sin"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Antworte mit con queso."
+      },
+      {
+        "es": "¿Necesitas una bolsa?",
+        "de": "Brauchst du eine Tüte?",
+        "hint": "Sí, una bolsa, por favor.",
+        "need": [
+          "bolsa"
+        ],
+        "reject": [
+          "no quiero",
+          "sin"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Bitte um una bolsa."
+      },
+      {
+        "es": "Repite tu pedido completo, por favor.",
+        "de": "Wiederhole bitte deine ganze Bestellung.",
+        "hint": "Quiero un pan con queso, por favor, para llevar.",
+        "need": [
+          "quiero",
+          "pan",
+          "con queso",
+          "por favor",
+          "para llevar"
+        ],
+        "reject": [
+          "no quiero",
+          "sin"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Verbinde Brot, Käse, bitte und zum Mitnehmen."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "label": "Im Restaurant",
+    "title": "Ein Platz für zwei.",
+    "heroLead": "Ein Tisch.",
+    "heroAccent": "Zeit zum Genießen.",
+    "context": "Mit Lucía im Restaurant",
+    "summary": "Du hast um einen Tisch für zwei auf der Terrasse gebeten.",
+    "phrases": [
+      {
+        "phrase": "Quiero una mesa",
+        "de": "Ich möchte einen Tisch.",
+        "add": "Quiero una mesa",
+        "tokens": [
+          "mesa",
+          "una",
+          "Quiero"
+        ],
+        "tip": "Mesa ist weiblich: una mesa."
+      },
+      {
+        "phrase": "Quiero una mesa para dos",
+        "de": "Ich möchte einen Tisch für zwei.",
+        "add": "para dos",
+        "tokens": [
+          "dos",
+          "para"
+        ],
+        "tip": "Para dos heißt für zwei Personen."
+      },
+      {
+        "phrase": "Quiero una mesa para dos, por favor",
+        "de": "Ich möchte einen Tisch für zwei, bitte.",
+        "add": "por favor",
+        "tokens": [
+          "favor",
+          "por"
+        ],
+        "tip": "Die freundliche Wendung kennst du bereits."
+      },
+      {
+        "phrase": "Quiero una mesa para dos, por favor, en la terraza",
+        "de": "Ich möchte einen Tisch für zwei, bitte, auf der Terrasse.",
+        "add": "en la terraza",
+        "tokens": [
+          "terraza",
+          "la",
+          "en"
+        ],
+        "tip": "En la terraza heißt auf der Terrasse."
+      }
+    ],
+    "words": [
+      {
+        "es": "la mesa",
+        "de": "der Tisch",
+        "symbol": "🍽️",
+        "note": "Im Spanischen ist mesa weiblich.",
+        "example": "Una mesa para dos."
+      },
+      {
+        "es": "dos",
+        "de": "zwei",
+        "symbol": "✌️",
+        "note": "Dos bleibt bei männlichen und weiblichen Wörtern gleich.",
+        "example": "Para dos personas."
+      },
+      {
+        "es": "la terraza",
+        "de": "die Terrasse",
+        "symbol": "🌿",
+        "note": "En la terraza: auf der Terrasse.",
+        "example": "En la terraza, por favor."
+      }
+    ],
+    "turns": [
+      {
+        "es": "¿Qué necesitas?",
+        "de": "Was brauchst du?",
+        "hint": "Quiero una mesa.",
+        "need": [
+          "quiero",
+          "mesa"
+        ],
+        "reject": [
+          "no quiero",
+          "sin"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Bitte um una mesa."
+      },
+      {
+        "es": "¿Para cuántas personas?",
+        "de": "Für wie viele Personen?",
+        "hint": "Para dos, por favor.",
+        "need": [
+          "para dos"
+        ],
+        "reject": [
+          "no quiero",
+          "sin"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Für zwei heißt para dos."
+      },
+      {
+        "es": "¿Dentro o en la terraza?",
+        "de": "Drinnen oder auf der Terrasse?",
+        "hint": "En la terraza, por favor.",
+        "need": [
+          "terraza"
+        ],
+        "reject": [
+          "no quiero",
+          "sin"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Wähle en la terraza."
+      },
+      {
+        "es": "Repite tu petición, por favor.",
+        "de": "Wiederhole bitte deine Bitte.",
+        "hint": "Quiero una mesa para dos, por favor, en la terraza.",
+        "need": [
+          "quiero",
+          "mesa",
+          "para dos",
+          "por favor",
+          "terraza"
+        ],
+        "reject": [
+          "no quiero",
+          "sin"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Verbinde Tisch, zwei Personen und Terrasse."
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "label": "Unterwegs",
+    "title": "Du findest deinen Weg.",
+    "heroLead": "Eine Frage.",
+    "heroAccent": "Ein neuer Weg.",
+    "context": "Mit Lucía unterwegs",
+    "summary": "Du hast nach einem Bahnhof in der Nähe gefragt und rechts verstanden.",
+    "phrases": [
+      {
+        "phrase": "Busco una estación",
+        "de": "Ich suche einen Bahnhof.",
+        "add": "Busco una estación",
+        "tokens": [
+          "estación",
+          "una",
+          "Busco"
+        ],
+        "tip": "Busco heißt ich suche."
+      },
+      {
+        "phrase": "Busco una estación de tren",
+        "de": "Ich suche einen Zugbahnhof.",
+        "add": "de tren",
+        "tokens": [
+          "tren",
+          "de"
+        ],
+        "tip": "De tren verdeutlicht: ein Bahnhof für Züge."
+      },
+      {
+        "phrase": "Busco una estación de tren cerca de aquí",
+        "de": "Ich suche einen Zugbahnhof hier in der Nähe.",
+        "add": "cerca de aquí",
+        "tokens": [
+          "aquí",
+          "de",
+          "cerca"
+        ],
+        "tip": "Lerne cerca de aquí als ganze Wendung."
+      },
+      {
+        "phrase": "Busco una estación de tren cerca de aquí, por favor",
+        "de": "Ich suche bitte einen Zugbahnhof hier in der Nähe.",
+        "add": "por favor",
+        "tokens": [
+          "favor",
+          "por"
+        ],
+        "tip": "Por favor passt auch beim Nachfragen."
+      }
+    ],
+    "words": [
+      {
+        "es": "la estación",
+        "de": "der Bahnhof",
+        "symbol": "🚉",
+        "note": "Estación ist weiblich.",
+        "example": "Una estación de tren."
+      },
+      {
+        "es": "cerca",
+        "de": "in der Nähe",
+        "symbol": "📍",
+        "note": "Cerca de aquí heißt hier in der Nähe.",
+        "example": "Cerca de aquí."
+      },
+      {
+        "es": "la derecha",
+        "de": "rechts / die rechte Seite",
+        "symbol": "➡️",
+        "note": "A la derecha heißt nach rechts oder rechts.",
+        "example": "Está a la derecha."
+      }
+    ],
+    "turns": [
+      {
+        "es": "¿Qué buscas?",
+        "de": "Was suchst du?",
+        "hint": "Busco una estación de tren.",
+        "need": [
+          "busco",
+          "estacion"
+        ],
+        "reject": [
+          "no busco"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Beginne mit busco una estación."
+      },
+      {
+        "es": "¿Cerca de aquí?",
+        "de": "Hier in der Nähe?",
+        "hint": "Sí, cerca de aquí.",
+        "need": [
+          "cerca de aqui"
+        ],
+        "reject": [
+          "no"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Bestätige mit cerca de aquí."
+      },
+      {
+        "es": "La estación está a la derecha. ¿Dónde está?",
+        "de": "Der Bahnhof ist rechts. Wo ist er?",
+        "hint": "A la derecha.",
+        "need": [
+          "derecha"
+        ],
+        "reject": [
+          "izquierda",
+          "no"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Rechts heißt a la derecha."
+      },
+      {
+        "es": "Repite lo que buscas, por favor.",
+        "de": "Wiederhole bitte, was du suchst.",
+        "hint": "Busco una estación de tren cerca de aquí, por favor.",
+        "need": [
+          "busco",
+          "estacion",
+          "tren",
+          "cerca de aqui",
+          "por favor"
+        ],
+        "reject": [
+          "no busco"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Verbinde Bahnhof, Zug und hier in der Nähe."
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "label": "Auf dem Markt",
+    "title": "Du kaufst selbst ein.",
+    "heroLead": "Frische Äpfel.",
+    "heroAccent": "Deine Worte.",
+    "context": "Mit Lucía auf dem Markt",
+    "summary": "Du hast ein Kilo Äpfel und eine Tüte bestellt.",
+    "phrases": [
+      {
+        "phrase": "Quiero un kilo",
+        "de": "Ich möchte ein Kilo.",
+        "add": "Quiero un kilo",
+        "tokens": [
+          "kilo",
+          "un",
+          "Quiero"
+        ],
+        "tip": "Un kilo ist ein Kilogramm."
+      },
+      {
+        "phrase": "Quiero un kilo de manzanas",
+        "de": "Ich möchte ein Kilo Äpfel.",
+        "add": "de manzanas",
+        "tokens": [
+          "manzanas",
+          "de"
+        ],
+        "tip": "De verbindet die Menge mit dem Produkt."
+      },
+      {
+        "phrase": "Quiero un kilo de manzanas y una bolsa",
+        "de": "Ich möchte ein Kilo Äpfel und eine Tüte.",
+        "add": "y una bolsa",
+        "tokens": [
+          "bolsa",
+          "una",
+          "y"
+        ],
+        "tip": "Y heißt und. Bolsa kennst du aus der Bäckerei."
+      },
+      {
+        "phrase": "Quiero un kilo de manzanas y una bolsa, por favor",
+        "de": "Ich möchte ein Kilo Äpfel und eine Tüte, bitte.",
+        "add": "por favor",
+        "tokens": [
+          "favor",
+          "por"
+        ],
+        "tip": "Eine komplette freundliche Bestellung."
+      }
+    ],
+    "words": [
+      {
+        "es": "el kilo",
+        "de": "das Kilo",
+        "symbol": "⚖️",
+        "note": "Un kilo de: ein Kilo von.",
+        "example": "Un kilo de manzanas."
+      },
+      {
+        "es": "la manzana",
+        "de": "der Apfel",
+        "symbol": "🍎",
+        "note": "Mehrzahl: las manzanas.",
+        "example": "Quiero manzanas."
+      },
+      {
+        "es": "la bolsa",
+        "de": "die Tüte",
+        "symbol": "🛍️",
+        "note": "Eine bekannte Vokabel in einem neuen Zusammenhang.",
+        "example": "Una bolsa, por favor."
+      }
+    ],
+    "turns": [
+      {
+        "es": "¿Qué fruta quieres?",
+        "de": "Welches Obst möchtest du?",
+        "hint": "Quiero manzanas.",
+        "need": [
+          "quiero",
+          "manzanas"
+        ],
+        "reject": [
+          "no quiero",
+          "sin"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Äpfel heißt manzanas."
+      },
+      {
+        "es": "¿Cuánto quieres?",
+        "de": "Wie viel möchtest du?",
+        "hint": "Un kilo, por favor.",
+        "need": [
+          "un kilo"
+        ],
+        "reject": [
+          "no quiero",
+          "sin"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Bitte um un kilo."
+      },
+      {
+        "es": "¿Quieres una bolsa?",
+        "de": "Möchtest du eine Tüte?",
+        "hint": "Sí, una bolsa, por favor.",
+        "need": [
+          "bolsa"
+        ],
+        "reject": [
+          "no quiero",
+          "sin"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Bitte um una bolsa."
+      },
+      {
+        "es": "Repite tu pedido completo.",
+        "de": "Wiederhole deine ganze Bestellung.",
+        "hint": "Quiero un kilo de manzanas y una bolsa, por favor.",
+        "need": [
+          "quiero",
+          "un kilo",
+          "manzanas",
+          "bolsa",
+          "por favor"
+        ],
+        "reject": [
+          "no quiero",
+          "sin"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Verbinde Menge, Äpfel, Tüte und bitte."
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "label": "Im Hotel",
+    "title": "Ankommen und dich verständigen.",
+    "heroLead": "Eine Reservierung.",
+    "heroAccent": "Gut angekommen.",
+    "context": "Mit Lucía im Hotel",
+    "summary": "Du hast eine Reservierung für zwei Personen und zwei Nächte erklärt.",
+    "phrases": [
+      {
+        "phrase": "Tengo una reserva",
+        "de": "Ich habe eine Reservierung.",
+        "add": "Tengo una reserva",
+        "tokens": [
+          "reserva",
+          "una",
+          "Tengo"
+        ],
+        "tip": "Tengo heißt ich habe."
+      },
+      {
+        "phrase": "Tengo una reserva para dos personas",
+        "de": "Ich habe eine Reservierung für zwei Personen.",
+        "add": "para dos personas",
+        "tokens": [
+          "personas",
+          "dos",
+          "para"
+        ],
+        "tip": "Para dos kennst du aus dem Restaurant."
+      },
+      {
+        "phrase": "Tengo una reserva para dos personas por dos noches",
+        "de": "Ich habe eine Reservierung für zwei Personen für zwei Nächte.",
+        "add": "por dos noches",
+        "tokens": [
+          "noches",
+          "dos",
+          "por"
+        ],
+        "tip": "Por dos noches beschreibt hier die Dauer."
+      },
+      {
+        "phrase": "Tengo una reserva para dos personas por dos noches a nombre de Ana",
+        "de": "Ich habe eine Reservierung für zwei Personen für zwei Nächte auf den Namen Ana.",
+        "add": "a nombre de Ana",
+        "tokens": [
+          "Ana",
+          "de",
+          "nombre",
+          "a"
+        ],
+        "tip": "Ana ist ein Übungsname. Gib keine persönlichen Daten ein."
+      }
+    ],
+    "words": [
+      {
+        "es": "la reserva",
+        "de": "die Reservierung",
+        "symbol": "🗓️",
+        "note": "Tengo una reserva: Ich habe eine Reservierung.",
+        "example": "Tengo una reserva."
+      },
+      {
+        "es": "la noche",
+        "de": "die Nacht",
+        "symbol": "🌙",
+        "note": "Zwei Nächte: dos noches.",
+        "example": "Por dos noches."
+      },
+      {
+        "es": "la habitación",
+        "de": "das Zimmer",
+        "symbol": "🛏️",
+        "note": "Im Hotel: una habitación.",
+        "example": "Una habitación para dos."
+      }
+    ],
+    "turns": [
+      {
+        "es": "¿Tienes una reserva para una habitación?",
+        "de": "Hast du eine Reservierung für ein Zimmer?",
+        "hint": "Sí, tengo una reserva.",
+        "need": [
+          "tengo",
+          "reserva"
+        ],
+        "reject": [
+          "no tengo"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Antworte mit tengo una reserva."
+      },
+      {
+        "es": "¿Para cuántas noches?",
+        "de": "Für wie viele Nächte?",
+        "hint": "Por dos noches.",
+        "need": [
+          "dos noches"
+        ],
+        "reject": [
+          "una noche",
+          "no"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Zwei Nächte heißt dos noches."
+      },
+      {
+        "es": "¿A qué nombre?",
+        "de": "Auf welchen Namen?",
+        "hint": "A nombre de Ana.",
+        "need": [
+          "ana"
+        ],
+        "reject": [
+          "no"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Verwende nur den Übungsnamen Ana."
+      },
+      {
+        "es": "¿Puedes explicar la reserva completa?",
+        "de": "Kannst du die ganze Reservierung erklären?",
+        "hint": "Tengo una reserva para dos personas por dos noches a nombre de Ana.",
+        "need": [
+          "tengo",
+          "reserva",
+          "dos personas",
+          "dos noches",
+          "ana"
+        ],
+        "reject": [
+          "no tengo"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Verbinde Reservierung, Personen, Nächte und Ana."
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "label": "Nachfragen & Verstehen",
+    "title": "Du darfst jederzeit nachfragen.",
+    "heroLead": "Ganz entspannt.",
+    "heroAccent": "In deinem Tempo.",
+    "context": "Mit Lucía nachfragen",
+    "summary": "Du kannst um Wiederholung und langsameres Sprechen bitten.",
+    "phrases": [
+      {
+        "phrase": "¿Puedes repetir?",
+        "de": "Kannst du das wiederholen?",
+        "add": "¿Puedes repetir?",
+        "tokens": [
+          "repetir?",
+          "¿Puedes"
+        ],
+        "tip": "Puedes repetir ist eine hilfreiche Bitte."
+      },
+      {
+        "phrase": "¿Puedes repetir la frase?",
+        "de": "Kannst du den Satz wiederholen?",
+        "add": "la frase",
+        "tokens": [
+          "frase",
+          "la"
+        ],
+        "tip": "La frase bedeutet der Satz."
+      },
+      {
+        "phrase": "¿Puedes repetir la frase más despacio?",
+        "de": "Kannst du den Satz langsamer wiederholen?",
+        "add": "más despacio",
+        "tokens": [
+          "despacio",
+          "más"
+        ],
+        "tip": "Más despacio heißt langsamer."
+      },
+      {
+        "phrase": "¿Puedes repetir la frase más despacio, por favor?",
+        "de": "Kannst du den Satz bitte langsamer wiederholen?",
+        "add": "por favor",
+        "tokens": [
+          "favor",
+          "por"
+        ],
+        "tip": "Du bestimmst dein Tempo – auch im Gespräch."
+      }
+    ],
+    "words": [
+      {
+        "es": "repetir",
+        "de": "wiederholen",
+        "symbol": "🔁",
+        "note": "Nach puedes folgt repetir ohne Veränderung.",
+        "example": "¿Puedes repetir?"
+      },
+      {
+        "es": "despacio",
+        "de": "langsam",
+        "symbol": "🐢",
+        "note": "Más despacio: langsamer.",
+        "example": "Más despacio, por favor."
+      },
+      {
+        "es": "la frase",
+        "de": "der Satz",
+        "symbol": "💬",
+        "note": "Im Spanischen ist frase weiblich.",
+        "example": "Repite la frase."
+      }
+    ],
+    "turns": [
+      {
+        "es": "¿Me entiendes?",
+        "de": "Verstehst du mich?",
+        "hint": "No entiendo.",
+        "need": [
+          "no entiendo"
+        ],
+        "reject": [],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Wenn du nicht verstehst, sage no entiendo."
+      },
+      {
+        "es": "¿Qué necesitas?",
+        "de": "Was brauchst du?",
+        "hint": "¿Puedes repetir?",
+        "need": [
+          "puedes",
+          "repetir"
+        ],
+        "reject": [
+          "no puedes"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Bitte mit puedes repetir um Wiederholung."
+      },
+      {
+        "es": "¿Cómo quieres que hable?",
+        "de": "Wie soll ich sprechen?",
+        "hint": "Más despacio, por favor.",
+        "need": [
+          "despacio"
+        ],
+        "reject": [
+          "rapido",
+          "no"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Bitte mit más despacio um langsameres Sprechen."
+      },
+      {
+        "es": "Pide que repita la frase más despacio.",
+        "de": "Bitte darum, den Satz langsamer zu wiederholen.",
+        "hint": "¿Puedes repetir la frase más despacio, por favor?",
+        "need": [
+          "puedes",
+          "repetir",
+          "frase",
+          "despacio",
+          "por favor"
+        ],
+        "reject": [
+          "no puedes"
+        ],
+        "success": "¡Muy bien! Deine Antwort passt.",
+        "help": "Verbinde wiederholen, Satz, langsamer und bitte."
+      }
+    ]
+  }
+]

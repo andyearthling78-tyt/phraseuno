@@ -1,0 +1,231 @@
+{
+  "scope": "Actual iOS Release simulator bundle; not a signed store archive or Android binary",
+  "version": "1.0.0",
+  "build": "2",
+  "microphonePermission": false,
+  "cameraPermission": false,
+  "trackingOrCollectedDataDeclaredInManifests": false,
+  "privacyManifests": [
+    {
+      "file": "PrivacyInfo.xcprivacy",
+      "NSPrivacyAccessedAPITypes": [
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "CA92.1"
+          ]
+        },
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "C617.1"
+          ]
+        },
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "35F9.1"
+          ]
+        }
+      ],
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyTracking": false
+    },
+    {
+      "file": "React-timing_privacy.bundle/PrivacyInfo.xcprivacy",
+      "NSPrivacyAccessedAPITypes": [
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "35F9.1"
+          ]
+        }
+      ],
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyTracking": false
+    },
+    {
+      "file": "ExpoLocalization_privacy.bundle/PrivacyInfo.xcprivacy",
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyTracking": false,
+      "NSPrivacyTrackingDomains": [],
+      "NSPrivacyAccessedAPITypes": [
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "CA92.1"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "ExpoConstants_privacy.bundle/PrivacyInfo.xcprivacy",
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyTracking": false,
+      "NSPrivacyTrackingDomains": [],
+      "NSPrivacyAccessedAPITypes": [
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "CA92.1"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "React-cxxreact_privacy.bundle/PrivacyInfo.xcprivacy",
+      "NSPrivacyAccessedAPITypes": [
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "C617.1"
+          ]
+        }
+      ],
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyTracking": false
+    },
+    {
+      "file": "ExpoApplication_privacy.bundle/PrivacyInfo.xcprivacy",
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyTracking": false,
+      "NSPrivacyTrackingDomains": [],
+      "NSPrivacyAccessedAPITypes": [
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "C617.1"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "ExpoNotifications_privacy.bundle/PrivacyInfo.xcprivacy",
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyTracking": false,
+      "NSPrivacyTrackingDomains": [],
+      "NSPrivacyAccessedAPITypes": [
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "CA92.1"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "Frameworks/React.framework/PrivacyInfo.xcprivacy",
+      "NSPrivacyAccessedAPITypes": [
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "C617.1"
+          ]
+        },
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "CA92.1"
+          ]
+        },
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "35F9.1"
+          ]
+        }
+      ],
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyTracking": false
+    },
+    {
+      "file": "Frameworks/ReactNativeDependencies.framework/ReactNativeDependencies_folly.bundle/PrivacyInfo.xcprivacy",
+      "NSPrivacyAccessedAPITypes": [
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "C617.1"
+          ]
+        }
+      ],
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyTracking": false
+    },
+    {
+      "file": "Frameworks/ReactNativeDependencies.framework/ReactNativeDependencies_SocketRocket.bundle/PrivacyInfo.xcprivacy",
+      "NSPrivacyAccessedAPITypes": [],
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyTracking": false
+    },
+    {
+      "file": "Frameworks/ReactNativeDependencies.framework/ReactNativeDependencies_glog.bundle/PrivacyInfo.xcprivacy",
+      "NSPrivacyAccessedAPITypes": [
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "C617.1"
+          ]
+        }
+      ],
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyTracking": false
+    },
+    {
+      "file": "Frameworks/ReactNativeDependencies.framework/ReactNativeDependencies_boost.bundle/PrivacyInfo.xcprivacy",
+      "NSPrivacyAccessedAPITypes": [
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "C617.1"
+          ]
+        },
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "35F9.1"
+          ]
+        }
+      ],
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyTracking": false
+    },
+    {
+      "file": "Frameworks/ExpoFileSystem.framework/expo-file-system_ExpoFileSystem.bundle/PrivacyInfo.xcprivacy",
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyTracking": false,
+      "NSPrivacyTrackingDomains": [],
+      "NSPrivacyAccessedAPITypes": [
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "0A2A.1",
+            "3B52.1"
+          ]
+        },
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryDiskSpace",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "E174.1",
+            "85F4.1"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "RNCAsyncStorage_resources.bundle/PrivacyInfo.xcprivacy",
+      "NSPrivacyCollectedDataTypes": [],
+      "NSPrivacyAccessedAPITypes": [
+        {
+          "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+          "NSPrivacyAccessedAPITypeReasons": [
+            "C617.1"
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Manifest declarations do not replace final SDK/network behaviour audit",
+    "Final signed store archive and Android binary not yet audited"
+  ]
+}

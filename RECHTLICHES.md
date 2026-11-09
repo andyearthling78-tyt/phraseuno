@@ -1,27 +1,13 @@
-# Rechtsbereich – Arbeitsstand
+# Rechtsbereich – Stand 9. November 2026
 
-Stand: 8. November 2026. Ausrichtung dieses Entwurfs: Deutschland / EU.
+Impressum, Datenschutz, Nutzungshinweise und Lizenzkatalog sind in der App auf Deutsch und Englisch offline zugänglich. Die Anbieterangaben einschließlich der ausdrücklich gelieferten Kontakt-Telefonnummer sind zentral in `src/lib/legal.ts` hinterlegt.
 
-## Eingebaut
+Der Entwurf beschreibt den aktuellen Quellcode: sieben lokale Lerntage, schriftliche Dialogantworten, Gerätestimmen, freiwillige lokale Mitteilungen, Betriebssystem-Backups, Teilen und Löschen. Es gibt kein eigenes Backend, Konto, Tracking oder externe KI. Für notwendige lokale Funktionen ist Art. 6 Abs. 1 lit. f DSGVO mit dokumentierter Interessenabwägung und § 25 Abs. 2 Nr. 2 TDDDG als Entwurf angesetzt; freiwillige Erinnerungen und Kontaktanfragen werden gesondert behandelt. Das ist vor Veröffentlichung juristisch zu prüfen.
 
-Über das Info-Symbol im Kopf jeder App-Seite sind Impressum, Datenschutzhinweise, Nutzungshinweise und Open-Source-Lizenzen erreichbar. Die Dokumente liegen in der App und benötigen keine Webseite. Der Lizenzbereich enthält Paketinformationen und die in den installierten Paketen bzw. CocoaPods vorhandenen Lizenztexte; einige Entwicklungswerkzeuge liefern nur eine Lizenzkennzeichnung mit.
+`release/legal-review.md` enthält die konkrete Prüfung, verbleibende Betreiberpflichten und Quellen. `release/data-safety.json` bereitet die Store-Datenschutzangaben vor. Die Zielgruppe sind Erwachsene und ältere Jugendliche ab 16 Jahren; die endgültige Store-Altersbewertung folgt aus den tatsächlich ausgefüllten Fragebögen. US-/UK-Verfügbarkeit bedeutet keine pauschale Rechtsfreigabe.
 
-Die Datenschutzbeschreibung folgt dem aktuellen Quellcode: lokale Lern- und Dialogdaten, kein eigenes Backend, kein Tracking und keine externe KI. Die Betriebssystem-Sprachausgabe, Tastatur-Diktat, Geräte-Backups und Entwicklungsbuilds sind gesondert beschrieben. Die App bietet Teilen und Löschen der lokalen Lerndaten an. Schreib- und Löschvorgänge laufen geordnet, damit ältere Speichervorgänge gelöschte Daten nicht zurückschreiben.
+`release/legal-site/` enthält statische deutsche und englische Fassungen einschließlich Support. Diese Dateien sind noch nicht öffentlich gehostet. Für die Stores müssen erreichbare HTTPS-Adressen ergänzt werden; die tatsächliche Hosting-Verarbeitung muss vor Veröffentlichung separat beschrieben werden.
 
-## Noch offen
+Offen bleiben insbesondere die juristische Endfreigabe, Betreiberbestätigung der Mail-Aufbewahrung, finale native Datenschutzprüfung für Android sowie Store-Konto-/Händlerprüfung und Veröffentlichungstests. Es wurde kein rechtliches Prüfsiegel und keine anwaltliche Freigabe erteilt.
 
-Die vom Betreiber gelieferten Angaben sind im Impressum und als Verantwortlicher im Datenschutz hinterlegt: Andy Pimpertz, Am Hauweg 77, 47249 Duisburg, phrase_uno@gmx.de, USt-IdNr. DE268050119. Nicht gelieferte Unternehmensangaben wurden nicht erfunden. Die auf das konkrete Angebot passende Rechtsgrundlage für personenbezogene Daten bleibt vor einer Veröffentlichung zu ergänzen. Falls Anbieter, Geschäftsmodell oder Datenverarbeitung geändert werden, müssen die Texte entsprechend angepasst werden.
-
-Anbieterangaben werden zentral in `src/lib/legal.ts` gepflegt. Die Texte sind Implementierungsentwürfe und keine Zusage rechtlicher Vollständigkeit. Es wurden keine pauschalen Haftungsausschlüsse, keine unnötige Einwilligungspflicht und keine Vertragsbedingungen für bisher nicht vorhandene Käufe erfunden.
-
-## Verwendete Grundlagen
-
-- § 5 DDG, Anbieterinformationen: https://www.gesetze-im-internet.de/ddg/__5.html
-- DSGVO, insbesondere Art. 6, 13 und 15–21: https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32016R0679
-- § 25 Abs. 2 TDDDG, notwendiger Zugriff auf Geräteinformationen: https://www.gesetze-im-internet.de/ttdsg/__25.html
-
-## Prüfung
-
-TypeScript und ESLint bestanden. Acht automatisierte Tests bestanden, einschließlich geordneter Löschung und Fehlerbehandlung des Speichers. Im iOS-Simulator wurden Direktzugriff, Impressum, Datenschutzhinweise, Lizenzsuche, Lizenzdetail und der Abbruch des Löschdialogs geprüft. Bestehende Lerndaten wurden dabei nicht gelöscht.
-
-Der aktualisierte iOS-Release-Build mit dem Rechtsbereich wurde erfolgreich kompiliert (null Buildfehler) und auf dem verbundenen iPhone installiert. Die Anbieterangaben wurden nachträglich anhand der ausdrücklich gelieferten Angaben vervollständigt.
+Grundlagen: [§ 5 DDG](https://www.gesetze-im-internet.de/ddg/__5.html), [DSGVO](https://eur-lex.europa.eu/eli/reg/2016/679/oj), [§ 25 TDDDG](https://www.gesetze-im-internet.de/ttdsg/__25.html), [ICO](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/lawful-basis/).

@@ -1,0 +1,7 @@
+PhraseUNO 1.0.0 (2)
+No login, payment, API key or test account is needed.
+Complete onboarding; reminders are optional and declining permission does not block lessons.
+Choose any of the seven days from the home screen. Each day contains 4 phrase-building steps, 4 simulated conversation answers and 3 flip cards. The lesson screen provides answer hints.
+Audio uses OS Spanish voices; check media volume/output. Voice availability varies. The fixed recorded voice pack is not included and must not be advertised.
+Settings: gear icon. Language: DE/EN dropdown. Privacy, provider information, usage notes and licences: info icon. Local learning records can be shared or deleted there. No microphone recording or external AI is used.
+Audience: adults and older teens 16+. Please use fictional practice name Ana at the hotel.

@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { audioClips, audioTextKey, recordingForText, recordingKey, isRecordingPackComplete } from "../src/lib/audio-catalog.ts";
-import { phrases, turns, words } from "../src/lib/learning.ts";
+import { lessons } from "../src/lib/course.ts";
+const phrases=lessons.flatMap(day=>day.phrases), turns=lessons.flatMap(day=>day.turns), words=lessons.flatMap(day=>day.words);
 test("Recording script covers all spoken lesson content and preserves meaningful words", () => {
   for (const text of [...phrases.map((p) => p.phrase), ...turns.flatMap((turn) => [turn.es, turn.hint]), ...words.map((word) => word.es), "Hola. Quiero un café con leche, por favor."]) {
     assert.ok(recordingForText(text, "female", "natural"), text);

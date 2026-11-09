@@ -2,9 +2,13 @@ import { useI18n } from "./i18n";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator, View } from "react-native";
-import { fresh, KEY, LearningState, restore } from "./learning";
+import { fresh, KEY, LearningState } from "./learning";
 import { createStorageQueue } from "./storage";
+import { CourseState, freshCourse, lessons, Lesson, restoreCourse, selectDay } from "./course";
 type Store = {
+  course: CourseState;
+  lesson: Lesson;
+  openDay: (id: number) => void;
   state: LearningState;
   setState: React.Dispatch<React.SetStateAction<LearningState>>;
   saveError: boolean;
@@ -13,28 +17,36 @@ type Store = {
 const Context = createContext<Store | null>(null);
 export function LearningProvider({ children }: { children: React.ReactNode }) {
   const { t } = useI18n();
-  const [state, setState] = useState(fresh);
+  const [course, setCourse] = useState(freshCourse);
+  const state = course.days[String(course.selectedDay)] ?? fresh();
+  const lesson = lessons.find((day) => day.id === course.selectedDay) ?? lessons[0];
+  const setState: Store["setState"] = (action) => setCourse((previous) => {
+    const key = String(previous.selectedDay);
+    const current = previous.days[key] ?? fresh();
+    return { ...previous, days: { ...previous.days, [key]: typeof action === "function" ? action(current) : action } };
+  });
+  const openDay = (id: number) => setCourse((previous) => selectDay(previous, id));
   const [ready, setReady] = useState(false);
   const [saveError, setSaveError] = useState(false);
   const [storage] = useState(() => createStorageQueue(AsyncStorage, KEY));
   useEffect(() => {
     AsyncStorage.getItem(KEY)
-      .then((raw) => setState(restore(raw)))
+      .then((raw) => setCourse(restoreCourse(raw)))
       .catch(() => setSaveError(true))
       .finally(() => setReady(true));
   }, []);
   useEffect(() => {
     if (!ready) return;
-    const raw = JSON.stringify(state);
+    const raw = JSON.stringify(course);
     storage
       .save(raw)
       .then(() => setSaveError(false))
       .catch(() => setSaveError(true));
-  }, [state, ready, storage]);
+  }, [course, ready, storage]);
   async function clearProgress() {
     try {
       await storage.clear();
-      setState(fresh());
+      setCourse(freshCourse());
       setSaveError(false);
     } catch (error) {
       setSaveError(true);
@@ -57,7 +69,7 @@ export function LearningProvider({ children }: { children: React.ReactNode }) {
       </View>
     );
   return (
-    <Context.Provider value={{ state, setState, saveError, clearProgress }}>
+    <Context.Provider value={{ state, setState, course, lesson, openDay, saveError, clearProgress }}>
       {children}
     </Context.Provider>
   );

@@ -29,14 +29,12 @@ import {
   fresh,
   normalize,
   percent,
-  phrases,
-  words,
-  turns,
 } from "../lib/learning";
 export default function Learn() {
   const { t } = useI18n();
   const Alert = useLocalizedAlert();
-  const { state, setState, saveError } = useLearning();
+  const { state, setState, saveError, lesson, openDay } = useLearning();
+  const { phrases, words, turns } = lesson;
   const [picked, setPicked] = useState<string[]>([]);
   const [passed, setPassed] = useState(false);
   const [feedback, setFeedback] = useState("");
@@ -117,7 +115,7 @@ export default function Learn() {
   function send() {
     const text = reply.trim();
     if (!text) return;
-    const result = assess(text, state.chat);
+    const result = assess(text, state.chat, turns);
     setState((v) => ({
       ...v,
       chat: v.chat + (result.ok ? 1 : 0),
@@ -152,7 +150,7 @@ export default function Learn() {
         </View>
         {state.stage === "intro" && (
           <Card>
-            <Text style={s.h2}>Bereit für deinen ersten Satz?</Text>
+            <Text style={s.h2}>Bereit für deinen nächsten Satz?</Text>
             <Button onPress={() => setState((v) => ({ ...v, stage: "build" }))}>
               Los geht’s →
             </Button>
@@ -162,14 +160,7 @@ export default function Learn() {
           <Card>
             <Label>01 / PHRASEN · {state.build + 1} VON 4</Label>
             <Text style={s.title}>
-              {
-                [
-                  "Dein erster Satz.",
-                  "Ein bisschen mehr du.",
-                  "Freundlich bestellen.",
-                  "Dein Kaffee kommt mit.",
-                ][state.build]
-              }
+              {lesson.title}
             </Text>
             <Text style={s.subtitle}>{p.de}</Text>
             <View style={l.phrase}>
@@ -240,7 +231,7 @@ export default function Learn() {
             <Button onPress={check} disabled={!passed && !picked.length}>
               {passed
                 ? state.build === 3
-                  ? "Zum Café-Dialog →"
+                  ? "Zum Dialog →"
                   : "Weiter →"
                 : "Prüfen ✓"}
             </Button>
@@ -256,7 +247,7 @@ export default function Learn() {
                 <Text style={{ fontSize: 27 }}>👩🏽</Text>
               </View>
               <View>
-                <Text style={s.h2}>Mit Lucía im Café</Text>
+                <Text style={s.h2}>{lesson.context}</Text>
                 <Text style={s.small}>
                   Simulierter Dialog · {Math.min(state.chat + 1, 4)} / 4
                 </Text>
@@ -312,9 +303,9 @@ export default function Learn() {
             ) : (
               <>
                 <View style={l.bubble}>
-                  <Text style={s.body}>¡Aquí tienes tu café! ☕</Text>
+                  <Text style={s.body}>¡Muy bien! ✨</Text>
                   <Text style={s.small}>
-                    Hier ist dein Kaffee. Du hast dich verständlich gemacht!
+                    Du hast dich verständlich gemacht!
                   </Text>
                 </View>
                 <Button
@@ -440,13 +431,12 @@ export default function Learn() {
             <View style={l.badge}>
               <Text style={{ fontSize: 37, color: C.green }}>✦</Text>
             </View>
-            <Label>TAG 01 · GESCHAFFT</Label>
+            <Label>Tag {lesson.id} · geschafft</Label>
             <Text style={[s.title, s.center]}>
-              Dein erster{"\n"}spanischer Moment.
+              Ein weiterer spanischer Moment.
             </Text>
             <Text style={[s.body, s.center]}>
-              Du hast einen Kaffee bestellt. Mit Milch. Freundlich. Zum
-              Mitnehmen.
+              {lesson.summary}
             </Text>
             <View style={s.row}>
               {[
@@ -473,7 +463,7 @@ export default function Learn() {
               onPress={() =>
                 Alert.alert(
                   "Lerntag wiederholen?",
-                  "Der Fortschritt von Tag 1 wird zurückgesetzt, damit du alle Übungen erneut machen kannst.",
+                  "Der Fortschritt dieses Lerntags wird zurückgesetzt. Deine anderen Lerntage bleiben erhalten.",
                   [
                     { text: "Abbrechen", style: "cancel" },
                     {
@@ -492,11 +482,12 @@ export default function Learn() {
             >
               Lerntag noch einmal üben ↻
             </Button>
+            {lesson.id < 7 && <Button onPress={() => { openDay(lesson.id + 1); router.replace("/"); }}>Nächster Lerntag →</Button>}
             <Button secondary onPress={() => router.replace("/")}>
               Zur Übersicht
             </Button>
             <Text style={[s.small, s.center]}>
-              Prototyp · Tag 1 ist vollständig spielbar.
+              Sieben Lerntage. Schritt für Schritt.
             </Text>
           </Card>
         )}

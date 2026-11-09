@@ -3,9 +3,10 @@ import { View } from "react-native";
 import { router } from "expo-router";
 import { Button, Card, Label, Page, s, Speak } from "../components/ui";
 import { useLearning } from "../lib/store";
-import { words } from "../lib/learning";
+
 export default function Words() {
-  const { state } = useLearning();
+  const { state, lesson } = useLearning();
+  const { words } = lesson;
   return (
     <Page>
       <View>
@@ -14,7 +15,7 @@ export default function Words() {
           Kleine Bausteine.{"\n"}Viele Möglichkeiten.
         </Text>
         <Text style={s.subtitle}>
-          Drei Wörter aus deinem ersten Café-Gespräch.
+          Drei Wörter aus deinem ausgewählten Lerntag.
         </Text>
       </View>
       {words.map((w, i) => (

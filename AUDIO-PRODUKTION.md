@@ -4,7 +4,7 @@ Status: Produktion vorbereitet; noch keine hochwertigen Audioaufnahmen vorhanden
 
 Lucía: weiblich. Mateo: männlich. Beide sprechen denselben vollständigen Textsatz auf Spanisch (es-ES), jeweils natürlich und langsam zum Mitsprechen. Warm, ruhig, erwachsen, freundlich und klar; keine Cartoonstimme, kein übertriebenes Schauspiel. Akzente und Satzmelodie natürlich halten. Die langsame Fassung wird separat eingesprochen/erzeugt, nicht durch tieferes Abspielen der natürlichen Fassung.
 
-Zuerst vier Hörproben desselben Preview-Texts (zwei Stimmen × zwei Sprechweisen) produzieren und anhören. Erst danach den vollständigen Satz produzieren: 17 Texte × zwei Stimmen × zwei Sprechweisen = 68 MP3-Dateien. Keine Hintergrundmusik. Dateien technisch decodieren und auf Stille, abgeschnittene Wörter, Lautheit und korrekte spanische Aussprache prüfen.
+Zuerst vier Hörproben desselben Preview-Texts (zwei Stimmen × zwei Sprechweisen) produzieren und anhören. Erst danach den vollständigen Satz produzieren: 94 eindeutige Texte × zwei Stimmen × zwei Sprechweisen = 376 MP3-Dateien. Keine Hintergrundmusik. Dateien technisch decodieren und auf Stille, abgeschnittene Wörter, Lautheit und korrekte spanische Aussprache prüfen.
 
 Quelle, verwendete feste Voice-ID bzw. Sprecher und Nutzungsnachweis für jede Stimme in production.json dokumentieren. Nur nach tatsächlichem Anhören den SHA-256-Wert der betreffenden MP3 unter ihrem Schlüssel in approvedSha256 eintragen. Der Prüfbefehl gibt die Schlüssel/fehlenden Hashes aus. Keine App-Nutzerdaten oder Zugangsschlüssel in diese Dateien schreiben.
 

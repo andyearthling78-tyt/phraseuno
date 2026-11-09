@@ -9,13 +9,13 @@ import { useLearning } from "../../lib/store";
 export default function Legal() {
   const { t } = useI18n();
   const Alert = useLocalizedAlert();
-  const { state, clearProgress } = useLearning();
+  const { course, clearProgress } = useLearning();
   const [busy, setBusy] = useState(false);
   async function share() {
     try {
       await Share.share({
         title: "PhraseUNO · Meine Lerndaten",
-        message: JSON.stringify(state, null, 2),
+        message: JSON.stringify(course, null, 2),
       });
     } catch {
       Alert.alert("Teilen nicht möglich", "Bitte versuche es später erneut.");
@@ -88,7 +88,7 @@ export default function Legal() {
             {
               path: "/legal/nutzung",
               title: "Hinweise zur Nutzung",
-              detail: "Umfang und Grenzen des Prototyps",
+              detail: "Umfang und Grenzen der App",
             },
             {
               path: "/legal/lizenzen",
@@ -130,7 +130,7 @@ export default function Legal() {
         </Text>
       </Card>
       <Text style={[s.small, s.center]}>
-        PhraseUNO · Version 1.0.0 · Lernprototyp
+        PhraseUNO · Version 1.0.0 · Sieben Lerntage
       </Text>
     </Page>
   );

@@ -5,7 +5,7 @@ import { Button, Card, Label, Page, Progress, s } from "../components/ui";
 import { useLearning } from "../lib/store";
 import { percent } from "../lib/learning";
 export default function LearningProgress() {
-  const { state, saveError } = useLearning();
+  const { state, saveError, lesson } = useLearning();
   return (
     <Page>
       <View>
@@ -14,7 +14,7 @@ export default function LearningProgress() {
         <Text style={s.subtitle}>Dein Fortschritt in Spanisch.</Text>
       </View>
       <Card>
-        <Text style={s.h2}>Tag 01 · Im Café</Text>
+        <Text style={s.h2}>Tag {lesson.id} · <Text>{lesson.label}</Text></Text>
         <Text style={s.small}>{percent(state)}% abgeschlossen</Text>
         <Progress value={percent(state)} />
         <View style={s.row}>
@@ -31,7 +31,7 @@ export default function LearningProgress() {
         </View>
         <Text style={s.body}>
           {state.completedAt
-            ? "Dein erster Lerntag ist geschafft. ¡Muy bien!"
+            ? "Dieser Lerntag ist geschafft. ¡Muy bien!"
             : "Dein Lerntag wartet dort, wo du aufgehört hast."}
         </Text>
         <Text style={s.small}>

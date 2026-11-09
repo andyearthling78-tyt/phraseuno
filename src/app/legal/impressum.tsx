@@ -8,6 +8,7 @@ export default function Imprint() {
     ["Anbieter", provider.name],
     ["Ladungsfähige Anschrift", provider.address],
     ["Kontakt-E-Mail", provider.email],
+    ["Telefon", provider.phone],
     ["Rechtsform", provider.legalForm],
     ["Vertretungsberechtigte Person", provider.representative],
     ["Register und Registernummer", provider.register],

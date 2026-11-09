@@ -71,3 +71,11 @@ Audio-Korrektur nativ gebaut: Release-Simulator und Release-iPhone erfolgreich. 
 - Dateiwiedergabe nutzt das vorhandene Expo-Audio-Modul. Tatsächliche feste Audios fehlen; `recordingPackReady` bleibt false. Kein Wechsel der Stimme und keine Aktivierung der neuen Auswahl ohne vollständigen Satz.
 - Keine MP3-Dateien erzeugt und keine Hörqualität freigegeben. Ein nativer Wiedergabetest der festen Aufnahmen ist deshalb noch nicht möglich. Auf dem persönlichen iPhone wurde in diesem Schritt keine neue Version installiert.
 - Fal-Anmeldung im Browser vorhanden, aber Kontoverbindung steht noch aus. Fal verlangt unter „Finish setup“ Rechnungsadresse, Karte und Guthaben. Es wurden keine Zahlungsdaten eingetragen, keine Guthabenkäufe und keine kostenpflichtigen Generierungen ausgelöst.
+
+## Sieben Lerntage und Store-Vorbereitung · 9. November 2026
+
+Sieben vollständige bilinguale Lektionen, separater Fortschritt und Migration bestehender Tag-1-Daten implementiert. Alle 27 Tests bestanden, TypeScript/ESLint und iOS-/Android-Hermes-Bundles erfolgreich. iOS-Release-Simulator-Build erfolgreich. Alte Tag-1-Daten (100 %) blieben erhalten; Tag 2 in Englisch vollständig aufgebaut, Dialog beantwortet und Karten abgeschlossen. Sprachwechsel auf Deutsch erhält den Abschluss; Tag 3 beginnt bei 0 %. Nach Prozessneustart bleiben Tag 1 und 2 abgeschlossen, Tag 3 ausgewählt und Einstellungen erhalten. iPad-Pro-13-Onboarding, sofortiger Sprachwechsel und Startansichten geprüft.
+
+11 echte native Store-Bilder in passenden iPhone-/iPad-Größen vorbereitet. Quellcode und 14 iOS-Bundle-Datenschutzmanifeste geprüft; keine Tracking-/Erhebungsdeklaration und keine Mikrofon-/Kameraberechtigung vorhanden. Grenzen: kein Netzwerkverkehrsnachweis, kein signiertes Store-Archiv. Zwei finale englische Rechtsbereich-Beschriftungen und die erweiterte zukünftige Audio-Liste wurden nach dem nativen Build ergänzt; endgültige Quell-Bundles sind geprüft.
+
+Neuer iPhone-Build nicht installiert: physisches Gerät war nicht erreichbar. Android-SDK fehlt; keine APK-/AAB-, Geräte- oder Screenshotprüfung. Store-Release nicht freigegeben. `release/README.md` und `release/release-status.json` dokumentieren juristische Prüfung, Hosting-URLs, Konto-/Signierung, Fragebögen und Distributionstests. Aktueller Audio-Katalog: 94 Texte, geplant 376 Dateien; keine Aufnahmen vorhanden oder aktiviert.

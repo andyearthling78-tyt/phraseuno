@@ -1,0 +1,94 @@
+{
+  "screenshots": [
+    {
+      "file": "screenshots/ios-ipad/de-DE/01-home.png",
+      "width": 2064,
+      "height": 2752,
+      "format": "PNG",
+      "mode": "RGB",
+      "origin": "Actual native iOS Release simulator capture; no artwork overlay"
+    },
+    {
+      "file": "screenshots/ios-ipad/en-US/01-home.png",
+      "width": 2064,
+      "height": 2752,
+      "format": "PNG",
+      "mode": "RGB",
+      "origin": "Actual native iOS Release simulator capture; no artwork overlay"
+    },
+    {
+      "file": "screenshots/ios-iphone/de-DE/01-home.png",
+      "width": 1206,
+      "height": 2622,
+      "format": "PNG",
+      "mode": "RGB",
+      "origin": "Actual native iOS Release simulator capture; no artwork overlay"
+    },
+    {
+      "file": "screenshots/ios-iphone/de-DE/02-phrase.png",
+      "width": 1206,
+      "height": 2622,
+      "format": "PNG",
+      "mode": "RGB",
+      "origin": "Actual native iOS Release simulator capture; no artwork overlay"
+    },
+    {
+      "file": "screenshots/ios-iphone/de-DE/04-words.png",
+      "width": 1206,
+      "height": 2622,
+      "format": "PNG",
+      "mode": "RGB",
+      "origin": "Actual native iOS Release simulator capture; no artwork overlay"
+    },
+    {
+      "file": "screenshots/ios-iphone/de-DE/05-completion.png",
+      "width": 1206,
+      "height": 2622,
+      "format": "PNG",
+      "mode": "RGB",
+      "origin": "Actual native iOS Release simulator capture; no artwork overlay"
+    },
+    {
+      "file": "screenshots/ios-iphone/en-US/01-home.png",
+      "width": 1206,
+      "height": 2622,
+      "format": "PNG",
+      "mode": "RGB",
+      "origin": "Actual native iOS Release simulator capture; no artwork overlay"
+    },
+    {
+      "file": "screenshots/ios-iphone/en-US/02-phrase.png",
+      "width": 1206,
+      "height": 2622,
+      "format": "PNG",
+      "mode": "RGB",
+      "origin": "Actual native iOS Release simulator capture; no artwork overlay"
+    },
+    {
+      "file": "screenshots/ios-iphone/en-US/03-dialogue.png",
+      "width": 1206,
+      "height": 2622,
+      "format": "PNG",
+      "mode": "RGB",
+      "origin": "Actual native iOS Release simulator capture; no artwork overlay"
+    },
+    {
+      "file": "screenshots/ios-iphone/en-US/04-cards.png",
+      "width": 1206,
+      "height": 2622,
+      "format": "PNG",
+      "mode": "RGB",
+      "origin": "Actual native iOS Release simulator capture; no artwork overlay"
+    },
+    {
+      "file": "screenshots/ios-iphone/en-US/05-completion.png",
+      "width": 1206,
+      "height": 2622,
+      "format": "PNG",
+      "mode": "RGB",
+      "origin": "Actual native iOS Release simulator capture; no artwork overlay"
+    }
+  ],
+  "englishReuse": "en-US images may also be used for en-GB; interface is identical",
+  "android": "No Android screenshots supplied. Capture from final native Android build before submission."
+}

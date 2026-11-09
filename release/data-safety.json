@@ -1,0 +1,29 @@
+{
+  "status": "SOURCE_AUDITED_DRAFT_VERIFY_FINAL_BINARIES",
+  "apple": {
+    "dataCollection": "Data Not Collected",
+    "tracking": false,
+    "accountCreation": false,
+    "accountDeletion": "Not applicable; no accounts"
+  },
+  "google": {
+    "dataCollected": false,
+    "dataShared": false,
+    "ads": false,
+    "accountCreation": false,
+    "accountDeletion": "Not applicable; no accounts",
+    "localDeletion": "Info → Delete learning data; all seven days; preferences preserved"
+  },
+  "basis": {
+    "localData": "Processed on device only; no app backend or analytics",
+    "tts": "Only fixed course text sent to OS speech service; OS/provider behaviour separately disclosed",
+    "sharing": "Only explicit system share-menu action; no automated operator transfer",
+    "support": "User-initiated email outside app; sender/message processed by operator as described in policy"
+  },
+  "gates": [
+    "Confirm final release SDKs have no added telemetry",
+    "Android final binary/network and permission audit pending",
+    "Hosting privacy policy URL required",
+    "Revisit declarations if cloud AI, purchases, analytics or new SDKs are added"
+  ]
+}

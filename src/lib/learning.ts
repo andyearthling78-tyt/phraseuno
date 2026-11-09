@@ -115,10 +115,10 @@ export const normalize = (s: string) =>
     .replace(/[^a-z\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-export function assess(text: string, index: number) {
+export function assess(text: string, index: number, lessonTurns = turns) {
   if (!text.trim())
     return { ok: false, message: "Schreibe zuerst deine Antwort." };
-  const t = turns[index];
+  const t = lessonTurns[index];
   if (!t)
     return { ok: false, message: "Dieser Dialog ist bereits abgeschlossen." };
   return {

@@ -1,0 +1,62 @@
+{
+  "asOf": "2026-11-09",
+  "status": "PREPARED_NOT_SUBMITTED",
+  "implemented": [
+    "Seven bilingual learning days with isolated persisted progress",
+    "Version-1 learning data migration",
+    "Provider phone in imprint and privacy",
+    "Revised bilingual legal drafts and static support/legal pages",
+    "Store metadata for Germany, USA, UK",
+    "11 actual iOS screenshots and store graphics"
+  ],
+  "validation": {
+    "automatedTests": {
+      "passed": 27,
+      "failed": 0
+    },
+    "typescript": "PASS",
+    "eslint": "PASS",
+    "iosAndAndroidHermesBundles": "PASS",
+    "nativeIosReleaseSimulatorBuild": "PASS",
+    "iosManualFlow": "PASS: migrated old day one, complete day two, day three, language switch, restart, iPad onboarding",
+    "iosPrivacyManifestAudit": "14 bundled manifests: no tracking/collected-data declarations; no microphone/camera permission",
+    "binarySourceDifference": "Native QA binary predates two English legal-label translations and expanded future audio catalog. Final source bundles validated; no fixed recordings included. Final signed archive still required."
+  },
+  "submissionGates": [
+    {
+      "id": "legalApproval",
+      "status": "OPEN",
+      "reason": "Final legal review must be supplied by qualified legal counsel; operator must confirm operational retention and international obligations."
+    },
+    {
+      "id": "publicLegalUrls",
+      "status": "OPEN",
+      "reason": "Static HTML files supplied; no public privacy/support HTTPS URLs selected or deployed. Actual hosting privacy disclosures required."
+    },
+    {
+      "id": "androidRelease",
+      "status": "OPEN",
+      "reason": "Android SDK absent on this Mac. APK/AAB build, device QA, native screenshots, final permission/network audit still required."
+    },
+    {
+      "id": "iphoneInstallation",
+      "status": "OPEN",
+      "reason": "New seven-day build not installed on personal iPhone: device was unreachable. Previous version remains installed."
+    },
+    {
+      "id": "storeAccountsAndSigning",
+      "status": "OPEN",
+      "reason": "Paid membership, production signing, trader/contact verification and store identifiers must be checked in account; no signed store archive submitted."
+    },
+    {
+      "id": "distributionTesting",
+      "status": "OPEN",
+      "reason": "TestFlight and Play internal/closed tests not run. Google 12 testers/14 continuous days applies if account falls under its new personal-account rules."
+    },
+    {
+      "id": "storeQuestionnaires",
+      "status": "OPEN",
+      "reason": "Final privacy declarations, age-rating and target-audience questionnaires must match final signed builds. Draft provided; no form submitted."
+    }
+  ]
+}

@@ -8,9 +8,10 @@ import { usePreferences } from "../lib/preferences";
 import { Redirect, router } from "expo-router";
 import { Button, Card, C, Label, Page, Progress, s } from "../components/ui";
 import { useLearning } from "../lib/store";
+import { lessons } from "../lib/course";
 import { percent } from "../lib/learning";
 export default function Home() {
-  const { state, setState, saveError } = useLearning();
+  const { state, setState, saveError, lesson, course, openDay } = useLearning();
   const { preferences, update } = usePreferences();
   const [momentVisible, setMomentVisible] = useState(false);
   function openLesson() {
@@ -21,33 +22,33 @@ export default function Home() {
   const p = percent(state);
   if (!preferences.onboarded) return <Redirect href="/onboarding" />;
   return (
-    <Page>
+    <Page key={lesson.id}>
       <LearningMoment visible={momentVisible} onClose={() => setMomentVisible(false)} onContinue={() => {
         update({ lastMotivationDay: localDay() }).catch(() => {});
         openLesson();
       }} />
       <View>
-        <Label>TAG 01 / IM CAFÉ</Label>
+        <Label>Tag {lesson.id} / <Text>{lesson.label}</Text></Label>
         <Text style={[s.title, { marginTop: 10 }]}>
-          Dein erster spanischer Moment.
+          {lesson.title}
         </Text>
         <Text style={s.subtitle}>
-          Heute bestellst du deinen Kaffee. Auf Spanisch.
+          Heute sprichst du ein bisschen mehr Spanisch.
         </Text>
       </View>
       <View style={[s.hero, { padding: 22, gap: 12, minHeight: 0 }]}>
         <PlayfulDetails />
-        <Label>ALLTAGSSPANISCH · LEKTION 01</Label>
+        <Label>Alltagsspanisch · Lektion {lesson.id}</Label>
         <Text style={[s.heroTitle, { fontSize: 32, lineHeight: 36 }]}>
-          Ein Kaffee.{"\n"}Viele{" "}
-          <Text style={{ color: C.yellow }}>Möglichkeiten.</Text>
+          {lesson.heroLead}{"\n"}
+          <Text style={{ color: C.yellow }}>{lesson.heroAccent}</Text>
         </Text>
 
         <View style={s.row}>
           <View style={s.pill}>
             <Text style={s.pillText}>◷ ca. 10 Min. · für Einsteiger</Text>
           </View>
-          <Text style={{ fontSize: 42, marginLeft: "auto" }}>☕</Text>
+          <Text style={{ fontSize: 42, marginLeft: "auto" }}>{["☕", "🥖", "🍽️", "📍", "🍎", "🛏️", "💬"][lesson.id - 1]}</Text>
         </View>
         <Button
           accent
@@ -81,7 +82,7 @@ export default function Home() {
           [
             "02",
             "Mit Lucía sprechen",
-            "Dein erster Dialog im Café.",
+            "Dein Gespräch für heute.",
             "4 Min.",
             state.chat === 4,
           ],
@@ -125,6 +126,13 @@ export default function Home() {
         </Text>
       </Card>
 
+      <Card>
+        <Text style={s.h2}>Deine erste Woche</Text>
+        <Text style={s.small}>Wähle einen Lerntag. Jeder Tag speichert deinen Fortschritt einzeln.</Text>
+        {lessons.map((day) => <Button key={day.id} secondary={day.id !== lesson.id} onPress={() => { openDay(day.id); }}>
+          <Text>Tag </Text>{day.id}<Text> · </Text><Text>{day.label}</Text>{course.days[String(day.id)]?.completedAt ? " ✓" : ""}
+        </Button>)}
+      </Card>
       <Card>
         <Text style={s.h2}>Mehr sprechen. Weniger pauken.</Text>
         <View style={[s.row, { gap: 4 }]}>

@@ -1,0 +1,41 @@
+{
+  "version": "1.0.0",
+  "build": 2,
+  "bundleIdentifier": "com.phraseuno.mobile",
+  "category": {
+    "apple": "Education",
+    "google": "Education"
+  },
+  "targetAudience": "16–17 and 18+, not directed to children",
+  "pricePlan": "Free; no ads or in-app purchases",
+  "supportEmail": "phrase_uno@gmx.de",
+  "privacyPolicyUrl": null,
+  "supportUrl": null,
+  "releaseStatus": "PREPARED_NOT_SUBMITTED",
+  "locales": {
+    "de-DE": {
+      "name": "PhraseUNO: Spanisch im Alltag",
+      "subtitle": "Spanisch in kleinen Schritten",
+      "shortDescription": "Sieben Lerntage mit spanischen Alltagssätzen, Dialogen und Vokabelkarten.",
+      "promotionalText": "Bestelle einen Kaffee, finde deinen Weg und frage entspannt nach: sieben kurze Lerntage, deutsche oder englische Erklärungen und dein eigenes Tempo.",
+      "keywords": "spanisch,lernen,phrasen,alltag,reisen,vokabeln,anfänger,dialog,sprachlernen",
+      "description": "Deine ersten spanischen Sätze – für echte Alltagssituationen.\n\nPhraseUNO führt dich durch sieben kurze Lerntage: im Café, in der Bäckerei, im Restaurant, unterwegs, auf dem Markt, im Hotel und beim Nachfragen.\n\nDu baust Schritt für Schritt eine Phrase auf, übst vier Antworten mit der simulierten Lehrerin Lucía und festigst drei Wörter mit umdrehbaren Karten. Pro Tag sind ungefähr zehn Minuten vorgesehen: 80 % Phrasen und Dialog, 20 % Worttraining. Du bestimmst dein Tempo.\n\nDas ist enthalten:\n• Sieben Lerntage mit eigenem Fortschritt\n• Deutsche oder englische Erklärungen\n• Spanische Hörbeispiele mit verfügbaren Gerätestimmen\n• Tagesziel und freiwillige, lautlose Lernerinnerung\n• Kleine ermutigende Lernmomente\n• Lokale Speicherung ohne Nutzerkonto\n• Keine Werbung, Käufe oder Abonnements\n\nDie Dialoge sind lokale Simulationen mit festen Antworten und Hilfen. Es gibt keine freie KI-Unterhaltung und keine Aussprachebewertung. Antworten werden getippt; optional kannst du die Diktierfunktion deiner Tastatur verwenden.\n\nDie Lerninhalte liegen auf deinem Gerät. Sprachstimmen können je nach Betriebssystem Downloads oder eine Verbindung benötigen. Der Lernstand wird nicht automatisch zwischen Geräten übertragen.\n\nPhraseUNO ist ein Einstieg mit einer Woche Lerninhalt, kein vollständiger Sprachkurs. Für Erwachsene und ältere Jugendliche ab 16 Jahren."
+    },
+    "en-US": {
+      "name": "PhraseUNO: Everyday Spanish",
+      "subtitle": "Seven days. Everyday phrases.",
+      "shortDescription": "Seven learning days of Spanish phrases, practice conversations and word cards.",
+      "promotionalText": "Order a coffee, find your way and ask for help: seven short learning days, German or English explanations and your own pace.",
+      "keywords": "spanish,learn,phrases,travel,beginner,vocabulary,conversation,language,practice",
+      "description": "Your first Spanish phrases for everyday situations.\n\nPhraseUNO guides you through seven short learning days: at the café, bakery, restaurant, finding your way, market, hotel and asking for help.\n\nBuild a phrase step by step, practise four answers with simulated teacher Lucía and reinforce three words with flip cards. Each day is designed for around ten minutes: 80% phrases and conversation, 20% word practice. Learn at your own pace.\n\nIncluded:\n• Seven learning days with separate progress\n• German or English explanations\n• Spanish audio examples using available device voices\n• A daily goal and optional silent learning reminder\n• Gentle, encouraging learning moments\n• Local progress storage without an account\n• No advertising, purchases or subscriptions\n\nConversations are local simulations with fixed responses and hints. There is no open-ended AI conversation or pronunciation assessment. Type your answers, or optionally use your keyboard’s dictation feature.\n\nLesson content is stored on your device. Depending on your operating system, speech voices may require downloads or a connection. Progress does not automatically transfer between devices.\n\nPhraseUNO is a one-week introduction, not a complete language course. For adults and older teenagers aged 16 and over."
+    },
+    "en-GB": {
+      "name": "PhraseUNO: Everyday Spanish",
+      "subtitle": "Seven days. Everyday phrases.",
+      "shortDescription": "Seven learning days of Spanish phrases, practice conversations and word cards.",
+      "promotionalText": "Order a coffee, find your way and ask for help: seven short learning days, German or English explanations and your own pace.",
+      "keywords": "spanish,learn,phrases,travel,beginner,vocabulary,conversation,language,practice",
+      "description": "Your first Spanish phrases for everyday situations.\n\nPhraseUNO guides you through seven short learning days: at the café, bakery, restaurant, finding your way, market, hotel and asking for help.\n\nBuild a phrase step by step, practise four answers with simulated teacher Lucía and reinforce three words with flip cards. Each day is designed for around ten minutes: 80% phrases and conversation, 20% word practice. Learn at your own pace.\n\nIncluded:\n• Seven learning days with separate progress\n• German or English explanations\n• Spanish audio examples using available device voices\n• A daily goal and optional silent learning reminder\n• Gentle, encouraging learning moments\n• Local progress storage without an account\n• No advertising, purchases or subscriptions\n\nConversations are local simulations with fixed responses and hints. There is no open-ended AI conversation or pronunciation assessment. Type your answers, or optionally use your keyboard’s dictation feature.\n\nLesson content is stored on your device. Depending on your operating system, speech voices may require downloads or a connection. Progress does not automatically transfer between devices.\n\nPhraseUNO is a one-week introduction, not a complete language course. For adults and older teenagers aged 16 and over."
+    }
+  }
+}

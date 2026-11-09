@@ -48,7 +48,8 @@ Node.js 24+, npm, für iOS Xcode/CocoaPods, für Android Java/Android SDK instal
 
 ## Funktionsumfang
 
-- Tag 1 im Café: Quiero un café → con leche → por favor → para llevar.
+- Sieben Lerntage: Café, Bäckerei, Restaurant, Orientierung, Markt, Hotel und Nachfragen.
+- Tag 1: Quiero un café → con leche → por favor → para llevar. Jeder Tag enthält vier Phrasenschritte, vier Dialogantworten und drei Wörter; der Fortschritt wird pro Tag gespeichert. Alte Tag-1-Daten werden übernommen.
 - Vierstufiger simulierter Lehrerdialog mit inhaltsbezogener Antwortprüfung, Rückmeldung und Hilfen.
 - Spanische Sprachausgabe mit der Stimme des Geräts. Die App konfiguriert eine aktive Audio-Session für Medienwiedergabe auch im Lautlosmodus. Die Medienlautstärke und die gewählte Audioausgabe bleiben in der Kontrolle des Geräts. Antworten werden schriftlich eingegeben; die Diktierfunktion der Systemtastatur kann verwendet werden. Keine eigene Mikrofonaufnahme und keine Aussprachebewertung.
 - Animierte, barrierearm bedienbare Vokabelkarten mit Rückseite und Wiederholungsrunde für unsichere Wörter.
@@ -65,13 +66,13 @@ npm test
 npm run bundle:check
 ```
 
-Die Bundle-Prüfung erzeugt native Hermes-Bundles für iOS und Android. Sie ersetzt keinen Test auf einem Android-Gerät. Tag 1 ist der komplette Inhalt dieses Prototyps.
+Die Bundle-Prüfung erzeugt native Hermes-Bundles für iOS und Android. Sie ersetzt keinen Test auf einem Android-Gerät. Der aktuelle Kurs umfasst sieben vollständige Lerntage.
 
 Dokumentation: https://docs.expo.dev/versions/v58.0.0/ und https://docs.expo.dev/guides/local-app-development/
 
 ## Rechtliches
 
-Das Info-Symbol in der Kopfzeile öffnet den eingebauten Rechtsbereich. Die Anbieterangaben sind im Impressum und in den Datenschutzhinweisen hinterlegt. Die rechtliche Einordnung der Datenverarbeitung ist vor einer Veröffentlichung noch zu vervollständigen. Details und Quellen stehen in `RECHTLICHES.md`. Der Lizenzkatalog ist lokal enthalten; bei aktualisierten Abhängigkeiten mit `python3 scripts/generate-notices.py` aus den installierten npm-Paketen und iOS-Pods neu erzeugen.
+Das Info-Symbol in der Kopfzeile öffnet den eingebauten Rechtsbereich. Die Anbieterangaben sind im Impressum und in den Datenschutzhinweisen hinterlegt. Ein zweisprachiger Datenschutzentwurf mit Rechtsgrundlagen und technischer Prüfung ist enthalten; die abschließende juristische Freigabe steht aus. Details und Quellen stehen in `RECHTLICHES.md`. Der Lizenzkatalog ist lokal enthalten; bei aktualisierten Abhängigkeiten mit `python3 scripts/generate-notices.py` aus den installierten npm-Paketen und iOS-Pods neu erzeugen.
 
 ## English interface
 
@@ -111,8 +112,12 @@ Vorschau und Lernphrasen nutzen eine gemeinsame, geordnete Wiedergabe. Vor jeder
 
 ## Vorbereitung: genau zwei feste Offline-Stimmen
 
-`AUDIO-PRODUKTION.md` und `assets/audio/spanish/recording-script.csv` enthalten 17 spanische Texte für Lucía (weiblich) und Mateo (männlich), jeweils natürlich und separat langsam gesprochen: 68 MP3-Dateien. Noch keine dieser Aufnahmen ist vorhanden oder freigegeben. Die installierte iPhone-Version nutzt weiterhin die bereits hörbar bestätigte Gerätesprachausgabe; in diesem Schritt wurde kein neues App-Paket installiert.
+`AUDIO-PRODUKTION.md` und `assets/audio/spanish/recording-script.csv` enthalten 94 eindeutige spanische Texte für Lucía (weiblich) und Mateo (männlich), jeweils natürlich und separat langsam gesprochen: 376 MP3-Dateien. Noch keine dieser Aufnahmen ist vorhanden oder freigegeben. Die installierte iPhone-Version nutzt weiterhin die bereits hörbar bestätigte Gerätesprachausgabe; in diesem Schritt wurde kein neues App-Paket installiert.
 
 Die vorbereitete Dateiwiedergabe wird erst aktiv, wenn beide Stimmen in beiden Sprechweisen vollständig vorliegen. `node scripts/build-recorded-audio.mjs` prüft Dateien, MP3-Kopf, Produktionsquelle/Nutzungsnachweis und die nach Hörprüfung dokumentierten SHA-256-Werte. Erst `--write` erzeugt die statischen lokalen Asset-Verweise. Die Freigabe bezieht sich auf die konkrete Datei; ein späterer Dateitausch verlangt eine neue Prüfung. Decoder- und Hörprüfung bleiben zusätzlich notwendig.
 
 Nach Freischaltung zeigt die App genau zwei Stimmen und die zwei Sprechweisen. Ohne vollständigen Aufnahmesatz bleiben die bestehenden Systemstimmen verfügbar. Bessere Klangqualität ist erst mit den tatsächlichen abgenommenen Audios erreichbar. Fal war bei der Prüfung noch nicht vollständig für Audioerzeugung eingerichtet; die Webseite verlangte Zahlungsdaten/Guthaben und die Kontoverbindung.
+
+## Veröffentlichung – Stand 9. November 2026
+
+Das vorbereitete Store-Paket liegt in `release/`: deutsche und englische Beschreibungen (USA/UK), echte iOS-Simulatorbilder, Store-Grafiken, Datenschutzdeklarationsentwurf und lokal bereitgestellte Rechts-/Supportseiten. `release/README.md` dokumentiert die offenen Veröffentlichungsschritte. Es wurde nichts bei Apple oder Google eingereicht. Die letzte erfolgreiche Installation auf dem persönlichen iPhone betrifft den vorherigen Stand; die aktuelle Sieben-Tage-Version wurde im iOS-Release-Simulator geprüft. Das iPhone war für den erneuten Build nicht erreichbar.

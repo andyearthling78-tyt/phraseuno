@@ -1,0 +1,98 @@
+# PhraseUNO – Audio-Woche
+
+94 eindeutige Texte für sieben Lerntage. Zwei Stimmen, je natürlich und langsam: 376 Dateien. Noch keine festen Aufnahmen vorhanden. Quelle, Nutzungsrechte, Hörprüfung und SHA-256-Freigabe sind vor Aktivierung erforderlich.
+
+- preview: Hola. Quiero un café con leche, por favor.
+- order-coffee: Quiero un café
+- order-milk: Quiero un café con leche
+- order-please: Quiero un café con leche, por favor
+- order-takeaway: Quiero un café con leche, por favor, para llevar
+- with-milk: con leche
+- please: por favor
+- to-go: para llevar
+- word-coffee: el café
+- word-milk: la leche
+- word-take: llevar
+- ask-order: ¡Hola! ¿Qué quieres tomar?
+- ask-milk: ¿Solo o con leche?
+- ask-takeaway: ¿Para tomar aquí o para llevar?
+- ask-repeat: Muy bien. ¿Puedes repetir tu pedido completo?
+- answer-milk: Con leche, por favor.
+- answer-takeaway: Para llevar, por favor.
+- day2-clip1: Quiero un pan
+- day2-clip2: Quiero un pan con queso
+- day2-clip3: Quiero un pan con queso, por favor
+- day2-clip4: Quiero un pan con queso, por favor, para llevar
+- day2-clip5: el pan
+- day2-clip6: el queso
+- day2-clip7: la bolsa
+- day2-clip8: ¡Hola! ¿Qué quieres?
+- day2-clip10: ¿Con queso?
+- day2-clip11: Con queso, por favor.
+- day2-clip12: ¿Necesitas una bolsa?
+- day2-clip13: Sí, una bolsa, por favor.
+- day2-clip14: Repite tu pedido completo, por favor.
+- day3-clip1: Quiero una mesa
+- day3-clip2: Quiero una mesa para dos
+- day3-clip3: Quiero una mesa para dos, por favor
+- day3-clip4: Quiero una mesa para dos, por favor, en la terraza
+- day3-clip5: la mesa
+- day3-clip6: dos
+- day3-clip7: la terraza
+- day3-clip8: ¿Qué necesitas?
+- day3-clip10: ¿Para cuántas personas?
+- day3-clip11: Para dos, por favor.
+- day3-clip12: ¿Dentro o en la terraza?
+- day3-clip13: En la terraza, por favor.
+- day3-clip14: Repite tu petición, por favor.
+- day4-clip1: Busco una estación
+- day4-clip2: Busco una estación de tren
+- day4-clip3: Busco una estación de tren cerca de aquí
+- day4-clip4: Busco una estación de tren cerca de aquí, por favor
+- day4-clip5: la estación
+- day4-clip6: cerca
+- day4-clip7: la derecha
+- day4-clip8: ¿Qué buscas?
+- day4-clip10: ¿Cerca de aquí?
+- day4-clip11: Sí, cerca de aquí.
+- day4-clip12: La estación está a la derecha. ¿Dónde está?
+- day4-clip13: A la derecha.
+- day4-clip14: Repite lo que buscas, por favor.
+- day5-clip1: Quiero un kilo
+- day5-clip2: Quiero un kilo de manzanas
+- day5-clip3: Quiero un kilo de manzanas y una bolsa
+- day5-clip4: Quiero un kilo de manzanas y una bolsa, por favor
+- day5-clip5: el kilo
+- day5-clip6: la manzana
+- day5-clip8: ¿Qué fruta quieres?
+- day5-clip9: Quiero manzanas.
+- day5-clip10: ¿Cuánto quieres?
+- day5-clip11: Un kilo, por favor.
+- day5-clip12: ¿Quieres una bolsa?
+- day5-clip14: Repite tu pedido completo.
+- day6-clip1: Tengo una reserva
+- day6-clip2: Tengo una reserva para dos personas
+- day6-clip3: Tengo una reserva para dos personas por dos noches
+- day6-clip4: Tengo una reserva para dos personas por dos noches a nombre de Ana
+- day6-clip5: la reserva
+- day6-clip6: la noche
+- day6-clip7: la habitación
+- day6-clip8: ¿Tienes una reserva para una habitación?
+- day6-clip9: Sí, tengo una reserva.
+- day6-clip10: ¿Para cuántas noches?
+- day6-clip11: Por dos noches.
+- day6-clip12: ¿A qué nombre?
+- day6-clip13: A nombre de Ana.
+- day6-clip14: ¿Puedes explicar la reserva completa?
+- day7-clip1: ¿Puedes repetir?
+- day7-clip2: ¿Puedes repetir la frase?
+- day7-clip3: ¿Puedes repetir la frase más despacio?
+- day7-clip4: ¿Puedes repetir la frase más despacio, por favor?
+- day7-clip5: repetir
+- day7-clip6: despacio
+- day7-clip7: la frase
+- day7-clip8: ¿Me entiendes?
+- day7-clip9: No entiendo.
+- day7-clip12: ¿Cómo quieres que hable?
+- day7-clip13: Más despacio, por favor.
+- day7-clip14: Pide que repita la frase más despacio.
