@@ -83,3 +83,11 @@ Neuer iPhone-Build nicht installiert: physisches Gerät war nicht erreichbar. An
 ## Aktualisierung: persönliches iPhone verbunden · 9. November 2026
 
 Aktuellen finalen Quellstand mit sieben Tagen, neuen Rechtsangaben und vollständiger englischer Beschriftung als iOS-Release für das iPhone 13 gebaut: erfolgreich, null Fehler und drei Build-Warnungen. Installation zu 100 % abgeschlossen. Anschließender Start durch Apples Gerätewerkzeug erfolgreich bestätigt. Es wurde kein Lernstand gelöscht. TypeScript und ESLint erneut bestanden. Dies bestätigt Installation und Prozessstart; es ersetzt keine abschließende Nutzerprüfung der neuen Lektionen auf dem Gerät und keine Store-Distributionstests.
+
+## Hören/Sprechen und Wochenvokabeln · Build 3 · 9. November 2026
+
+31 Tests bestanden; TypeScript/ESLint und Hermes-Exporte für beide Plattformen erfolgreich. Native Spracherkennung 58.0.1 eingebunden. Mikrofon in generierter Android-/iOS-Konfiguration sowie tatsächlichem iPhone-Bundle vorhanden. On-device-only-Option, keine persistierte Tondatei; iOS-Fallbackschutz reproduzierbar per postinstall gesetzt.
+
+Native iPhone-/Simulator-Release-Builds erfolgreich. iPhone installiert und Prozessstart bestätigt. Abschließende UI-Korrekturen (bekannte Karten weiterblättern, tatsächliches Schreibfeld, Mikrofonabbruch beim Öffnen der Dialoghilfe) per Expo export:embed als Hermes-Bundle in App-Kopien eingebettet; vorhandene Gerätesignatur beibehalten, strikte Signaturprüfungen erfolgreich, finale Installation bestätigt. Letzter Start durch Gerätesperre blockiert.
+
+Simulator: Vorlesen beim Eintritt, Freigabe des Nachsprechknopfs nach Vorlese-Ende, Mikrofonabfrage erst nach Tippen, Ablehnung zeigt Hinweis/Schreibalternative. Vorhandene abgeschlossene Tage 1/2 erhalten; Wochensammlung zeigt sechs Wörter. Tages-/Wochenwechsel und freiwillige Karten/Bedeutung angezeigt, echtes optionales Texteingabefeld bestätigt. Automatisierte Tests prüfen 20 eindeutige Wochenwörter, Zurückstellen/Neustart und Freigabe erst nach vollständiger Woche/Vokabeln. Keine echte spanische Sprachaufnahme als Hardwaretest durchgeführt; keine Aussprachequalität behauptet. Android-Hardwaretests weiterhin offen.

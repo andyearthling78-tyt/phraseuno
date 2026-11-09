@@ -9,7 +9,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.phraseuno.mobile",
-      "buildNumber": "2",
+      "buildNumber": "3",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -21,9 +21,8 @@
       },
       "predictiveBackGestureEnabled": true,
       "package": "com.phraseuno.mobile",
-      "versionCode": 2,
+      "versionCode": 3,
       "blockedPermissions": [
-        "android.permission.RECORD_AUDIO",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.SYSTEM_ALERT_WINDOW",
@@ -51,10 +50,17 @@
       [
         "expo-audio",
         {
-          "microphonePermission": false,
-          "recordAudioAndroid": false,
+          "microphonePermission": "PhraseUNO nutzt das Mikrofon, damit du spanische Sätze nachsprechen und Antworten sprechen kannst.",
+          "recordAudioAndroid": true,
           "enableBackgroundPlayback": false,
           "enableBackgroundRecording": false
+        }
+      ],
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "PhraseUNO nutzt das Mikrofon, damit du spanische Sätze nachsprechen und Antworten sprechen kannst.",
+          "speechRecognitionPermission": "PhraseUNO erkennt deine spanischen Übungssätze. Die App verwendet ausschließlich Erkennung auf dem Gerät."
         }
       ]
     ],

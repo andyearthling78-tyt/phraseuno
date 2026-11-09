@@ -8,7 +8,7 @@ import { usePreferences } from "../lib/preferences";
 import { Redirect, router } from "expo-router";
 import { Button, Card, C, Label, Page, Progress, s } from "../components/ui";
 import { useLearning } from "../lib/store";
-import { lessons } from "../lib/course";
+import { lessons, weekStatus } from "../lib/course";
 import { percent } from "../lib/learning";
 export default function Home() {
   const { state, setState, saveError, lesson, course, openDay } = useLearning();
@@ -20,6 +20,7 @@ export default function Home() {
     router.push("/learn");
   }
   const p = percent(state);
+  const week = weekStatus(course);
   if (!preferences.onboarded) return <Redirect href="/onboarding" />;
   return (
     <Page key={lesson.id}>
@@ -132,6 +133,12 @@ export default function Home() {
         {lessons.map((day) => <Button key={day.id} secondary={day.id !== lesson.id} onPress={() => { openDay(day.id); }}>
           <Text>Tag </Text>{day.id}<Text> · </Text><Text>{day.label}</Text>{course.days[String(day.id)]?.completedAt ? " ✓" : ""}
         </Button>)}
+      </Card>
+      <Card>
+        <Text style={s.h2}>Dein Wochenabschluss</Text>
+        <Text style={s.body}>{week.completedDays} / 7 <Text>Lerntage geschafft</Text></Text>
+        <Text style={s.small}>{week.readyForNextWeek ? "Woche 1 geschafft! Alle Wochenwörter sind geübt. Weitere Lernwochen folgen." : "Die nächste Lernwoche wird erst freigegeben, wenn alle sieben Lerntage und ihre gesammelten Vokabeln geübt sind."}</Text>
+        <Button secondary onPress={() => router.push("/words")}>Wochenvokabeln üben →</Button>
       </Card>
       <Card>
         <Text style={s.h2}>Mehr sprechen. Weniger pauken.</Text>

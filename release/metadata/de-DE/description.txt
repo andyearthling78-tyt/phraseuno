@@ -13,7 +13,7 @@ Das ist enthalten:
 • Lokale Speicherung ohne Nutzerkonto
 • Keine Werbung, Käufe oder Abonnements
 
-Die Dialoge sind lokale Simulationen mit festen Antworten und Hilfen. Es gibt keine freie KI-Unterhaltung und keine Aussprachebewertung. Antworten werden getippt; optional kannst du die Diktierfunktion deiner Tastatur verwenden.
+Die Dialoge sind lokale Simulationen mit festen Antworten und Hilfen. Es gibt keine freie KI-Unterhaltung und keine Aussprachebewertung. Lucía spricht vor, du sprichst nach und antwortest per Mikrofon. Die App verlangt spanische Spracherkennung auf dem Gerät; ein passendes Offline-Sprachmodell und Mikrofonerlaubnis sind erforderlich. Schreiben ist freiwillig. Nach dem Lerntag startet automatisch eine verschiebbare Vokabel-Zusatzübung. Die Wochensammlung bündelt alle gelernten Wörter; der Wochenabschluss verlangt ihre Wiederholung.
 
 Die Lerninhalte liegen auf deinem Gerät. Sprachstimmen können je nach Betriebssystem Downloads oder eine Verbindung benötigen. Der Lernstand wird nicht automatisch zwischen Geräten übertragen.
 

@@ -1,3 +1,5 @@
+> Build 3: Freiwillige lokale Mikrofonverarbeitung ergänzt (Einwilligung, sichtbare Aufnahme, Abbruch, keine Tondatei, kein Online-Fallback). Erkannte Dialogantworten verbleiben lokal. Rechtsentwürfe und finale Datenschutzerklärung müssen auch diese Funktion berücksichtigen.
+
 # Rechtliche und datenschutzbezogene Prüfungsvorlage
 
 Stand: 9. November 2026. Keine anwaltliche Freigabe. Die technischen Aussagen sind am Quellcode geprüft; Rechtsbewertung und organisatorische Umsetzung bleiben vom Anbieter/qualifizierter Rechtsberatung zu bestätigen.

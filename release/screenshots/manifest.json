@@ -90,5 +90,6 @@
     }
   ],
   "englishReuse": "en-US images may also be used for en-GB; interface is identical",
-  "android": "No Android screenshots supplied. Capture from final native Android build before submission."
+  "android": "No Android screenshots supplied. Capture from final native Android build before submission.",
+  "status": "HISTORICAL_BUILD_2_REPLACE_BEFORE_SUBMISSION"
 }

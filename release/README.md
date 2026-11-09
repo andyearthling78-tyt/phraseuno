@@ -1,44 +1,17 @@
-# PhraseUNO – Store-Paket
+# PhraseUNO – Store-Paket · Build 3
 
-Stand: 9. November 2026 · Version 1.0.0 (Build 2). **Vorbereitet, nicht eingereicht.** Die native App läuft ohne Browser. Die erste Woche enthält sieben Lerntage auf Deutsch und Englisch, mit vier Phrasen, vier Dialogantworten und drei Wörtern pro Tag. Vorhandener Tag-1-Fortschritt wird übernommen.
+Stand: 9. November 2026 · Version 1.0.0 (Build 3). Vorbereitet, nicht eingereicht.
 
-## Enthalten
+Die native App enthält sieben Lerntage auf Deutsch und Englisch. Der Schwerpunkt ist jetzt Zuhören, Nachsprechen und gesprochenes Antworten. Schreiben bleibt optional. Mikrofonzugriff wird erst nach Tastendruck gefragt; die Erkennung verlangt ein spanisches Offline-Modell und wechselt nicht automatisch ins Netz. Keine Tondatei wird gespeichert. Rückmeldungen prüfen erkannte Wörter, keine Aussprachequalität.
 
-- `metadata.json` und `metadata/`: Store-Beschreibungen für de-DE, en-US und en-GB, Keywords, Kurztexte und Kategorien; Zeichenlängen geprüft.
-- `screenshots/ios-iphone/`: vier deutsche und fünf englische echte Simulatoraufnahmen in 1206 × 2622; `ios-ipad/`: je eine in 2064 × 2752. PNG/RGB ohne Alpha. Englische Bilder gelten für USA und UK. Keine Webansichten oder nachgebauten Android-Bilder.
-- `graphics/`: Store-Icons 512/1024 Pixel und Google-Feature-Grafiken 1024 × 500 auf Deutsch und Englisch.
-- `legal-site/`: statische Rechts- und Supportseiten in beiden Sprachen. Noch nicht öffentlich gehostet; die Hosting-Datenschutzbeschreibung muss zum tatsächlichen Anbieter passen.
-- `data-safety.json`: begründeter Entwurf für „keine Datenerhebung/kein Tracking“, vorbehaltlich finaler SDK-, Betriebssystem- und Binärprüfung.
-- `legal-review.md`: überarbeitete Texte, konkrete Interessenabwägung und verbleibende rechtliche/organisatorische Fragen. Keine anwaltliche Freigabe.
-- `ios-privacy-audit.json`: Prüfung von 14 Datenschutzmanifesten im tatsächlichen iOS-Release-Simulatorpaket. Kein Ersatz für die Prüfung des signierten Store-Archivs oder von Netzwerkverkehr.
-- `review-notes.txt`: Hinweise für Store-Prüfer, ohne Testkonto.
-- `release-status.json`: maschinenlesbarer Prüfstand und alle offenen Freigaben.
+Nach einem erfolgreichen Dialog startet automatisch die Vokabel-Zusatzübung. Sie kann am Tag verschoben werden. „Meine Wörter“ bietet Tages- und Wochensammlung mit Karten und Hörbeispielen. Doppelte Wörter werden zusammengefasst. Die sieben Tage ergeben 20 unterschiedliche Wörter. Der Wochenabschluss verlangt alle sieben Tage und alle Wochenwörter. Weitere Kurswochen sind noch nicht enthalten.
 
-Die Kontakt-Telefonnummer ist mit den gelieferten Angaben übernommen. Sie ist zusammen mit der Anbieteranschrift in App und Rechtstexten sichtbar. Händlerdaten müssen in den Store-Konten zusätzlich eingetragen/verifiziert werden.
+31 Tests, TypeScript und ESLint bestanden. Hermes-Bundles für iOS/Android erstellt. Native iPhone- und Simulator-Builds erfolgreich. Der iPhone-Build wurde installiert und gestartet; danach wurden kleine UI-Korrekturen mit Expos finalem Hermes-Bundle eingebettet, streng signaturgeprüft und erfolgreich installiert. Der letzte Startversuch scheiterte an der Gerätesperre. Im Simulator sind Vorlesen/Ende, Mikrofonabfrage, Ablehnung, Tages-/Wochensammlung und echtes freiwilliges Schreibfeld geprüft. **Tatsächliche Erkennung gesprochener spanischer Sätze auf Hardware und Android-Gerätetests stehen aus.**
 
-## Geprüft
+Enthalten: `metadata.json` und `metadata/` (DE/USA/UK), `legal-site/` (noch nicht öffentlich gehostete Rechts-/Supportseiten), `legal-review.md`, `data-safety.json`, `ios-privacy-audit.json`, `review-notes.txt`, `release-status.json`, Store-Grafiken und historische iOS-Screenshots. Die bisherigen Store-Bilder zeigen überwiegend Build 2; vor Einreichung gegen aktuelle Sprechansichten austauschen. Sie sind im Bildmanifest ausdrücklich als historisch markiert.
 
-27 automatisierte Tests, TypeScript, ESLint und native Hermes-Bundles für beide Plattformen bestanden. Der iOS-Release-Simulator-Build war erfolgreich. Tag 2 wurde komplett durchgespielt; Tag 1 blieb nach Migration abgeschlossen. Neustart erhält beide Abschlüsse und die Auswahl von Tag 3. Auf dem iPad wurden Onboarding, Deutsch und Englisch geprüft. Der aktuelle Quellstand wurde zusätzlich als nativer Release-Build für das iPhone 13 erfolgreich erstellt (null Fehler), vollständig installiert und am 9. November 2026 gestartet. Vor Store-Einreichung bleiben das signierte Distributionsarchiv und abschließende Gerätetests erforderlich.
+Offen bleiben juristische Endfreigabe, öffentliche HTTPS-Adressen samt Hosting-Datenschutz, finale Signierung/Store-Archive, Datenschutzerklärungen und Altersfragebögen in den Konten sowie TestFlight-/Google-Play-Tests. Zielgruppe: Erwachsene und ältere Jugendliche, keine Kinder-App. Die vorbereiteten Datenschutzangaben müssen mit den finalen Paketen abgeglichen werden. Es wurde weder eine Store-Einreichung noch eine Website-Veröffentlichung ausgeführt.
 
-Die festen Aufnahmen sind noch nicht produziert/freigegeben. Die App nutzt weiterhin Gerätestimmen. Es wurde keine kostenpflichtige Audioerzeugung ausgelöst.
+Materialprüfung im Projekt: `node scripts/check-release.mjs`. Der Zusatz `--submission` liefert einen Fehlerstatus, solange Veröffentlichungspunkte offen sind. Weitere technische Details stehen in `SPRECHEN-UND-VOKABELN.md` im Projekt.
 
-## Nächste Veröffentlichungsschritte
-
-1. Rechtsentwürfe abschließend fachlich prüfen lassen und Betreiberpflichten bestätigen. Eine Übersetzung alleine ist keine Freigabe für USA/UK.
-2. Datenschutz und Support unter eigenen öffentlichen HTTPS-Adressen bereitstellen; Hosting-Verarbeitung ergänzen und URLs in `metadata.json` eintragen.
-3. Die neue Sieben-Tage-Version ist auf dem iPhone installiert und gestartet. Android-Umgebung oder autorisierten Cloud-Build einrichten, APK/AAB erstellen und auf Android testen; echte Screenshots ergänzen.
-4. Produktionssignierung und Händlerstatus in Apple-/Google-Konten prüfen. Diese Vorbereitung enthält weder Zugangsdaten noch Zertifikate. Altersbewertung aus den Store-Fragebögen bestimmen; Zielgruppe sind Erwachsene und ältere Jugendliche (16+), keine Kinder-App.
-5. Finales signiertes Paket, Datenschutzerklärungen und Berechtigungen gemeinsam prüfen. TestFlight und Play-Test durchführen; sofern das persönliche Google-Konto unter die betreffende Regel fällt, zwölf Tester über vierzehn zusammenhängende Tage einplanen. Erst anschließend zur Veröffentlichung einreichen.
-
-`node scripts/check-release.mjs` im Projekt prüft die gelieferten Materialien. `node scripts/check-release.mjs --submission` endet bewusst mit Fehlerstatus, solange Freigaben offen sind. Eine erfolgreiche Materialprüfung ist keine Veröffentlichungsfreigabe.
-
-## Primärquellen
-
-- [Apple-Datenschutzangaben](https://developer.apple.com/app-store/app-privacy-details/)
-- [Google Data Safety](https://support.google.com/googleplay/android-developer/answer/10787469)
-- [Apple-Bildgrößen](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications)
-- [Google Store-Grafiken](https://support.google.com/googleplay/android-developer/answer/9866151)
-- [Google-Testanforderungen](https://support.google.com/googleplay/android-developer/answer/14151465)
-- [Apple EU-Händlerangaben](https://developer.apple.com/help/app-store-connect/manage-compliance-information/manage-european-union-digital-services-act-trader-requirements/)
-
-Die Dateien können für die Einreichung verwendet werden, sobald die offenen Punkte erfüllt und die endgültigen Inhalte bestätigt sind. Es wurde keine Store-Veröffentlichung und keine öffentliche Website-Veröffentlichung ausgeführt.
+Primärquellen: [Apple Datenschutz](https://developer.apple.com/app-store/app-privacy-details/), [Google Data Safety](https://support.google.com/googleplay/android-developer/answer/10787469), [Spracherkennungsbibliothek](https://github.com/jamsch/expo-speech-recognition).

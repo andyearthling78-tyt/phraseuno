@@ -15,6 +15,7 @@
     "expo-notifications": "~58.1.8",
     "expo-router": "~58.0.30",
     "expo-speech": "~58.0.3",
+    "expo-speech-recognition": "58.0.1",
     "expo-status-bar": "~58.0.4",
     "react": "19.3.0",
     "react-dom": "19.3.0",
@@ -33,7 +34,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "expo lint",
     "test": "node --test tests/*.test.mjs",
-    "bundle:check": "expo export --platform ios --platform android --output-dir .expo/bundle-check"
+    "bundle:check": "expo export --platform ios --platform android --output-dir .expo/bundle-check",
+    "postinstall": "node scripts/patch-speech-recognition.mjs"
   },
   "private": true,
   "engines": {

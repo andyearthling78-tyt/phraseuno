@@ -4,11 +4,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator, View } from "react-native";
 import { fresh, KEY, LearningState } from "./learning";
 import { createStorageQueue } from "./storage";
-import { CourseState, freshCourse, lessons, Lesson, restoreCourse, selectDay } from "./course";
+import { CourseState, freshCourse, lessons, Lesson, restoreCourse, selectDay, reviewCollectedWord } from "./course";
 type Store = {
   course: CourseState;
   lesson: Lesson;
   openDay: (id: number) => void;
+  reviewWord: (es: string, known: boolean) => void;
   state: LearningState;
   setState: React.Dispatch<React.SetStateAction<LearningState>>;
   saveError: boolean;
@@ -26,6 +27,7 @@ export function LearningProvider({ children }: { children: React.ReactNode }) {
     return { ...previous, days: { ...previous.days, [key]: typeof action === "function" ? action(current) : action } };
   });
   const openDay = (id: number) => setCourse((previous) => selectDay(previous, id));
+  const reviewWord = (es: string, known: boolean) => setCourse(previous => reviewCollectedWord(previous, es, known));
   const [ready, setReady] = useState(false);
   const [saveError, setSaveError] = useState(false);
   const [storage] = useState(() => createStorageQueue(AsyncStorage, KEY));
@@ -69,7 +71,7 @@ export function LearningProvider({ children }: { children: React.ReactNode }) {
       </View>
     );
   return (
-    <Context.Provider value={{ state, setState, course, lesson, openDay, saveError, clearProgress }}>
+    <Context.Provider value={{ state, setState, course, lesson, openDay, reviewWord, saveError, clearProgress }}>
       {children}
     </Context.Provider>
   );

@@ -173,8 +173,7 @@ export function restore(raw: string | null) {
     if (
       s.stage === "summary" &&
       (!s.completedAt ||
-        !Number.isFinite(Date.parse(s.completedAt)) ||
-        s.known.length !== 3)
+        !Number.isFinite(Date.parse(s.completedAt)))
     )
       return fresh();
     return s;

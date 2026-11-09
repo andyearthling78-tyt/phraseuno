@@ -1,3 +1,5 @@
+> Aktualisierung 9. November 2026 · Build 3: Lernen beginnt mit automatischem Vorlesen, Nachsprechen und gesprochenen Antworten. Schreiben ist freiwillig. Mikrofonzugriff wird erst nach bewusstem Tastendruck angefragt; ausschließlich lokale spanische Erkennung, keine gespeicherte Tondatei. Das native Paket `expo-speech-recognition` 58.0.1 ist fest gebunden; `postinstall` setzt einen geprüften Schutz gegen stillen iOS-Online-Fallback. Alte Aussagen unten über fehlenden Mikrofonzugriff gelten für Build 2. Vokabeln sammeln sich im Tages-/Wochen-Reiter; die Zusatzübung startet nach dem erfolgreichen Dialog, kann am Tag verschoben werden und bleibt für den Wochenabschluss offen. Woche 2 ist noch kein enthaltener Kursinhalt. Alte Store-Bilder zeigen Build 2; vor Einreichung aktualisieren.
+
 # Rechtsbereich – Stand 9. November 2026
 
 Impressum, Datenschutz, Nutzungshinweise und Lizenzkatalog sind in der App auf Deutsch und Englisch offline zugänglich. Die Anbieterangaben einschließlich der ausdrücklich gelieferten Kontakt-Telefonnummer sind zentral in `src/lib/legal.ts` hinterlegt.

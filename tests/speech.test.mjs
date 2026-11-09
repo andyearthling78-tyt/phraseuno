@@ -44,3 +44,12 @@ test("Audio session errors are surfaced and do not break the next attempt", asyn
   await controller.speak(request("retry"));
   assert.deepEqual(spoken, ["retry"]);
 });
+test('Playback completion belongs to the current phrase; stopped audio cannot enable a later microphone step', async () => {
+ const completions=[]; const native=[];
+ const controller=createSpeechController({stop:async()=>{},prepare:async()=>{},speak:(_text,options)=>native.push(options.onDone)});
+ await controller.speak({...request('first'),onDone:()=>completions.push('first')});
+ await controller.speak({...request('second'),onDone:()=>completions.push('second')});
+ native[0](); assert.deepEqual(completions,[]);
+ native[1](); assert.deepEqual(completions,['second']);
+ await controller.stop();native[1]();assert.deepEqual(completions,['second']);
+});

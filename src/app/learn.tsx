@@ -12,6 +12,8 @@ import {
   View,
 } from "react-native";
 import { router } from "expo-router";
+import { OralPractice } from "../components/oral-practice";
+import { matchesSpokenPhrase } from "../lib/oral-model";
 import { learningSpeech } from "../lib/speech";
 import {
   Button,
@@ -35,7 +37,9 @@ export default function Learn() {
   const Alert = useLocalizedAlert();
   const { state, setState, saveError, lesson, openDay } = useLearning();
   const { phrases, words, turns } = lesson;
-  const [picked, setPicked] = useState<string[]>([]);
+  const [writing, setWriting] = useState(false);
+  const [writingPassed, setWritingPassed] = useState(false);
+  const [written, setWritten] = useState("");
   const [passed, setPassed] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [hint, setHint] = useState(false);
@@ -90,35 +94,24 @@ export default function Learn() {
       return { ...v, known: learned, card };
     });
   }
-  function check() {
-    if (passed) {
-      setState((v) => ({
-        ...v,
-        build: v.build + 1,
-        stage: v.build === 3 ? "chat" : "build",
-      }));
-      setPicked([]);
-      setPassed(false);
-      setFeedback("");
-      setHint(false);
-      return;
-    }
-    const ok =
-      normalize(picked.join(" ")) === normalize(phrases[state.build].add);
-    setPassed(ok);
-    setFeedback(
-      ok
-        ? "¡Muy bien! " + phrases[state.build].tip
-        : "Fast! Tippe die Wörter zum Zurücklegen an und versuche es noch einmal.",
-    );
+  function advance() {
+    setState(v => ({ ...v, build: v.build + 1, stage: v.build === 3 ? "chat" : "build" }));
+    setWritten(""); setPassed(false); setWritingPassed(false); setWriting(false); setFeedback(""); setHint(false);
   }
-  function send() {
-    const text = reply.trim();
+  function check() {
+    const ok = normalize(written) === normalize(phrases[state.build].phrase);
+    setWritingPassed(ok);
+    if (ok) setPassed(true);
+    setFeedback(ok ? "¡Muy bien! " + phrases[state.build].tip : "Fast! Vergleiche deinen Satz mit dem Beispiel und versuche es noch einmal.");
+  }
+  function send(answer: string = reply) {
+    const text = answer.trim();
     if (!text) return;
     const result = assess(text, state.chat, turns);
     setState((v) => ({
       ...v,
       chat: v.chat + (result.ok ? 1 : 0),
+      ...(result.ok && v.chat === 3 ? { stage: "cards" as const, completedAt: new Date().toISOString(), card: [0, 1, 2].find(i => !v.known.includes(i)) ?? 0 } : {}),
       messages: [
         ...v.messages,
         { role: "user", text },
@@ -127,6 +120,7 @@ export default function Learn() {
     }));
     setReply("");
     setHint(false);
+    if (result.ok) setWriting(false);
   }
   const p = phrases[Math.min(state.build, 3)],
     turn = turns[Math.min(state.chat, 3)],
@@ -165,76 +159,22 @@ export default function Learn() {
             <Text style={s.subtitle}>{p.de}</Text>
             <View style={l.phrase}>
               <Text style={[s.h2, s.center]}>{p.phrase}</Text>
-              <Speak text={p.phrase} />
             </View>
-            <Text style={[s.small, s.center]}>
-              {state.build
-                ? "Ergänze die neuen Wörter in der richtigen Reihenfolge."
-                : "Tippe die Wörter in der richtigen Reihenfolge an."}
-            </Text>
-            <View style={s.answer}>
-              {state.build > 0 && (
-                <Text style={[s.small, s.center]}>
-                  {phrases[state.build - 1].phrase}
-                </Text>
-              )}
-              <View style={s.wrap}>
-                {picked.length ? (
-                  picked.map((word, i) => (
-                    <Pressable
-                      accessibilityRole="button"
-                      accessibilityLabel={t(`${word} zurücklegen`)}
-                      disabled={passed}
-                      key={`${word}-${i}`}
-                      onPress={() => {
-                        setPicked((v) => v.filter((_, n) => n !== i));
-                        setFeedback("");
-                      }}
-                      style={[s.token, { backgroundColor: C.pale }]}
-                    >
-                      <Text style={s.tokenText}>{word}</Text>
-                    </Pressable>
-                  ))
-                ) : (
-                  <Text style={s.small}>Hier entsteht dein Satz …</Text>
-                )}
-              </View>
-            </View>
-            <View style={s.wrap}>
-              {p.tokens.map((word) => (
-                <Pressable
-                  accessibilityRole="button"
-                  disabled={picked.includes(word) || passed}
-                  accessibilityState={{
-                    disabled: picked.includes(word) || passed,
-                  }}
-                  key={word}
-                  onPress={() => {
-                    setPicked((v) => [...v, word]);
-                    setFeedback("");
-                  }}
-                  style={[
-                    s.token,
-                    (picked.includes(word) || passed) && { opacity: 0.25 },
-                  ]}
-                >
-                  <Text style={s.tokenText}>{word}</Text>
-                </Pressable>
-              ))}
-            </View>
-            {feedback !== "" && (
-              <View accessibilityLiveRegion="polite" style={s.note}>
-                <Text style={s.body}>{feedback}</Text>
-              </View>
-            )}
+            {!passed && <OralPractice key={`build-${lesson.id}-${state.build}`} prompt={p.phrase} repeat onAnswer={text => {
+              const ok = matchesSpokenPhrase(text, p.phrase);
+              setPassed(ok);
+              setFeedback(ok ? "Gut verstanden! Du hast den Satz gesprochen." : "Noch einmal ganz entspannt. Höre den Satz erneut und sprich ihn vollständig nach.");
+            }} />}
+            {passed && <Text accessibilityLiveRegion="polite" style={s.body}>✓ Gut gemacht. Weiter in deinem Tempo.</Text>}
+            <Button secondary onPress={() => setWriting(value => !value)}>{writing ? "Schreibübung schließen" : "Optional: auch schreiben üben"}</Button>
+            {writing && <>
+              <Text style={s.small}>Schreibe den vollständigen Satz auf Spanisch.</Text>
+              <TextInput value={written} onChangeText={value => { setWritten(value); setWritingPassed(false); }} accessibilityLabel={t("Den Satz auf Spanisch schreiben")} placeholder={t("Dein spanischer Satz …")} placeholderTextColor={C.muted} style={l.input} multiline maxLength={300} autoCorrect={false} />
+              <Button onPress={check} disabled={writingPassed || !written.trim()}>Schreiben prüfen ✓</Button>
+            </>}
+            {feedback !== "" && <View accessibilityLiveRegion="polite" style={s.note}><Text style={s.body}>{feedback}</Text></View>}
             {hint && <Text style={s.body}>💡 {p.tip}</Text>}
-            <Button onPress={check} disabled={!passed && !picked.length}>
-              {passed
-                ? state.build === 3
-                  ? "Zum Dialog →"
-                  : "Weiter →"
-                : "Prüfen ✓"}
-            </Button>
+            {passed && <Button onPress={advance}>{state.build === 3 ? "Zum Dialog →" : "Weiter →"}</Button>}
             <Button secondary onPress={() => setHint((v) => !v)}>
               {hint ? "Hilfe ausblenden" : "💡 Kleine Hilfe"}
             </Button>
@@ -271,10 +211,10 @@ export default function Learn() {
                 <View style={l.bubble}>
                   <Text style={s.body}>{turn.es}</Text>
                   <Text style={[s.small, { marginTop: 8 }]}>{turn.de}</Text>
-                  <View style={{ marginTop: 10 }}>
-                    <Speak text={turn.es} />
-                  </View>
                 </View>
+                {!hint && <OralPractice key={`chat-${lesson.id}-${state.chat}`} prompt={turn.es} onAnswer={send} />}
+                <Button secondary onPress={() => setWriting(value => !value)}>{writing ? "Schreibübung schließen" : "Optional: Antwort tippen"}</Button>
+                {writing && <>
                 <TextInput
                   value={reply}
                   onChangeText={setReply}
@@ -287,9 +227,10 @@ export default function Learn() {
                   autoCorrect={false}
                   autoCapitalize="sentences"
                 />
-                <Button disabled={!reply.trim()} onPress={send}>
+                <Button disabled={!reply.trim()} onPress={() => send()}>
                   Antwort senden ↗
                 </Button>
+                </>}
                 <Button secondary onPress={() => setHint((v) => !v)}>
                   💡 Antwort-Hilfe
                 </Button>
@@ -319,14 +260,14 @@ export default function Learn() {
               </>
             )}
             <Text style={s.small}>
-              Lucía spricht per Geräte-Sprachausgabe. Antworte schriftlich oder
-              sprich den Satz für dich nach. Keine Mikrofonaufnahme und keine
-              Aussprachebewertung.
+              Höre Lucía zu und antworte laut. Schreiben ist freiwillig. Die Rückmeldung bezieht sich auf erkannte Wörter und ist keine Aussprachebewertung.
             </Text>
           </Card>
         )}
         {state.stage === "cards" && (
           <Card>
+            <Text style={s.h2}>Lerntag geschafft! ✨</Text>
+            <Text style={s.body}>Jetzt folgt deine freiwillige Vokabel-Zusatzübung. Du kannst sie später im Vokabel-Reiter fortsetzen. Vor der nächsten Lernwoche werden alle Wochenwörter wiederholt.</Text>
             <Label>03 / WÖRTER · {state.known.length} VON 3 SICHER</Label>
             <Text style={s.title}>Schon vertraut.</Text>
             <Text style={s.subtitle}>
@@ -424,6 +365,7 @@ export default function Learn() {
             <Text style={[s.small, s.center]}>
               Unsichere Wörter kommen noch einmal dran.
             </Text>
+            <Button secondary onPress={() => setState(v => ({ ...v, stage: "summary", completedAt: v.completedAt ?? new Date().toISOString() }))}>Vokabeln später üben →</Button>
           </Card>
         )}
         {state.stage === "summary" && (
@@ -442,7 +384,7 @@ export default function Learn() {
               {[
                 ["4", "Phrasen"],
                 ["1", "Dialog"],
-                ["3", "Wörter"],
+                [`${state.known.length}/3`, "Wörter"],
               ].map(([n, text]) => (
                 <View style={s.stat} key={text}>
                   <Text style={s.statNumber}>{n}</Text>
@@ -471,7 +413,7 @@ export default function Learn() {
                       onPress: () => {
                         setState({ ...fresh(), stage: "build" });
                         setPassed(false);
-                        setPicked([]);
+                        setWritten("");
                         setFeedback("");
                         setHint(false);
                       },
@@ -482,6 +424,7 @@ export default function Learn() {
             >
               Lerntag noch einmal üben ↻
             </Button>
+            <Button secondary onPress={() => router.replace("/words")}>Vokabeln aus diesem Lerntag üben →</Button>
             {lesson.id < 7 && <Button onPress={() => { openDay(lesson.id + 1); router.replace("/"); }}>Nächster Lerntag →</Button>}
             <Button secondary onPress={() => router.replace("/")}>
               Zur Übersicht

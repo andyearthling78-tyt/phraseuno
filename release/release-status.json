@@ -1,6 +1,6 @@
 {
   "asOf": "2026-11-09",
-  "status": "PREPARED_NOT_SUBMITTED",
+  "status": "BUILD_3_INSTALLED_SPEECH_HARDWARE_QA_PENDING",
   "implemented": [
     "Seven bilingual learning days with isolated persisted progress",
     "Version-1 learning data migration",
@@ -11,17 +11,19 @@
   ],
   "validation": {
     "automatedTests": {
-      "passed": 27,
+      "passed": 31,
       "failed": 0
     },
     "typescript": "PASS",
     "eslint": "PASS",
     "iosAndAndroidHermesBundles": "PASS",
     "nativeIosReleaseSimulatorBuild": "PASS",
-    "iosManualFlow": "PASS: migrated old day one, complete day two, day three, language switch, restart, iPad onboarding",
+    "iosManualFlow": "PASS: old progress preserved; day/week vocabulary selectors, six collected fixture words after two completed days, optional cards and real writing input, automatic spoken prompt and enabled microphone after playback, permission denial message.",
     "iosPrivacyManifestAudit": "14 bundled manifests: no tracking/collected-data declarations; no microphone/camera permission",
-    "binarySourceDifference": "Physical iPhone Release build now includes final source, including English legal labels and expanded future audio catalog. Fixed recordings remain absent; signed store archive still required.",
-    "nativeIosReleaseDeviceBuild": "PASS: Release build succeeded with 0 errors; installed 100% on iPhone 13 and launched via Apple device tools on 2026-11-09"
+    "binarySourceDifference": "Final source Hermes bundle embedded into copies of native Release builds; native code unchanged, device copy re-signed with existing profile; strict signatures verified. No fixed recordings included.",
+    "nativeIosReleaseDeviceBuild": "PASS: native microphone/recognition module compiled; iPhone build installed and launched. Final UI corrections embedded with Expo export:embed, signatures verified, installation confirmed; final launch blocked by device lock.",
+    "nativeSpeech": "Native speech UI, auto-play completion state, permission prompt and denied-permission fallback verified in simulator. Actual Spanish microphone recognition and network behaviour still require physical-device testing.",
+    "screenshots": "Build 2 historical screenshots; new speaking/vocabulary views require refreshed store captures."
   },
   "submissionGates": [
     {
@@ -42,7 +44,7 @@
     {
       "id": "iphoneInstallation",
       "status": "DONE",
-      "reason": "Current seven-day Release version built, installed successfully on connected iPhone 13 and launched on 2026-11-09. User-facing real-device flow/audio confirmation remains part of release QA."
+      "reason": "Build 3 native app and final source bundle installed successfully. Earlier build 3 process launch confirmed; final re-launch blocked by device lock. User can open app after unlocking."
     },
     {
       "id": "storeAccountsAndSigning",

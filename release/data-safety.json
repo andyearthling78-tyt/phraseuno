@@ -1,5 +1,5 @@
 {
-  "status": "SOURCE_AUDITED_DRAFT_VERIFY_FINAL_BINARIES",
+  "status": "UPDATED_SOURCE_DRAFT_MICROPHONE_FEATURE_REQUIRES_DEVICE_VALIDATION",
   "apple": {
     "dataCollection": "Data Not Collected",
     "tracking": false,
@@ -18,12 +18,14 @@
     "localData": "Processed on device only; no app backend or analytics",
     "tts": "Only fixed course text sent to OS speech service; OS/provider behaviour separately disclosed",
     "sharing": "Only explicit system share-menu action; no automated operator transfer",
-    "support": "User-initiated email outside app; sender/message processed by operator as described in policy"
+    "support": "User-initiated email outside app; sender/message processed by operator as described in policy",
+    "microphone": "Explicit tap and OS microphone permission; on-device Spanish recognition required; no persisted audio. Recognised conversation text stays in local learning data."
   },
   "gates": [
     "Confirm final release SDKs have no added telemetry",
     "Android final binary/network and permission audit pending",
     "Hosting privacy policy URL required",
-    "Revisit declarations if cloud AI, purchases, analytics or new SDKs are added"
+    "Revisit declarations if cloud AI, purchases, analytics or new SDKs are added",
+    "Recheck final speech library and on-device-only enforcement on both platforms; microphone added in build 3"
   ]
 }

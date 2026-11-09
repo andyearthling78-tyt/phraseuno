@@ -24,7 +24,7 @@ export const learningSpeech = createSpeechController({
     subscription = current.addListener("playbackStatusUpdate", (status) => {
       if (player !== current) return;
       if (status.error) { releaseRecording(); options.onError(new Error(status.error)); }
-      else if (status.didJustFinish) releaseRecording();
+      else if (status.didJustFinish) { releaseRecording(); options.onDone?.(); }
     });
     current.play();
   },

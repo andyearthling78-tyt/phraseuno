@@ -1,10 +1,9 @@
 {
-  "scope": "Actual iOS Release simulator bundle; not a signed store archive or Android binary",
-  "version": "1.0.0",
-  "build": "2",
-  "microphonePermission": false,
-  "cameraPermission": false,
-  "trackingOrCollectedDataDeclaredInManifests": false,
+  "scope": "Actual physical iPhone Release bundle, build 3; not a store-distribution archive",
+  "microphonePermission": "PhraseUNO nutzt das Mikrofon, damit du spanische Sätze nachsprechen und Antworten sprechen kannst.",
+  "speechPermission": "PhraseUNO erkennt deine spanischen Übungssätze. Die App verwendet ausschließlich Erkennung auf dem Gerät.",
+  "audioPersistence": false,
+  "recognition": "On-device required by JS and native patch; actual recognition/network behaviour remains to verify on hardware",
   "privacyManifests": [
     {
       "file": "PrivacyInfo.xcprivacy",
@@ -225,7 +224,7 @@
     }
   ],
   "limitations": [
-    "Manifest declarations do not replace final SDK/network behaviour audit",
-    "Final signed store archive and Android binary not yet audited"
+    "No network traffic audit",
+    "Android binary and store archive not tested"
   ]
 }

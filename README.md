@@ -1,3 +1,5 @@
+> Aktualisierung 9. November 2026 · Build 3: Lernen beginnt mit automatischem Vorlesen, Nachsprechen und gesprochenen Antworten. Schreiben ist freiwillig. Mikrofonzugriff wird erst nach bewusstem Tastendruck angefragt; ausschließlich lokale spanische Erkennung, keine gespeicherte Tondatei. Das native Paket `expo-speech-recognition` 58.0.1 ist fest gebunden; `postinstall` setzt einen geprüften Schutz gegen stillen iOS-Online-Fallback. Alte Aussagen unten über fehlenden Mikrofonzugriff gelten für Build 2. Vokabeln sammeln sich im Tages-/Wochen-Reiter; die Zusatzübung startet nach dem erfolgreichen Dialog, kann am Tag verschoben werden und bleibt für den Wochenabschluss offen. Woche 2 ist noch kein enthaltener Kursinhalt. Alte Store-Bilder zeigen Build 2; vor Einreichung aktualisieren.
+
 # PhraseUNO – native iOS- und Android-App
 
 React Native und Expo SDK 58 mit nativen Oberflächen. Die App benötigt keinen Browser und keinen KI-API-Schlüssel.

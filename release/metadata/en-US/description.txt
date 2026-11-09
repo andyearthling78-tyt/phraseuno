@@ -13,7 +13,7 @@ Included:
 • Local progress storage without an account
 • No advertising, purchases or subscriptions
 
-Conversations are local simulations with fixed responses and hints. There is no open-ended AI conversation or pronunciation assessment. Type your answers, or optionally use your keyboard’s dictation feature.
+Conversations are local simulations with fixed responses and hints. There is no open-ended AI conversation or pronunciation assessment. Listen to Lucía, repeat aloud and answer using the microphone. Spanish on-device recognition requires a compatible offline language model and microphone permission. Writing is optional. Each learning day opens optional vocabulary practice that can be deferred. The weekly collection brings all learned words together; the weekly review requires practising them all.
 
 Lesson content is stored on your device. Depending on your operating system, speech voices may require downloads or a connection. Progress does not automatically transfer between devices.
 

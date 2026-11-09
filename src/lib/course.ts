@@ -33,3 +33,37 @@ export function selectDay(course: CourseState, id: number): CourseState {
   if (!lessons.some((lesson) => lesson.id === id)) return course;
   return { ...course, selectedDay: id, days: { ...course.days, [String(id)]: course.days[String(id)] ?? fresh() } };
 }
+
+export function collectedWords(course: CourseState) {
+  const entries = new Map<string, { word: typeof words[number]; sources: { day: number; index: number }[]; known: boolean }>();
+  for (const lesson of lessons) {
+    const day = course.days[String(lesson.id)];
+    if (!day || day.chat !== 4) continue;
+    lesson.words.forEach((word, index) => {
+      const previous = entries.get(word.es);
+      const known = day.known.includes(index);
+      if (previous) { previous.sources.push({ day: lesson.id, index }); previous.known = previous.known && known; }
+      else entries.set(word.es, { word, sources: [{ day: lesson.id, index }], known });
+    });
+  }
+  return [...entries.values()];
+}
+export function reviewCollectedWord(course: CourseState, es: string, known: boolean): CourseState {
+  const entry = collectedWords(course).find(value => value.word.es === es);
+  if (!entry) return course;
+  const days = { ...course.days };
+  for (const source of entry.sources) {
+    const day = days[String(source.day)];
+    const learned = known ? [...new Set([...day.known, source.index])] : day.known.filter(index => index !== source.index);
+    const card = [0, 1, 2].find(index => !learned.includes(index)) ?? 0;
+    days[String(source.day)] = { ...day, known: learned, card,
+      stage: learned.length === 3 && day.stage === 'cards' ? 'summary' : day.stage };
+  }
+  return { ...course, days };
+}
+export function weekStatus(course: CourseState) {
+  const completedDays = lessons.filter(lesson => course.days[String(lesson.id)]?.chat === 4).length;
+  const vocabulary = collectedWords(course);
+  const remaining = vocabulary.filter(entry => !entry.known).length;
+  return { completedDays, vocabulary, remaining, readyForNextWeek: completedDays === lessons.length && remaining === 0 };
+}
