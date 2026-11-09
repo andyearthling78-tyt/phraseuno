@@ -12,7 +12,8 @@ import {
   View,
 } from "react-native";
 import { router } from "expo-router";
-import { OralPractice } from "../components/oral-practice";
+import { OralPractice, Pill } from "../components/oral-practice";
+import { usePreferences } from "../lib/preferences";
 import { ListenStep } from "../components/listen-step";
 import { matchesSpokenPhrase } from "../lib/oral-model";
 import { learningSpeech } from "../lib/speech";
@@ -49,6 +50,11 @@ function StepTrail({ step }: { step: PhraseStep }) {
     </View>)}
   </View>;
 }
+function Dots({ total, done }: { total: number; done: number }) {
+  return <View accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: total, now: done }} style={{ flexDirection: "row", gap: 6, marginTop: 6 }}>
+    {Array.from({ length: total }, (_, i) => <View key={i} style={{ width: 22, height: 6, borderRadius: 3, backgroundColor: i < done ? C.green : i === done ? C.yellow : C.line }} />)}
+  </View>;
+}
 function BuiltPhrase({ phrase, add }: { phrase: string; add: string }) {
   const at = phrase.toLowerCase().lastIndexOf(add.toLowerCase());
   if (at < 0) return <Text translate={false} style={[s.h2, s.center]}>{phrase}</Text>;
@@ -60,6 +66,7 @@ export default function Learn() {
   const { t } = useI18n();
   const Alert = useLocalizedAlert();
   const { state, setState, saveError, lesson, openDay, course } = useLearning();
+  const { preferences } = usePreferences();
   const { phrases, words, turns } = lesson;
   const [writing, setWriting] = useState(false);
   const [step, setStep] = useState<PhraseStep>("listen");
@@ -126,7 +133,7 @@ export default function Learn() {
   function check() {
     const ok = normalize(written) === normalize(phrases[state.build].phrase);
     setWritingPassed(ok);
-    setFeedback(ok ? "¡Muy bien! Geschrieben, gelesen, gesprochen. Dieser Baustein sitzt." : "Fast! Vergleiche deinen Satz mit dem Satz oben und versuche es noch einmal.");
+    setFeedback(ok ? "✓ ¡Muy bien! Dieser Baustein sitzt." : "Fast! Vergleiche mit dem Satz oben.");
   }
   function send(answer: string = reply) {
     const text = answer.trim();
@@ -146,6 +153,9 @@ export default function Learn() {
     setHint(false);
     if (result.ok) setWriting(false);
   }
+  const lastUser = [...state.messages].reverse().find((m) => m.role === "user")?.text;
+  const lastTeacher = state.messages.length && state.messages[state.messages.length - 1].role === "teacher" ? state.messages[state.messages.length - 1].text : undefined;
+  const lastOk = !!lastTeacher && turns.some((x) => x.success === lastTeacher);
   const p = phrases[Math.min(state.build, 3)],
     turn = turns[Math.min(state.chat, 3)],
     w = words[state.card];
@@ -154,7 +164,7 @@ export default function Learn() {
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
-      <Page lesson autoScroll={state.stage === "chat"}>
+      <Page lesson>
         <View style={s.row}>
           <Pressable
             accessibilityRole="button"
@@ -176,19 +186,16 @@ export default function Learn() {
         )}
         {state.stage === "build" && (
           <Card>
-            <Label>01 / PHRASEN · {state.build + 1} VON 4</Label>
+            <View style={[s.row, { justifyContent: "space-between" }]}>
+              <Text style={s.small}>Baustein {state.build + 1} / 4</Text>
+              <Dots total={4} done={state.build} />
+            </View>
             <StepTrail step={step} />
-            <Text style={s.title}>
-              {lesson.title}
-            </Text>
-            <Text style={s.subtitle}>{p.de}</Text>
+            <Text style={[s.subtitle, s.center]}>{p.de}</Text>
             {step === "listen" || step === "speak" ? (
               <View style={l.phrase}>
-                <Text style={{ fontSize: 34 }}>🎧</Text>
-                <Text style={[s.small, s.center]}>
-                  {hint ? "" : "Erst hören und nachsprechen. Den spanischen Text liest du im nächsten Schritt."}
-                </Text>
-                {hint && <Text translate={false} style={[s.h2, s.center]}>{p.phrase}</Text>}
+                {hint ? <Text translate={false} style={[s.h2, s.center]}>{p.phrase}</Text>
+                  : <Text accessible={false} style={{ fontSize: 40 }}>🎧</Text>}
               </View>
             ) : (
               <View style={l.phrase}>
@@ -196,115 +203,85 @@ export default function Learn() {
                 <Speak text={p.phrase} />
               </View>
             )}
-            {step === "listen" && <ListenStep key={`listen-${lesson.id}-${state.build}`} prompt={p.phrase} onContinue={() => { setStep("speak"); setFeedback(""); }} />}
+            {step === "listen" && <ListenStep key={`listen-${lesson.id}-${state.build}`} prompt={p.phrase} onContinue={() => { setStep("speak"); setFeedback(""); setHint(false); }} />}
             {step === "speak" && <>
               {!passed && <OralPractice key={`build-${lesson.id}-${state.build}`} prompt={p.phrase} repeat autoPlay={false} onAnswer={text => {
                 const ok = matchesSpokenPhrase(text, p.phrase);
                 setPassed(ok);
-                setFeedback(ok ? "Gut verstanden! Du hast den Satz gesprochen." : "Noch einmal ganz entspannt. Höre den Satz erneut und sprich ihn vollständig nach.");
-              }} />}
-              {passed && <Text accessibilityLiveRegion="polite" style={s.body}>✓ Gut gemacht. Jetzt siehst du den Satz.</Text>}
-              <Button secondary={!passed} onPress={() => { setStep("read"); setFeedback(""); setHint(false); }}>{passed ? "Weiter zum Lesen →" : "Gerade nicht sprechen? Weiter zum Lesen →"}</Button>
+                setFeedback(ok ? "✓ Gut verstanden!" : `„${text}“\nNoch einmal ganz entspannt.`);
+              }} actions={<>
+                <Pill label={hint ? "Text verbergen" : "💡 Text zeigen"} active={hint} onPress={() => setHint((v) => !v)} />
+                <Pill label="Überspringen →" onPress={() => { setStep("read"); setFeedback(""); setHint(false); }} />
+              </>} />}
+              {feedback !== "" && <Text accessibilityLiveRegion="polite" style={[s.body, s.center]}>{feedback}</Text>}
+              {passed && <Button onPress={() => { setStep("read"); setFeedback(""); setHint(false); }}>Weiter zum Lesen →</Button>}
             </>}
             {step === "read" && <>
-              <Text style={s.body}>Lies den Satz in Ruhe. Neu ist der hervorgehobene Baustein.</Text>
-              <View style={s.note}><Text style={s.body}>💡 {p.tip}</Text></View>
+              <Text style={[s.small, s.center]}>💡 {p.tip}</Text>
               <Button onPress={() => { setStep("write"); setFeedback(""); }}>Jetzt schreiben →</Button>
             </>}
             {step === "write" && <>
-              <Text style={s.small}>Schreibe den vollständigen Satz auf Spanisch. Akzente und Satzzeichen sind nicht entscheidend.</Text>
-              <TextInput value={written} onChangeText={value => { setWritten(value); setWritingPassed(false); }} accessibilityLabel={t("Den Satz auf Spanisch schreiben")} placeholder={t("Dein spanischer Satz …")} placeholderTextColor={C.muted} style={l.input} multiline maxLength={300} autoCorrect={false} autoCapitalize="sentences" editable={!writingPassed} />
-              {!writingPassed && <Button onPress={check} disabled={!written.trim()}>Schreiben prüfen ✓</Button>}
+              <TextInput value={written} onChangeText={value => { setWritten(value); setWritingPassed(false); }} accessibilityLabel={t("Den Satz auf Spanisch schreiben")} placeholder={t("Schreibe den Satz auf Spanisch …")} placeholderTextColor={C.muted} style={l.input} multiline maxLength={300} autoCorrect={false} autoCapitalize="sentences" editable={!writingPassed} />
+              {feedback !== "" && <Text accessibilityLiveRegion="polite" style={[s.body, s.center]}>{feedback}</Text>}
+              {!writingPassed && <Button onPress={check} disabled={!written.trim()}>Prüfen ✓</Button>}
+              {writingPassed && <Button onPress={advance}>{state.build === 3 ? "Zum Dialog →" : "Nächster Baustein →"}</Button>}
             </>}
-            {feedback !== "" && <View accessibilityLiveRegion="polite" style={s.note}><Text style={s.body}>{feedback}</Text></View>}
-            {step === "write" && writingPassed && <Button onPress={advance}>{state.build === 3 ? "Zum Dialog →" : "Nächster Baustein →"}</Button>}
-            {(step === "listen" || step === "speak") && <Button secondary onPress={() => setHint((v) => !v)}>
-              {hint ? "Text ausblenden" : "💡 Text kurz zeigen"}
-            </Button>}
           </Card>
         )}
         {state.stage === "chat" && (
           <Card>
             <View style={s.row}>
               <View style={l.avatar}>
-                <Text style={{ fontSize: 27 }}>👩🏽</Text>
+                <Text style={{ fontSize: 24 }}>{preferences.voiceGender === "male" ? "👨🏽" : "👩🏽"}</Text>
               </View>
-              <View>
-                <Text style={s.h2}>{lesson.context}</Text>
-                <Text style={s.small}>
-                  Simulierter Dialog · {Math.min(state.chat + 1, 4)} / 4
-                </Text>
+              <View style={{ flex: 1 }}>
+                <Text style={s.h2}>{lesson.label}</Text>
+                <Dots total={4} done={state.chat} />
               </View>
             </View>
-            {state.messages.map((m, i) => (
-              <View
-                key={i}
-                style={[l.bubble, m.role === "user" && l.userBubble]}
-              >
-                <Text
-                  translate={m.role !== "user"}
-                  style={[s.body, m.role === "user" && { color: C.cream }]}
-                >
-                  {m.text}
-                </Text>
-              </View>
-            ))}
             {state.chat < 4 ? (
               <>
-                <View style={l.bubble}>
-                  <Text style={s.body}>{turn.es}</Text>
-                  <Text style={[s.small, { marginTop: 8 }]}>{turn.de}</Text>
+                {lastUser && lastTeacher && (
+                  <View style={[l.feedback, lastOk ? l.feedbackOk : l.feedbackTry]} accessibilityLiveRegion="polite">
+                    <Text translate={false} style={s.small}>„{lastUser}“</Text>
+                    <Text style={s.body}>{lastOk ? "✓ " : "↻ "}{lastTeacher}</Text>
+                  </View>
+                )}
+                <View style={l.question}>
+                  <Text translate={false} style={l.questionEs}>{turn.es}</Text>
+                  <Text style={s.small}>{turn.de}</Text>
                 </View>
-                {!hint && <OralPractice key={`chat-${lesson.id}-${state.chat}`} prompt={turn.es} onAnswer={send} />}
-                <Button secondary onPress={() => setWriting(value => !value)}>{writing ? "Schreibübung schließen" : "Optional: Antwort tippen"}</Button>
-                {writing && <>
-                <TextInput
-                  value={reply}
-                  onChangeText={setReply}
-                  accessibilityLabel={t("Deine Antwort auf Spanisch")}
-                  placeholder={t("Deine Antwort auf Spanisch …")}
-                  placeholderTextColor={C.muted}
-                  style={l.input}
-                  maxLength={300}
-                  multiline
-                  autoCorrect={false}
-                  autoCapitalize="sentences"
-                />
-                <Button disabled={!reply.trim()} onPress={() => send()}>
-                  Antwort senden ↗
-                </Button>
-                </>}
-                <Button secondary onPress={() => setHint((v) => !v)}>
-                  💡 Antwort-Hilfe
-                </Button>
                 {hint && (
-                  <View style={s.note}>
-                    <Text style={s.body}>{turn.hint}</Text>
+                  <View style={[l.question, { backgroundColor: C.yellow }]}>
+                    <Text translate={false} style={[s.h2, s.center]}>{turn.hint}</Text>
                     <Speak text={turn.hint} />
                   </View>
                 )}
+                {!hint && !writing && <OralPractice key={`chat-${lesson.id}-${state.chat}`} prompt={turn.es} onAnswer={send}
+                  actions={<>
+                    <Pill label="⌨ Tippen" onPress={() => setWriting(true)} />
+                    <Pill label="💡 Hilfe" onPress={() => setHint(true)} />
+                  </>} />}
+                {hint && <Button secondary onPress={() => setHint(false)}>Verstanden – jetzt selbst sagen</Button>}
+                {writing && <>
+                  <TextInput value={reply} onChangeText={setReply} autoFocus
+                    accessibilityLabel={t("Deine Antwort auf Spanisch")} placeholder={t("Deine Antwort auf Spanisch …")}
+                    placeholderTextColor={C.muted} style={l.input} maxLength={300} multiline autoCorrect={false} autoCapitalize="sentences" />
+                  <Button disabled={!reply.trim()} onPress={() => send()}>Antwort senden ↗</Button>
+                  <Button secondary onPress={() => setWriting(false)}>🎙 Lieber sprechen</Button>
+                </>}
               </>
             ) : (
               <>
-                <View style={l.bubble}>
-                  <Text style={s.body}>¡Muy bien! ✨</Text>
-                  <Text style={s.small}>
-                    Du hast dich verständlich gemacht!
-                  </Text>
+                <View style={[l.feedback, l.feedbackOk]}>
+                  <Text style={s.h2}>¡Muy bien! ✨</Text>
+                  <Text style={s.body}>Dialog geschafft.</Text>
                 </View>
-                <Button
-                  onPress={() => {
-                    setHint(false);
-                    setState((v) => ({ ...v, stage: "cards" }));
-                  }}
-                >
-                  Jetzt Wörter festigen →
+                <Button onPress={() => { setHint(false); setState((v) => ({ ...v, stage: "cards" })); }}>
+                  Weiter zu den Vokabeln →
                 </Button>
               </>
             )}
-            <Text style={s.small}>
-              Höre Lucía zu und antworte laut. Schreiben ist freiwillig. Die Rückmeldung bezieht sich auf erkannte Wörter und ist keine Aussprachebewertung.
-            </Text>
           </Card>
         )}
         {state.stage === "cards" && (
@@ -485,6 +462,11 @@ export default function Learn() {
   );
 }
 const l = StyleSheet.create({
+  question: { backgroundColor: C.pale, borderRadius: 18, padding: 20, gap: 8, alignItems: "center" },
+  questionEs: { fontSize: 24, fontWeight: "700", color: C.green, textAlign: "center", letterSpacing: -0.4 },
+  feedback: { borderRadius: 14, padding: 14, gap: 4 },
+  feedbackOk: { backgroundColor: "#dfeccf" },
+  feedbackTry: { backgroundColor: "#f6e7c4" },
   trail: { flexDirection: "row", gap: 6, flexWrap: "wrap" },
   trailItem: { paddingVertical: 6, paddingHorizontal: 10, borderRadius: 999, borderWidth: 1, borderColor: C.line, backgroundColor: C.paper },
   trailDone: { borderColor: C.green, backgroundColor: C.pale },

@@ -3,8 +3,10 @@ import { useFocusEffect } from "expo-router";
 import { AppState, View } from "react-native";
 import { usePreferences } from "../lib/preferences";
 import { learningSpeech } from "../lib/speech";
+import { recognitionGate } from "../lib/recognition-gate";
 import { Text } from "./localized-text";
 import { Button, s } from "./ui";
+import { Pill } from "./oral-practice";
 
 // Step 1 of every phrase: listen only. The Spanish text stays hidden until the reading step.
 export function ListenStep({ prompt, onContinue }: { prompt: string; onContinue: () => void }) {
@@ -14,10 +16,12 @@ export function ListenStep({ prompt, onContinue }: { prompt: string; onContinue:
   const mounted = useRef(true);
   const generation = useRef(0);
   const halt = useCallback(() => { generation.current++; void learningSpeech.stop(); }, []);
-  const play = useCallback(() => {
+  const play = useCallback(async () => {
     const token = ++generation.current;
     if (!selectedVoice) { setPhase("error"); return; }
     setPhase("speaking");
+    await recognitionGate.idle();
+    if (!mounted.current || token !== generation.current) return;
     void learningSpeech.speak({
       text: prompt, voice: selectedVoice,
       recording: { voice: preferences.voiceGender, speed: preferences.audioSpeed },
@@ -35,17 +39,17 @@ export function ListenStep({ prompt, onContinue }: { prompt: string; onContinue:
   useFocusEffect(useCallback(() => () => { halt(); }, [halt]));
   useEffect(() => {
     if (voicesLoading) return;
-    const scheduled = setTimeout(play, 150);
+    const scheduled = setTimeout(() => { void play(); }, 150);
     return () => clearTimeout(scheduled);
   }, [play, voicesLoading]);
   const tutor = preferences.voiceGender === "male" ? "Mateo" : "Lucía";
   return <View style={{ gap: 12 }}>
-    <Text accessibilityLiveRegion="polite" style={[s.body, s.center]}>
-      {phase === "speaking" ? (tutor === "Mateo" ? "Mateo spricht. Hör genau hin …" : "Lucía spricht. Hör genau hin …")
-        : phase === "error" ? (selectedVoice ? "Die Stimme konnte nicht abgespielt werden. Prüfe die Medienlautstärke und das gewählte Audiogerät und versuche es erneut." : "Bitte wähle in den Einstellungen eine verfügbare spanische Stimme.")
-        : "Gut zugehört. Du kannst den Satz so oft hören, wie du möchtest."}
+    <Text accessibilityLiveRegion="polite" style={[s.h2, s.center]}>
+      {phase === "speaking" ? (tutor === "Mateo" ? "🔊 Mateo spricht …" : "🔊 Lucía spricht …")
+        : phase === "error" ? (selectedVoice ? "Die Stimme konnte nicht abgespielt werden." : "Bitte wähle in den Einstellungen eine spanische Stimme.")
+        : "Gut zugehört."}
     </Text>
-    <Button secondary onPress={play} disabled={phase === "speaking"}>♪ Noch einmal hören</Button>
-    <Button onPress={() => { halt(); onContinue(); }} disabled={!heard && phase !== "error"}>Jetzt nachsprechen →</Button>
+    <Button onPress={() => { halt(); onContinue(); }} disabled={!heard && phase !== "error"}>🎙 Jetzt nachsprechen →</Button>
+    <View style={s.row}><Pill label="♪ Nochmal hören" onPress={() => { void play(); }} disabled={phase === "speaking"} /></View>
   </View>;
 }

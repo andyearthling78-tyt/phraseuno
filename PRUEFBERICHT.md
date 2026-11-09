@@ -105,3 +105,11 @@ Jede Phrase folgt jetzt fest: Hören (Text verborgen) → Nachsprechen (überspr
 Wochenabfrage: Nach allen sieben Lerntagen öffnet sich im Vokabel-Reiter die Abfrage aller 20 Wochenwörter; unsichere Wörter wiederholen sich am Ende. `readyForNextWeek` verlangt jetzt zusätzlich den abgeschlossenen Wochencheck (`weekReviewedAt`, verlustfrei ergänzt, Speicher-Version unverändert).
 
 33 Tests, TypeScript und ESLint bestanden. Noch nicht nativ gebaut oder auf dem iPhone geprüft.
+
+## Sprechen stabilisiert, Mikrofonanzeige, ruhigere Lernseiten · 9. November 2026
+
+iPhone-Feedback zu Build 4: „Antwort sprechen“ reagierte oft nicht, Lucías nächste Frage brach mittendrin ab, Antworten wurden nach dem ersten Wort beendet, Seiten zu textlastig.
+
+Ursachen/Behebung: Abbrechen einer gar nicht laufenden Erkennung setzte die geteilte Audiositzung zurück (jetzt nur eigene Erkennung abbrechen); Kategorie-Wechsel zwischen Sprachausgabe (playback) und Mikrofon (playAndRecord/measurement) – jetzt eine gemeinsame playAndRecord-Sitzung; Sprachausgabe wartet app-weit auf das Ende der Erkennung plus 350 ms; Erkennung kontinuierlich mit eigener Pausenerkennung (1,7 s); unbeabsichtigte Abbrüche zeigen einen Hinweis statt nichts. Großes Mikrofon: grün = bereit, rot pulsierend mit Pegel = jetzt sprechen. Dialog zeigt nur noch aktuelle Frage und letzte Rückmeldung; Nebenaktionen als kleine Knöpfe; Datenschutz-Fußnoten aus den Übungen entfernt (bleiben unter Info/Datenschutz). Hinweis auf kostenlose erweiterte iOS-Stimmen in den Stimmeinstellungen.
+
+35 Tests, TypeScript, ESLint bestanden. Nativer Build und Gerätetest stehen aus.

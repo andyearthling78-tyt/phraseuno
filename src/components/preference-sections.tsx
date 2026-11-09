@@ -62,7 +62,8 @@ export function PreferenceSections({ section }: { section: PreferenceSection }) 
     <Choice label="Lucía · weiblich" selected={preferences.voiceGender === "female"} onPress={() => { learningSpeech.stop(); save({ voiceGender: "female", voiceId: null }); }} />
     <Choice label="Mateo · männlich" selected={preferences.voiceGender === "male"} onPress={() => { learningSpeech.stop(); save({ voiceGender: "male", voiceId: null }); }} />
     {voicesLoading ? <Text style={s.small}>Stimmen werden geladen …</Text> : selectedVoice ? <>
-      <Text style={s.small}>Aktive Stimme: <Text translate={false}>{selectedVoice.name}</Text></Text>
+      <Text style={s.small}>Aktive Stimme: <Text translate={false}>{selectedVoice.name}</Text> · {(selectedVoice as { quality?: string }).quality === "Enhanced" ? "erweiterte Qualität" : "Standardqualität"}</Text>
+      {(selectedVoice as { quality?: string }).quality !== "Enhanced" && <View style={s.note}><Text style={s.small}>Natürlicher klingt eine erweiterte Stimme. Lade sie kostenlos auf deinem iPhone: Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Spanisch, z. B. „Mónica (Erweitert)“ oder „Jorge (Erweitert)“. PhraseUNO wählt sie danach automatisch.</Text></View>}
       <Button secondary onPress={() => preview(selectedVoice.identifier)}>Stimme probehören ♪</Button>
     </> : <Text style={s.body}>{voiceError ? "Stimmen konnten nicht geladen werden. Bitte öffne die App erneut." : "Keine passende Stimme automatisch erkannt. Wähle unten eine verfügbare Stimme nach dem Probehören."}</Text>}
     {!voicesLoading && <Button secondary onPress={() => setShowVoices(!showVoices)}>{showVoices ? "Stimmenliste schließen" : "Verfügbare Stimmen auswählen"}</Button>}

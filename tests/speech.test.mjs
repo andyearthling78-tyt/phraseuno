@@ -11,7 +11,7 @@ test("Speech awaits stop and playback session, and uses full utterance volume", 
   await controller.speak(request("café"));
   assert.deepEqual(calls, ["stop", "prepare", "speak"]);
   assert.equal(learningAudioMode.playsInSilentMode, true);
-  assert.equal(learningAudioMode.allowsRecording, false);
+  assert.equal(learningAudioMode.allowsRecording, true);
   assert.equal(learningAudioMode.shouldRouteThroughEarpiece, false);
 });
 test("Rapid requests play only the newest phrase and cleanup cancels pending speech", async () => {

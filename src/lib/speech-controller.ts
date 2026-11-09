@@ -1,6 +1,8 @@
 export const learningAudioMode = {
   playsInSilentMode: true,
-  allowsRecording: false,
+  // Same play-and-record session as the microphone exercise: no category switch
+  // between Lucía/Mateo speaking and the learner answering, so nothing gets cut off.
+  allowsRecording: true,
   shouldPlayInBackground: false,
   shouldRouteThroughEarpiece: false,
   interruptionMode: "mixWithOthers" as const,
