@@ -1,0 +1,4 @@
+{
+  "NSMicrophoneUsageDescription": "PhraseUNO uses the microphone so you can repeat Spanish sentences and speak your answers.",
+  "NSSpeechRecognitionUsageDescription": "PhraseUNO turns your spoken Spanish into text on your device to check your answers."
+}

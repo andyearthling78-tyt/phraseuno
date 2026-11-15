@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "PhraseUNO",
+    "slug": "phraseuno",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "phraseuno",
+    "userInterfaceStyle": "light",
+    "icon": "./assets/icon.png",
+    "splash": { "image": "./assets/splash.png", "resizeMode": "contain", "backgroundColor": "#173e32" },
+    "locales": { "de": "./locales/de.json", "en": "./locales/en.json" },
+    "ios": {
+      "bundleIdentifier": "com.phraseuno.mobile",
+      "buildNumber": "10",
+      "supportsTablet": true,
+      "infoPlist": { "ITSAppUsesNonExemptEncryption": false, "CFBundleAllowMixedLocalizations": true }
+    },
+    "android": {
+      "package": "com.phraseuno.mobile",
+      "versionCode": 10,
+      "adaptiveIcon": { "foregroundImage": "./assets/adaptive-icon.png", "backgroundColor": "#173e32" }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-localization",
+      ["expo-audio", { "microphonePermission": "PhraseUNO uses the microphone so you can repeat Spanish sentences and speak your answers." }],
+      ["expo-speech-recognition", {
+        "microphonePermission": "PhraseUNO uses the microphone so you can repeat Spanish sentences and speak your answers.",
+        "speechRecognitionPermission": "PhraseUNO turns your spoken Spanish into text on your device to check your answers.",
+        "androidSpeechServicePackages": ["com.google.android.googlequicksearchbox", "com.google.android.as"]
+      }],
+      ["expo-notifications", { "color": "#173e32" }]
+    ],
+    "extra": {
+      "revenueCat": { "ios": "", "android": "" }
+    }
+  }
+}
